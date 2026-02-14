@@ -79,3 +79,7 @@ body {
   box-sizing: border-box;
   background-color: #fffaf9;
 }
+
+.input {
+  @apply border border-slate-200 rounded-lg p-3 w-full focus:outline-peach-400;
+}

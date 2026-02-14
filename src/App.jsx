@@ -10,7 +10,10 @@ import ResumeChoiceView from "./components/ResumeChoiceView";
 import TemplateGallery from "./components/TemplateGallery";
 import Footer from "./components/Footer";
 import UploadView from './components/UploadView';
+import EditorPage from "./components/editor/EditorPage";
 
+import TemplateOne from "./templates/TemplateOne";
+import TemplateTwo from "./templates/TemplateTwo";
 
 /* ---------------- STEPS SECTION ---------------- */
 
@@ -19,19 +22,19 @@ function StepsSection() {
     {
       id: "STEP 1",
       title: "Choose a stylish template",
-      desc: "Select one of the recruiter-approved CV templates designed specifically to always make it past the screening stage.",
+      desc: "Select one of the recruiter-approved CV templates.",
       icon: <MousePointer2 className="text-peach-500" size={24} />,
     },
     {
       id: "STEP 2",
       title: "Customize each CV section",
-      desc: "Add details about your experience, education, and skills with one click.",
+      desc: "Add experience, education, and skills easily.",
       icon: <Edit3 className="text-peach-500" size={24} />,
     },
     {
       id: "STEP 3",
       title: "Download your CV in seconds",
-      desc: "Save time and prepare for interviews confidently.",
+      desc: "Prepare for interviews confidently.",
       icon: <Download className="text-peach-500" size={24} />,
     }
   ];
@@ -52,30 +55,26 @@ function StepsSection() {
         </div>
 
         <div className="lg:w-1/2 space-y-10">
-          <h2 className="text-5xl font-black text-slate-800 leading-tight">
+          <h2 className="text-5xl font-black text-slate-800">
             Create your job-winning CV in <br />
             <span className="text-peach-500 text-6xl">3 simple steps</span>
           </h2>
 
-          <div className="space-y-8">
-            {steps.map((step, index) => (
-              <div key={index} className="flex gap-8 group">
-
-                <div className="w-12 h-12 bg-white border-2 border-peach-100 rounded-xl flex items-center justify-center shadow-sm group-hover:border-peach-500 transition-colors">
-                  {step.icon}
-                </div>
-
-                <div>
-                  <p className="text-peach-400 font-bold text-xs tracking-widest mb-1">{step.id}</p>
-                  <h3 className="text-2xl font-black text-slate-800 mb-2">{step.title}</h3>
-                  <p className="text-slate-500">{step.desc}</p>
-                </div>
-
+          {steps.map((step, index) => (
+            <div key={index} className="flex gap-8">
+              <div className="w-12 h-12 bg-white border-2 border-peach-100 rounded-xl flex items-center justify-center">
+                {step.icon}
               </div>
-            ))}
-          </div>
 
+              <div>
+                <p className="text-peach-400 text-xs font-bold">{step.id}</p>
+                <h3 className="text-2xl font-black">{step.title}</h3>
+                <p className="text-slate-500">{step.desc}</p>
+              </div>
+            </div>
+          ))}
         </div>
+
       </div>
     </section>
   );
@@ -87,6 +86,10 @@ function StepsSection() {
 export default function App() {
 
   const [view, setView] = useState('landing');
+
+  // ⭐ NEW TEMPLATE STATE
+  const [selectedTemplate, setSelectedTemplate] = useState("templateOne");
+
 
   const Navbar = () => (
     <nav className="flex justify-between items-center px-12 py-6 bg-white border-b border-peach-100 sticky top-0 z-50">
@@ -112,6 +115,7 @@ export default function App() {
     </nav>
   );
 
+
   return (
     <div className="min-h-screen bg-[#fffaf9] font-sans text-slate-900">
 
@@ -120,56 +124,38 @@ export default function App() {
       {/* -------- LANDING -------- */}
       {view === 'landing' && (
         <>
-          <main className="max-w-7xl mx-auto px-12 py-20 flex flex-col lg:flex-row items-center gap-16">
+          <main className="max-w-7xl mx-auto px-12 py-20 flex lg:flex-row flex-col gap-16">
 
-            {/* LEFT */}
             <div className="lg:w-1/2 space-y-8">
 
-              <div className="flex items-center gap-2 text-green-600 font-semibold text-sm">
-                <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
-                48,802 resumes created today
-              </div>
-
-              <h1 className="text-7xl font-extrabold leading-tight">
+              <h1 className="text-7xl font-extrabold">
                 Create your CV with an <br />
                 <span className="text-peach-500">AI-powered</span> CV maker
               </h1>
-
-              <p className="text-xl text-slate-500 max-w-lg">
-                The first step to a better job? A better CV.
-              </p>
 
               <div className="flex gap-4">
 
                 <button
                   onClick={() => setView('templates')}
-                  className="bg-peach-500 text-white px-10 py-4 rounded-xl font-bold text-lg shadow-lg hover:bg-peach-600 transition"
+                  className="bg-peach-500 text-white px-10 py-4 rounded-xl font-bold"
                 >
                   Create a New CV
                 </button>
 
                 <button
                   onClick={() => setView('upload')}
-                  className="border-2 border-peach-400 text-peach-500 px-10 py-4 rounded-xl font-bold text-lg hover:bg-white transition"
+                  className="border-2 border-peach-400 text-peach-500 px-10 py-4 rounded-xl font-bold"
                 >
                   Improve My Resume
                 </button>
 
               </div>
-
             </div>
 
-            {/* RIGHT */}
             <div className="lg:w-1/2 relative">
-
-              <div className="bg-white p-6 rounded-2xl shadow-2xl border border-peach-100 transform rotate-2">
-                <div className="w-full aspect-[3/4] bg-slate-50 rounded-lg p-6"></div>
+              <div className="bg-white p-6 rounded-2xl shadow-2xl border border-peach-100">
+                <div className="w-full aspect-[3/4] bg-slate-50 rounded-lg"></div>
               </div>
-
-              <div className="absolute top-1/2 -right-10 bg-green-50 text-green-700 px-4 py-2 rounded-full border border-green-200 shadow-sm font-bold flex items-center gap-2">
-                <CheckCircle size={14} /> ATS Perfect
-              </div>
-
             </div>
 
           </main>
@@ -188,7 +174,10 @@ export default function App() {
 
       {/* -------- TEMPLATE GALLERY -------- */}
       {view === 'templates' && (
-        <TemplateGallery setView={setView} />
+        <TemplateGallery
+          setView={setView}
+          setSelectedTemplate={setSelectedTemplate}
+        />
       )}
 
       {/* -------- RESUME CHOICE -------- */}
@@ -201,18 +190,27 @@ export default function App() {
       )}
 
       {/* -------- EDITOR -------- */}
-      {view === 'editor' && (
-        <div className="max-w-7xl mx-auto px-12 py-20 text-center">
-          <h2 className="text-4xl font-black mb-4">
-            Step 2: Customizing Your CV
-          </h2>
+      {view === "editor" && (
+        <EditorPage
+          selectedTemplate={selectedTemplate}
+          onPreview={() => setView("preview")}
+        />
+      )}
+
+      {/* -------- PREVIEW -------- */}
+      {view === "preview" && (
+        <div className="p-10">
 
           <button
-            onClick={() => setView('templates')}
-            className="text-peach-500 underline font-bold"
+            onClick={() => setView("editor")}
+            className="mb-6 text-peach-500 font-bold underline"
           >
-            Back to templates
+            ← Back to Editor
           </button>
+
+          {selectedTemplate === "templateOne" && <TemplateOne />}
+          {selectedTemplate === "templateTwo" && <TemplateTwo />}
+
         </div>
       )}
 
