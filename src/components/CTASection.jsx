@@ -26,21 +26,8 @@ export default function CTASection() {
 
         </div>
 
-        {/* Footer */}
-        <div className="flex flex-col md:flex-row justify-between items-center mt-12 text-sm text-slate-500 gap-4">
-
-          <p>© 2026 AuraResume. All rights reserved.</p>
-
-          <div className="flex gap-6">
-            <span className="hover:text-peach-500 cursor-pointer">Terms</span>
-            <span className="hover:text-peach-500 cursor-pointer">Privacy</span>
-            <span className="hover:text-peach-500 cursor-pointer">Cookies</span>
-            <span className="hover:text-peach-500 cursor-pointer">Contact</span>
-          </div>
-
-        </div>
-
       </div>
+
     </section>
   );
 }
