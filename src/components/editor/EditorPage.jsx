@@ -17,26 +17,33 @@ export default function EditorPage({ selectedTemplate }) {
   const [currentStep, setCurrentStep] = useState(0);
 
   // Initial form data structure
-  const initialFormData = {
-    firstName: "",
-    lastName: "",
-    email: "",
-    phone: "",
-    desiredJobTitle: "",
-    experience: [
-      {
-        jobTitle: "",
-        employer: "",
-        location: "",
-        startDate: "",
-        endDate: "",
-        description: "",
-      },
-    ],
-    education: [],
-    skills: [],
-    summary: "",
-  };
+const initialFormData = {
+  firstName: "",
+  lastName: "",
+  email: "",
+  phone: "",
+  desiredJobTitle: "",
+  country: "",
+  city: "",
+  address: "",
+  postCode: "",
+  linkedin: "",
+  portfolio: "",
+  experience: [
+    {
+      jobTitle: "",
+      employer: "",
+      location: "",
+      startDate: "",
+      endDate: "",
+      description: "",
+    },
+  ],
+  education: [],
+  skills: [],
+  summary: "",
+};
+
 
   const [formData, setFormData] = useState(initialFormData);
 
@@ -88,7 +95,7 @@ export default function EditorPage({ selectedTemplate }) {
                 <span
                   className={`rounded-full w-6 h-6 flex items-center justify-center border ${
                     currentStep === index
-                      ? "border-blue-500 bg-blue-500 text-white"
+                      ? "border-peach-500 bg-peach-500 text-white"
                       : "border-gray-300 text-gray-500"
                   }`}
                 >
@@ -96,7 +103,7 @@ export default function EditorPage({ selectedTemplate }) {
                 </span>
                 <span
                   className={`ml-2 text-sm font-medium ${
-                    currentStep === index ? "text-blue-500" : "text-gray-500"
+                    currentStep === index ? "text-peach-500" : "text-gray-500"
                   }`}
                 >
                   {step}
@@ -122,7 +129,7 @@ export default function EditorPage({ selectedTemplate }) {
               {currentStep < steps.length - 1 && (
                 <button
                   onClick={() => setCurrentStep(currentStep + 1)}
-                  className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+                  className="px-4 py-2 bg-peach-500 text-white rounded hover:bg-peach-600"
                 >
                   Next: {steps[currentStep + 1]}
                 </button>
