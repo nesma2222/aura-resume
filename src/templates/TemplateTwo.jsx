@@ -12,7 +12,24 @@ export default function TemplateTwo({ data }) {
 
       <hr className="my-4" />
 
-      <p>{data.experience}</p>
+      {/* ✅ Experience Section FIXED */}
+      {(data.experience || []).map((exp, index) => (
+        <div key={index} className="mb-3">
+          <p className="font-semibold">{exp.jobTitle}</p>
+
+          <p className="text-sm text-gray-600">
+            {exp.employer}
+            {exp.employer && exp.location && " • "}
+            {exp.location}
+          </p>
+
+          <p className="text-sm text-gray-400">
+            {exp.startDate} — {exp.endDate}
+          </p>
+
+          <p className="text-sm">{exp.description}</p>
+        </div>
+      ))}
 
     </div>
   );

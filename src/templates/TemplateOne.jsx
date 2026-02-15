@@ -3,13 +3,34 @@ export default function TemplateOne({ data }) {
     <div className="space-y-4">
 
       {/* Name */}
-      <h1 className="text-2xl font-bold">
+      <h1 className="text-2xl font-bold text-center">
         {data.firstName} {data.lastName}
       </h1>
 
+      {/* Desired Job Title */}
+      {data.desiredJobTitle && (
+        <p className="text-center text-sm text-gray-600">
+          {data.desiredJobTitle}
+        </p>
+      )}
+
       {/* Contact */}
-      <p>{data.email}</p>
-      <p>{data.phone}</p>
+      <div className="text-center text-sm text-gray-600">
+        {data.email && <p>{data.email}</p>}
+        {data.phone && <p>{data.phone}</p>}
+
+        {/* Address + Country with comma */}
+        {(data.address || data.country) && (
+          <p>
+            {data.address}
+            {data.address && data.country && ", "}
+            {data.city},
+            {data.postCode},
+            {data.country}
+            
+          </p>
+        )}
+      </div>
 
       <hr />
 
@@ -23,7 +44,9 @@ export default function TemplateOne({ data }) {
             <h4 className="font-semibold">{exp.jobTitle}</h4>
 
             <p className="text-sm text-gray-500">
-              {exp.employer} • {exp.location}
+              {exp.employer}
+              {exp.employer && exp.location && " • "}
+              {exp.location}
             </p>
 
             <p className="text-sm text-gray-400">
@@ -36,6 +59,56 @@ export default function TemplateOne({ data }) {
         ))}
 
       </div>
+
+      {/* ✅ Education Section */}
+      <div>
+        <h2 className="text-lg font-semibold mb-2">Education</h2>
+
+        {(data.education || []).map((edu, index) => (
+          <div key={index} className="mb-4">
+
+            <h4 className="font-semibold">{edu.degree}</h4>
+
+            <p className="text-sm text-gray-500">
+              {edu.school} • {edu.location}
+            </p>
+
+            <p className="text-sm text-gray-400">
+              {edu.startDate} — {edu.endDate}
+            </p>
+
+            <p className="text-sm">{edu.description}</p>
+
+          </div>
+        ))}
+      </div>
+
+        {/* ✅ Skills Section */}
+      <div>
+        <h2 className="text-lg font-semibold mb-2">Skills</h2>
+
+        <ul className="list-disc list-inside text-sm">
+          {(data.skills || []).map((skill, index) => (
+            <li key={index}>
+              {typeof skill === "string" ? skill : skill.name}
+            </li>
+          ))}
+        </ul>
+      </div>
+
+         {/* SUMMARY */}
+      {data.summary && (
+        <div>
+          <h2 className="text-lg font-semibold mb-2 text-left">
+            Summary
+          </h2>
+          <p className="text-sm text-left">{data.summary}</p>
+        </div>
+      )}
+
+
+
+
     </div>
   );
 }
