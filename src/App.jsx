@@ -6,6 +6,8 @@ import {
 } from 'lucide-react';
 import TestimonialsSection from "./components/TestimonialsSection";
 import CTASection from "./components/CTASection";
+import ResumeChoiceView from "./components/ResumeChoiceView";
+import TemplateGallery from "./components/TemplateGallery";
 
 // --- SUB-COMPONENTS ---
 
@@ -179,34 +181,43 @@ export default function App() {
 
       {/* TEMPLATE GALLERY VIEW */}
       {view === 'templates' && (
-        <div className="max-w-7xl mx-auto px-12 py-12 animate-in slide-in-from-bottom-4 duration-500">
-          <button onClick={() => setView('landing')} className="flex items-center gap-2 text-slate-400 font-bold mb-8 transition"><ArrowLeft size={20} /> Back</button>
+        // <div className="max-w-7xl mx-auto px-12 py-12 animate-in slide-in-from-bottom-4 duration-500">
+        //   <button onClick={() => setView('landing')} className="flex items-center gap-2 text-slate-400 font-bold mb-8 transition"><ArrowLeft size={20} /> Back</button>
           
-          <div className="flex justify-center items-center gap-4 mb-12 text-sm font-medium text-slate-400">
-            <span className="flex items-center gap-2 text-peach-500"><span className="w-6 h-6 rounded-full bg-peach-500 text-white flex items-center justify-center text-xs">1</span> Choose template</span>
-            <div className="w-12 h-[1px] bg-slate-200"></div>
-            <span className="flex items-center gap-2"><span className="w-6 h-6 rounded-full bg-slate-200 text-slate-500 flex items-center justify-center text-xs">2</span> Enter details</span>
-          </div>
+        //   <div className="flex justify-center items-center gap-4 mb-12 text-sm font-medium text-slate-400">
+        //     <span className="flex items-center gap-2 text-peach-500"><span className="w-6 h-6 rounded-full bg-peach-500 text-white flex items-center justify-center text-xs">1</span> Choose template</span>
+        //     <div className="w-12 h-[1px] bg-slate-200"></div>
+        //     <span className="flex items-center gap-2"><span className="w-6 h-6 rounded-full bg-slate-200 text-slate-500 flex items-center justify-center text-xs">2</span> Enter details</span>
+        //   </div>
 
-          <div className="text-center mb-16">
-            <h2 className="text-6xl font-black text-slate-800 mb-4">Resume templates</h2>
-            <p className="text-slate-500 text-xl">Ready in minutes — <span className="text-peach-500 italic">try it for free!</span></p>
-          </div>
+        //   <div className="text-center mb-16">
+        //     <h2 className="text-6xl font-black text-slate-800 mb-4">Resume templates</h2>
+        //     <p className="text-slate-500 text-xl">Ready in minutes — <span className="text-peach-500 italic">try it for free!</span></p>
+        //   </div>
 
-          <div className="grid md:grid-cols-3 gap-10">
-            {[1, 2, 3].map((t) => (
-              <div key={t} onClick={() => setView('editor')} className="group relative bg-white rounded-3xl shadow-md border border-peach-50 overflow-hidden hover:shadow-2xl transition-all cursor-pointer">
-                <div className="absolute inset-0 bg-peach-500/10 opacity-0 group-hover:opacity-100 transition-opacity z-10 flex items-center justify-center">
-                  <span className="bg-white text-peach-500 font-bold px-8 py-3 rounded-full shadow-lg">Use Template</span>
-                </div>
-                <div className="aspect-[3/4] bg-slate-50 p-8">
-                   <div className="w-full h-full bg-white shadow-sm rounded border-t-4 border-peach-400"></div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
+        //   <div className="grid md:grid-cols-3 gap-10">
+        //     {[1, 2, 3].map((t) => (
+        //       <div key={t} onClick={() => setView('editor')} className="group relative bg-white rounded-3xl shadow-md border border-peach-50 overflow-hidden hover:shadow-2xl transition-all cursor-pointer">
+        //         <div className="absolute inset-0 bg-peach-500/10 opacity-0 group-hover:opacity-100 transition-opacity z-10 flex items-center justify-center">
+        //           <span className="bg-white text-peach-500 font-bold px-8 py-3 rounded-full shadow-lg">Use Template</span>
+        //         </div>
+        //         <div className="aspect-[3/4] bg-slate-50 p-8">
+        //            <div className="w-full h-full bg-white shadow-sm rounded border-t-4 border-peach-400"></div>
+        //         </div>
+        //       </div>
+        //     ))}
+        //   </div>
+        // </div>
+          <TemplateGallery setView={setView} />
       )}
+      
+       {/* RESUME CHOICE VIEW */}
+{view === "resumeChoice" && (
+  <ResumeChoiceView setView={setView} />
+)}
+
+
+
 
       {/* EDITOR VIEW */}
       {view === 'editor' && (
