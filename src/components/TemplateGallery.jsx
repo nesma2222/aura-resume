@@ -218,19 +218,20 @@ function TemplateGallery({ setView, setSelectedTemplate }) {
       {/* Categories */}
       <div className="flex flex-wrap justify-center gap-4 mb-12">
         {categories.map((cat) => (
-          <button
-            key={cat.name}
-            onClick={() => setActiveCategory(cat.name)}
-            className={`flex items-center gap-2 px-5 py-2 rounded-full text-sm font-medium transition
-              ${
-                activeCategory === cat.name
-                  ? "bg-slate-800 text-white"
-                  : "bg-slate-100 text-slate-600 hover:bg-slate-200"
-              }`}
-          >
-            {cat.icon}
-            {cat.name}
-          </button>
+         <button
+  key={cat?.name}
+  onClick={() => setActiveCategory(cat?.name)}
+  className={`flex items-center gap-2 px-5 py-2 rounded-full text-sm font-medium transition
+    ${
+      activeCategory === cat?.name
+        ? "bg-slate-800 text-white"
+        : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+    }`}
+>
+  {cat?.icon}
+  {cat?.name}
+</button>
+
         ))}
       </div>
 

@@ -4,14 +4,14 @@ import ExperienceForm from "./ExperienceForm";
 import EducationForm from "./EducationForm";
 import SkillsForm from "./SkillsForm";
 import SummaryForm from "./SummaryForm";
-import Finalize from "./Finalize";
 import html2pdf from "html2pdf.js";
 
 import TemplateOne from "../../templates/TemplateOne";
 import TemplateTwo from "../../templates/TemplateTwo";
 import TemplateThree from "../../Templates/TemplateThree";
-export default function EditorPage({ selectedTemplate }) {
+import { ArrowLeft } from "lucide-react";
 
+export default function EditorPage({ selectedTemplate, onBack }) {
   const steps = ["Contacts", "Experience", "Education", "Skills", "Summary", "Finalize"];
   const [currentStep, setCurrentStep] = useState(0);
 
@@ -50,21 +50,19 @@ export default function EditorPage({ selectedTemplate }) {
   };
 
   const handleDownload = () => {
-  const element = document.getElementById("resume-preview");
+    const element = document.getElementById("resume-preview");
+    if (!element) return;
 
-  if (!element) return;
+    const options = {
+      margin: 0,
+      filename: "My_Resume.pdf",
+      image: { type: "jpeg", quality: 1 },
+      html2canvas: { scale: 2, useCORS: true },
+      jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
+    };
 
-  const options = {
-    margin: 0,
-    filename: "My_Resume.pdf",
-    image: { type: "jpeg", quality: 1 },
-    html2canvas: { scale: 2, useCORS: true },
-    jsPDF: { unit: "mm", format: "a4", orientation: "portrait" }
+    html2pdf().set(options).from(element).save();
   };
-
-  html2pdf().set(options).from(element).save();
-};
-
 
   const renderStepForm = () => {
     switch (currentStep) {
@@ -78,37 +76,20 @@ export default function EditorPage({ selectedTemplate }) {
         return <SkillsForm formData={formData} setFormData={setFormData} />;
       case 4:
         return <SummaryForm formData={formData} setFormData={setFormData} />;
-
-      // ✅ FINALIZE STEP ADDED
-      // case 5:
-      //   return (
-      //     <div className="text-center space-y-4">
-      //       <h2 className="text-xl font-semibold text-gray-700">
-      //         Resume Ready 🎉
-      //       </h2>
-      //       <p className="text-gray-500">
-      //         Review your resume from preview panel.
-      //       </p>
-      //     </div>
-      //   );
-
       case 5:
-  return (
-    <div className="text-center space-y-4">
-      <h2 className="text-xl font-semibold text-gray-700">
-        Resume Ready 🎉
-      </h2>
-
-      <button
-        onClick={handleDownload}
-        className="bg-peach-500 text-white px-6 py-2 rounded-lg hover:bg-peach-600 transition"
-      >
-        Download PDF
-      </button>
-    </div>
-  );
-
-
+        return (
+          <div className="text-center space-y-4">
+            <h2 className="text-xl font-semibold text-gray-700">
+              Resume Ready 🎉
+            </h2>
+            <button
+              onClick={handleDownload}
+              className="bg-peach-500 text-white px-6 py-2 rounded-lg hover:bg-peach-600 transition"
+            >
+              Download PDF
+            </button>
+          </div>
+        );
       default:
         return <div>Step not implemented yet</div>;
     }
@@ -117,7 +98,18 @@ export default function EditorPage({ selectedTemplate }) {
   return (
     <div className="min-h-screen bg-[#f9fafb] p-10">
 
-      <div className="flex justify-end mb-6 max-w-7xl mx-auto">
+      {/* Top buttons */}
+      <div className="flex justify-between mb-6 max-w-7xl mx-auto">
+        {/* Back to ResumeChoiceView */}
+        <button
+          onClick={onBack}
+          className="flex items-center gap-2 text-slate-500 hover:text-peach-500 font-semibold transition"
+        >
+          <ArrowLeft size={20} />
+          Back
+        </button>
+
+        {/* Start from Scratch */}
         <button
           onClick={handleReset}
           className="bg-peach-500 text-white px-4 py-2 rounded-lg hover:bg-peach-600 transition"
@@ -128,7 +120,7 @@ export default function EditorPage({ selectedTemplate }) {
 
       <div className="flex max-w-7xl mx-auto gap-10">
 
-        {/* LEFT */}
+        {/* LEFT SIDE: Form */}
         <div className="w-1/2">
 
           {/* Steps */}
@@ -144,7 +136,6 @@ export default function EditorPage({ selectedTemplate }) {
                 >
                   {index + 1}
                 </span>
-
                 <span
                   className={`ml-2 text-sm font-medium ${
                     currentStep === index ? "text-peach-500" : "text-gray-500"
@@ -156,10 +147,11 @@ export default function EditorPage({ selectedTemplate }) {
             ))}
           </div>
 
-          {/* Form */}
+          {/* Step Form */}
           <div className="bg-white rounded-2xl shadow p-6">
             {renderStepForm()}
 
+            {/* Step Navigation */}
             <div className="flex justify-between mt-6">
               {currentStep > 0 && (
                 <button
@@ -179,18 +171,17 @@ export default function EditorPage({ selectedTemplate }) {
                 </button>
               )}
             </div>
-
           </div>
         </div>
 
-        {/* RIGHT Preview */}
-    <div
-  id="resume-preview"
-  className="w-[210mm] min-h-[297mm] bg-white p-8 shadow"
->
-
+        {/* RIGHT SIDE: Live Preview */}
+        <div
+          id="resume-preview"
+          className="w-[210mm] min-h-[297mm] bg-white p-8 shadow"
+        >
           {selectedTemplate === "templateOne" && <TemplateOne data={formData} />}
           {selectedTemplate === "templateTwo" && <TemplateTwo data={formData} />}
+          {selectedTemplate === "templateThree" && <TemplateThree data={formData} />}
         </div>
 
       </div>

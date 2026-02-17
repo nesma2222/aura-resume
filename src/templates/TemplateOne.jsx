@@ -29,7 +29,35 @@ export default function TemplateOne({ data }) {
             {data.country}
             
           </p>
-        )}
+        )}        
+
+       {/* ✅ LinkedIn */}
+{data.linkedin && (
+  <p>
+    <a
+      href={data.linkedin}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="text-blue-600 underline"
+    >
+      {data.linkedin}
+    </a>
+  </p>
+)}
+
+{/* ✅ Portfolio */}
+{data.portfolio && (
+  <p>
+    <a
+      href={data.portfolio}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="text-blue-600 underline"
+    >
+      {data.portfolio}
+    </a>
+  </p>
+)}
       </div>
 
       <hr />
