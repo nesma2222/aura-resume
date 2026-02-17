@@ -5,6 +5,7 @@ import {
   FileText, Briefcase, Camera 
 } from 'lucide-react';
 import TestimonialsSection from "./components/TestimonialsSection";
+import CTASection from "./components/CTASection";
 
 // --- SUB-COMPONENTS ---
 
@@ -169,6 +170,7 @@ export default function App() {
           </main>
           <StepsSection />
           <TestimonialsSection />
+          <CTASection />
         </>
       )}
 
