@@ -1,5 +1,22 @@
 import { Sparkles } from "lucide-react";
 
+const footerData = {
+  resources: [
+    { name: "Resume Builder", url: "#" },
+    { name: "Resume Formatting", url: "#" },
+    { name: "Resume Writing", url: "#" },
+    { name: "Professional Resume", url: "#" },
+    { name: "Student Resume", url: "#" }
+  ],
+  support: [
+    { name: "Privacy Policy", url: "#" },
+    { name: "Cookie Policy", url: "#" },
+    { name: "Terms & Conditions", url: "#" },
+    { name: "Contact Us", url: "#" }
+  ],
+  payments: ["VISA", "MasterCard", "PayPal"]
+};
+
 export default function Footer() {
   return (
     <footer className="bg-gradient-to-br from-slate-900 to-slate-800 text-slate-200 pt-20 pb-10 mt-24">
@@ -31,11 +48,16 @@ export default function Footer() {
             <h3 className="font-bold text-lg mb-4 text-white">Resources</h3>
 
             <ul className="space-y-2 text-slate-400">
-              <li className="hover:text-peach-400 cursor-pointer">Resume Builder</li>
-              <li className="hover:text-peach-400 cursor-pointer">Resume Formatting</li>
-              <li className="hover:text-peach-400 cursor-pointer">Resume Writing</li>
-              <li className="hover:text-peach-400 cursor-pointer">Professional Resume</li>
-              <li className="hover:text-peach-400 cursor-pointer">Student Resume</li>
+              {footerData.resources.map((item) => (
+                <li key={item.name}>
+                  <a
+                    href={item.url}
+                    className="hover:text-peach-400 cursor-pointer"
+                  >
+                    {item.name}
+                  </a>
+                </li>
+              ))}
             </ul>
           </div>
 
@@ -44,10 +66,16 @@ export default function Footer() {
             <h3 className="font-bold text-lg mb-4 text-white">Support</h3>
 
             <ul className="space-y-2 text-slate-400">
-              <li className="hover:text-peach-400 cursor-pointer">Privacy Policy</li>
-              <li className="hover:text-peach-400 cursor-pointer">Cookie Policy</li>
-              <li className="hover:text-peach-400 cursor-pointer">Terms & Conditions</li>
-              <li className="hover:text-peach-400 cursor-pointer">Contact Us</li>
+              {footerData.support.map((item) => (
+                <li key={item.name}>
+                  <a
+                    href={item.url}
+                    className="hover:text-peach-400 cursor-pointer"
+                  >
+                    {item.name}
+                  </a>
+                </li>
+              ))}
             </ul>
           </div>
 
@@ -64,11 +92,16 @@ export default function Footer() {
               Email: support@auraresume.com
             </p>
 
-            {/* Payment Icons Placeholder */}
+            {/* Payment Icons */}
             <div className="flex gap-4 mt-6 text-slate-500 text-xs">
-              <div className="bg-slate-700 px-3 py-1 rounded">VISA</div>
-              <div className="bg-slate-700 px-3 py-1 rounded">MasterCard</div>
-              <div className="bg-slate-700 px-3 py-1 rounded">PayPal</div>
+              {footerData.payments.map((payment) => (
+                <div
+                  key={payment}
+                  className="bg-slate-700 px-3 py-1 rounded"
+                >
+                  {payment}
+                </div>
+              ))}
             </div>
           </div>
 

@@ -6,10 +6,15 @@ export default function ContactForm({ formData, setFormData }) {
   const [showAdditional, setShowAdditional] = useState(false);
 
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
+    const { name, value } = e?.target || {};
+
+    // ✅ Prevent crash if name missing
+    if (!name) return;
+
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value
+    }));
   };
 
   return (
@@ -28,7 +33,7 @@ export default function ContactForm({ formData, setFormData }) {
           <input
             name="firstName"
             placeholder="First name"
-            value={formData.firstName}
+            value={formData?.firstName || ""}
             onChange={handleChange}
             className="inputStyle"
           />
@@ -41,7 +46,7 @@ export default function ContactForm({ formData, setFormData }) {
           <input
             name="lastName"
             placeholder="Last name"
-            value={formData.lastName}
+            value={formData?.lastName || ""}
             onChange={handleChange}
             className="inputStyle"
           />
@@ -56,7 +61,7 @@ export default function ContactForm({ formData, setFormData }) {
         <input
           name="desiredJobTitle"
           placeholder="Desired job title"
-          value={formData.desiredJobTitle}
+          value={formData?.desiredJobTitle || ""}
           onChange={handleChange}
           className="inputStyle"
         />
@@ -71,7 +76,7 @@ export default function ContactForm({ formData, setFormData }) {
           <input
             name="phone"
             placeholder="Phone"
-            value={formData.phone}
+            value={formData?.phone || ""}
             onChange={handleChange}
             className="inputStyle"
           />
@@ -84,7 +89,7 @@ export default function ContactForm({ formData, setFormData }) {
           <input
             name="email"
             placeholder="Email"
-            value={formData.email}
+            value={formData?.email || ""}
             onChange={handleChange}
             className="inputStyle"
           />
@@ -100,7 +105,7 @@ export default function ContactForm({ formData, setFormData }) {
           <input
             name="country"
             placeholder="Country"
-            value={formData.country || ""}
+            value={formData?.country || ""}
             onChange={handleChange}
             className="inputStyle"
           />
@@ -113,7 +118,7 @@ export default function ContactForm({ formData, setFormData }) {
           <input
             name="city"
             placeholder="City"
-            value={formData.city || ""}
+            value={formData?.city || ""}
             onChange={handleChange}
             className="inputStyle"
           />
@@ -129,7 +134,7 @@ export default function ContactForm({ formData, setFormData }) {
           <input
             name="address"
             placeholder="Address"
-            value={formData.address || ""}
+            value={formData?.address || ""}
             onChange={handleChange}
             className="inputStyle"
           />
@@ -142,7 +147,7 @@ export default function ContactForm({ formData, setFormData }) {
           <input
             name="postCode"
             placeholder="Post code"
-            value={formData.postCode || ""}
+            value={formData?.postCode || ""}
             onChange={handleChange}
             className="inputStyle"
           />
@@ -168,7 +173,7 @@ export default function ContactForm({ formData, setFormData }) {
             <input
               name="linkedin"
               placeholder="LinkedIn URL"
-              value={formData.linkedin || ""}
+              value={formData?.linkedin || ""}
               onChange={handleChange}
               className="inputStyle"
             />
@@ -181,7 +186,7 @@ export default function ContactForm({ formData, setFormData }) {
             <input
               name="portfolio"
               placeholder="Portfolio URL"
-              value={formData.portfolio || ""}
+              value={formData?.portfolio || ""}
               onChange={handleChange}
               className="inputStyle"
             />
