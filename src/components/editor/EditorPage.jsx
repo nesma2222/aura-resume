@@ -5,6 +5,8 @@ import EducationForm from "./EducationForm";
 import SkillsForm from "./SkillsForm";
 import SummaryForm from "./SummaryForm";
 import html2pdf from "html2pdf.js";
+import { calculateResumeScore } from "../../utils/resumeScore";
+
 
 import TemplateOne from "../../templates/TemplateOne";
 import TemplateTwo from "../../templates/TemplateTwo";
@@ -43,6 +45,8 @@ export default function EditorPage({ selectedTemplate, onBack }) {
   };
 
   const [formData, setFormData] = useState(initialFormData);
+  
+  const resumeScore = calculateResumeScore(formData);
 
   const handleReset = () => {
     setFormData(initialFormData);
@@ -122,6 +126,29 @@ export default function EditorPage({ selectedTemplate, onBack }) {
 
         {/* LEFT SIDE: Form */}
         <div className="w-1/2">
+
+
+  {/* Resume Score */}
+  <div className="bg-white rounded-xl shadow p-4 mb-6">
+    <div className="flex justify-between items-center mb-2">
+      <h3 className="font-semibold text-slate-700">
+        Resume Strength
+      </h3>
+
+      <span className="font-bold text-peach-500">
+        {resumeScore} / 100
+      </span>
+    </div>
+
+    <div className="w-full bg-slate-200 h-3 rounded-full overflow-hidden">
+      <div
+        className="bg-peach-500 h-full transition-all duration-500"
+        style={{ width: `${resumeScore}%` }}
+      />
+    </div>
+  </div>
+
+        
 
           {/* Steps */}
           <div className="flex items-center space-x-6 mb-6">

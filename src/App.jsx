@@ -157,7 +157,7 @@ export default function App() {
   );
 
   return (
-    <div className="min-h-screen bg-[#FFE5B4] font-sans text-slate-900">
+    <div className="min-h-screen bg-[#fefefd] font-sans text-slate-900">
       <Navbar />
 
       {view === 'landing' && (
