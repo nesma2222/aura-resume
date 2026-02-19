@@ -4,9 +4,10 @@ import ExperienceForm from "./ExperienceForm";
 import EducationForm from "./EducationForm";
 import SkillsForm from "./SkillsForm";
 import SummaryForm from "./SummaryForm";
+import Finalize from "../Finalize/Finalize";
+
 import html2pdf from "html2pdf.js";
 import { calculateResumeScore } from "../../utils/resumeScore";
-
 
 import TemplateOne from "../../templates/TemplateOne";
 import TemplateTwo from "../../templates/TemplateTwo";
@@ -14,6 +15,7 @@ import TemplateThree from "../../Templates/TemplateThree";
 import { ArrowLeft } from "lucide-react";
 
 export default function EditorPage({ selectedTemplate, onBack }) {
+
   const steps = ["Contacts", "Experience", "Education", "Skills", "Summary", "Finalize"];
   const [currentStep, setCurrentStep] = useState(0);
 
@@ -45,7 +47,7 @@ export default function EditorPage({ selectedTemplate, onBack }) {
   };
 
   const [formData, setFormData] = useState(initialFormData);
-  
+
   const resumeScore = calculateResumeScore(formData);
 
   const handleReset = () => {
@@ -81,21 +83,9 @@ export default function EditorPage({ selectedTemplate, onBack }) {
       case 4:
         return <SummaryForm formData={formData} setFormData={setFormData} />;
       case 5:
-        return (
-          <div className="text-center space-y-4">
-            <h2 className="text-xl font-semibold text-gray-700">
-              Resume Ready 🎉
-            </h2>
-            <button
-              onClick={handleDownload}
-              className="bg-peach-500 text-white px-6 py-2 rounded-lg hover:bg-peach-600 transition"
-            >
-              Download PDF
-            </button>
-          </div>
-        );
+        return <Finalize formData={formData} setFormData={setFormData} />;
       default:
-        return <div>Step not implemented yet</div>;
+        return null;
     }
   };
 
@@ -104,7 +94,7 @@ export default function EditorPage({ selectedTemplate, onBack }) {
 
       {/* Top buttons */}
       <div className="flex justify-between mb-6 max-w-7xl mx-auto">
-        {/* Back to ResumeChoiceView */}
+
         <button
           onClick={onBack}
           className="flex items-center gap-2 text-slate-500 hover:text-peach-500 font-semibold transition"
@@ -113,42 +103,46 @@ export default function EditorPage({ selectedTemplate, onBack }) {
           Back
         </button>
 
-        {/* Start from Scratch */}
         <button
           onClick={handleReset}
           className="bg-peach-500 text-white px-4 py-2 rounded-lg hover:bg-peach-600 transition"
         >
           Start from Scratch
         </button>
+
+          {/* ✅ Download Button */}
+  <button
+    onClick={handleDownload}
+    className="bg-peach-500 text-white px-6 py-2 rounded-lg shadow hover:bg-peach-600 transition font-semibold"
+  >
+    Download PDF
+  </button>
       </div>
 
       <div className="flex max-w-7xl mx-auto gap-10">
 
-        {/* LEFT SIDE: Form */}
+        {/* LEFT SIDE */}
         <div className="w-1/2">
 
+          {/* Resume Score */}
+          <div className="bg-white rounded-xl shadow p-4 mb-6">
+            <div className="flex justify-between items-center mb-2">
+              <h3 className="font-semibold text-slate-700">
+                Resume Strength
+              </h3>
 
-  {/* Resume Score */}
-  <div className="bg-white rounded-xl shadow p-4 mb-6">
-    <div className="flex justify-between items-center mb-2">
-      <h3 className="font-semibold text-slate-700">
-        Resume Strength
-      </h3>
+              <span className="font-bold text-peach-500">
+                {resumeScore} / 100
+              </span>
+            </div>
 
-      <span className="font-bold text-peach-500">
-        {resumeScore} / 100
-      </span>
-    </div>
-
-    <div className="w-full bg-slate-200 h-3 rounded-full overflow-hidden">
-      <div
-        className="bg-peach-500 h-full transition-all duration-500"
-        style={{ width: `${resumeScore}%` }}
-      />
-    </div>
-  </div>
-
-        
+            <div className="w-full bg-slate-200 h-3 rounded-full overflow-hidden">
+              <div
+                className="bg-peach-500 h-full transition-all duration-500"
+                style={{ width: `${resumeScore}%` }}
+              />
+            </div>
+          </div>
 
           {/* Steps */}
           <div className="flex items-center space-x-6 mb-6">
@@ -163,9 +157,12 @@ export default function EditorPage({ selectedTemplate, onBack }) {
                 >
                   {index + 1}
                 </span>
+
                 <span
                   className={`ml-2 text-sm font-medium ${
-                    currentStep === index ? "text-peach-500" : "text-gray-500"
+                    currentStep === index
+                      ? "text-peach-500"
+                      : "text-gray-500"
                   }`}
                 >
                   {step}
@@ -174,34 +171,35 @@ export default function EditorPage({ selectedTemplate, onBack }) {
             ))}
           </div>
 
-          {/* Step Form */}
+          {/* FORM AREA */}
           <div className="bg-white rounded-2xl shadow p-6">
             {renderStepForm()}
 
-            {/* Step Navigation */}
-            <div className="flex justify-between mt-6">
-              {currentStep > 0 && (
-                <button
-                  onClick={() => setCurrentStep(currentStep - 1)}
-                  className="px-4 py-2 border rounded hover:bg-gray-100"
-                >
-                  Back
-                </button>
-              )}
+            {currentStep !== 5 && (
+              <div className="flex justify-between mt-6">
+                {currentStep > 0 && (
+                  <button
+                    onClick={() => setCurrentStep(currentStep - 1)}
+                    className="px-4 py-2 border rounded hover:bg-gray-100"
+                  >
+                    Back
+                  </button>
+                )}
 
-              {currentStep < steps.length - 1 && (
-                <button
-                  onClick={() => setCurrentStep(currentStep + 1)}
-                  className="px-4 py-2 bg-peach-500 text-white rounded hover:bg-peach-600"
-                >
-                  Next: {steps[currentStep + 1]}
-                </button>
-              )}
-            </div>
+                {currentStep < steps.length - 1 && (
+                  <button
+                    onClick={() => setCurrentStep(currentStep + 1)}
+                    className="px-4 py-2 bg-peach-500 text-white rounded hover:bg-peach-600"
+                  >
+                    Next: {steps[currentStep + 1]}
+                  </button>
+                )}
+              </div>
+            )}
           </div>
         </div>
 
-        {/* RIGHT SIDE: Live Preview */}
+        {/* RIGHT SIDE PREVIEW */}
         <div
           id="resume-preview"
           className="w-[210mm] min-h-[297mm] bg-white p-8 shadow"
