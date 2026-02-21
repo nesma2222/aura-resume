@@ -7,6 +7,7 @@ import ResumeChoiceView from "./components/ResumeChoiceView";
 import TemplateGallery from "./components/TemplateGallery";
 import UploadView from './components/UploadView';
 import EditorPage from "./components/editor/EditorPage";
+import TemplateSwitcher from "./components/editor/TemplateSwitcher";
 import TestimonialsSection from "./components/TestimonialsSection";
 import CTASection from "./components/CTASection";
 import Footer from "./components/Footer";
@@ -14,8 +15,8 @@ import Footer from "./components/Footer";
 import TemplateOne from "./templates/TemplateOne";
 import TemplateTwo from "./templates/TemplateTwo";
 
-// Import your webp resume preview image
 import ResumePreview from './assets/resumepreview.webp';
+
 
 /* ---------------- PROFESSIONAL LANDING HERO ---------------- */
 function LandingHero({ setView }) {
@@ -27,7 +28,6 @@ function LandingHero({ setView }) {
     <section className="bg-[#f1eae2] py-20">
       <div className="max-w-7xl mx-auto px-12 flex lg:flex-row flex-col gap-16 items-center">
 
-        {/* LEFT: Text */}
         <div className="lg:w-1/2 space-y-8">
           <p className="text-[#FF9F7F] font-bold">{resumesCreated.toLocaleString()} resumes created today</p>
 
@@ -55,7 +55,6 @@ function LandingHero({ setView }) {
             </button>
           </div>
 
-          {/* Stats */}
           <div className="flex gap-10 mt-10">
             <div>
               <p className="text-[#FF9F7F] font-bold text-xl">{moreLikelyHired}%</p>
@@ -69,24 +68,19 @@ function LandingHero({ setView }) {
           </div>
         </div>
 
-        {/* RIGHT: Resume Preview Image */}
-      
-          {/* Background shadow card */}
-         
-          {/* Actual resume image */}
-          <div className="w-72 sm:w-80 md:w-96 lg:w-[450px] h-auto shadow-xl overflow-hidden">
-            <img
-              src={ResumePreview}
-              alt="Resume Preview"
-              className="w-full h-full object-cover"
-            />
-          </div>
+        <div className="w-72 sm:w-80 md:w-96 lg:w-[450px] h-auto shadow-xl overflow-hidden">
+          <img
+            src={ResumePreview}
+            alt="Resume Preview"
+            className="w-full h-full object-cover"
+          />
         </div>
 
-     
+      </div>
     </section>
   );
 }
+
 
 /* ---------------- STEPS SECTION ---------------- */
 function StepsSection() {
@@ -100,7 +94,6 @@ function StepsSection() {
     <section className="bg-white py-24 border-t border-[#FFDAB3]">
       <div className="max-w-7xl mx-auto px-12 flex flex-col lg:flex-row items-center gap-20">
 
-        {/* Left side preview */}
         <div className="lg:w-1/2 relative h-[400px] flex items-center justify-center">
           <div className="absolute w-64 h-80 bg-[#FFDAB3] rounded-2xl border border-[#FFB380] transform -rotate-6 shadow-sm"></div>
           <div className="absolute w-64 h-80 bg-white rounded-2xl border border-slate-100 shadow-xl p-6 flex flex-col gap-3">
@@ -111,7 +104,6 @@ function StepsSection() {
           </div>
         </div>
 
-        {/* Right side steps */}
         <div className="lg:w-1/2 space-y-10">
           <h2 className="text-5xl font-black text-slate-800">
             Create your job-winning CV in <br />
@@ -138,10 +130,39 @@ function StepsSection() {
   );
 }
 
+
 /* ---------------- MAIN APP ---------------- */
 export default function App() {
   const [view, setView] = useState('landing');
   const [selectedTemplate, setSelectedTemplate] = useState("templateOne");
+
+  // ✅ NEW: store resume data when switching templates
+  const [formData, setFormData] = useState({
+  firstName: "",
+  lastName: "",
+  email: "",
+  phone: "",
+  desiredJobTitle: "",
+  country: "",
+  city: "",
+  address: "",
+  postCode: "",
+  linkedin: "",
+  portfolio: "",
+  experience: [
+    {
+      jobTitle: "",
+      employer: "",
+      location: "",
+      startDate: "",
+      endDate: "",
+      description: "",
+    },
+  ],
+  education: [],
+  skills: [],
+  summary: "",
+});
 
   const Navbar = () => (
     <nav className="flex justify-between items-center px-12 py-6 bg-white border-b border-[#FFDAB3] sticky top-0 z-50">
@@ -171,9 +192,45 @@ export default function App() {
       )}
 
       {view === 'upload' && <UploadView onBack={() => setView('landing')} />}
-      {view === 'templates' && <TemplateGallery setView={setView} setSelectedTemplate={setSelectedTemplate} />}
-      {view === 'resumeChoice' && <ResumeChoiceView onUpload={() => setView("upload")} onScratch={() => setView("editor")} onBack={() => setView("templates")} />}
-      {view === "editor" && <EditorPage selectedTemplate={selectedTemplate} onBack={() => setView("resumeChoice")} />}
+
+      {view === 'templates' && (
+        <TemplateGallery
+          setView={setView}
+          setSelectedTemplate={setSelectedTemplate}
+        />
+      )}
+
+      {view === 'resumeChoice' && (
+        <ResumeChoiceView
+          onUpload={() => setView("upload")}
+          onScratch={() => setView("editor")}
+          onBack={() => setView("templates")}
+        />
+      )}
+
+      {view === "editor" && (
+       <EditorPage
+  selectedTemplate={selectedTemplate}
+  formData={formData}
+  setFormData={setFormData}
+  onBack={() => setView("resumeChoice")}
+  goToTemplateSwitcher={(template) => {
+    setSelectedTemplate(template);
+    setView("templateSwitcher");
+  }}
+/>
+      )}
+
+      {view === "templateSwitcher" && (
+        <TemplateSwitcher
+          formData={formData}
+          selectedTemplate={selectedTemplate}
+          onBack={(newTemplate) => {
+            setSelectedTemplate(newTemplate);
+            setView("editor");
+          }}
+        />
+      )}
     </div>
   );
 }

@@ -1,7 +1,7 @@
 export const demoData = {
-  firstName: "John",
-  lastName: "Doe",
-  email: "john@email.com",
+  firstName: "Neena",
+  lastName: "Debrew",
+  email: "neena@email.com",
   phone: "+123456789",
   desiredJobTitle: "Frontend Developer",
   city: "New York",
