@@ -19,6 +19,10 @@ export default function TemplateTwo({ data }) {
         <div className="text-sm mt-2 space-x-4">
           {data?.email && <span>{data.email}</span>}
           {data?.phone && <span>{data.phone}</span>}
+          {data?.city && <span>{data.city}</span>}
+          {data?.postCode && <span>{data.postCode}</span>}
+          {data?.country && <span>{data.country}</span>}
+          
 
            {data?.linkedin && (
       <a
