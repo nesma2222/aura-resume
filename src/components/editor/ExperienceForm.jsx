@@ -93,8 +93,7 @@ export default function ExperienceForm({ formData, setFormData }) {
                 Start Date
               </label>
               <input
-                type="text"
-                placeholder="Jan 2024"
+                type="month"
                 value={exp.startDate}
                 onChange={(e) => handleChange(index, "startDate", e.target.value)}
                 className="inputStyle"
@@ -106,13 +105,31 @@ export default function ExperienceForm({ formData, setFormData }) {
                 End Date
               </label>
               <input
-                type="text"
-                placeholder="Present"
+                type="month"
                 value={exp.endDate}
                 onChange={(e) => handleChange(index, "endDate", e.target.value)}
                 className="inputStyle"
               />
             </div>
+
+             {/* Currently Working Checkbox */}
+              <div className="flex items-center gap-2 mt-2">
+                <input
+                  type="checkbox"
+                  checked={exp.currentlyWorking || false}
+                  onChange={(e) =>
+                    handleChange(
+                      index,
+                      "currentlyWorking",
+                      e.target.checked
+                    )
+                  }
+                />
+                <span className="text-sm text-slate-600">
+                  Currently Working Here
+                </span>
+              </div>
+            
 
           </div>
 
