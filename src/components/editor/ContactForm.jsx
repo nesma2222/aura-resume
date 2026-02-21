@@ -2,24 +2,45 @@ import { useState } from "react";
 import { ChevronDown, ChevronUp } from "lucide-react";
 
 export default function ContactForm({ formData, setFormData }) {
-
   const [showAdditional, setShowAdditional] = useState(false);
+  const [emailError, setEmailError] = useState("");
+
+
+  const validateEmail = (email) => {
+    const emailRegex =
+      /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[A-Za-z]{2,}$/;
+    return emailRegex.test(email);
+  };
 
   const handleChange = (e) => {
     const { name, value } = e?.target || {};
-
-    // ✅ Prevent crash if name missing
     if (!name) return;
+
+    let updatedValue = value;
+
+    updatedValue = updatedValue.trimStart();
+
+    
+    if (name === "email") {
+      updatedValue = updatedValue.toLowerCase();
+
+      if (updatedValue === "") {
+        setEmailError("");
+      } else if (!validateEmail(updatedValue)) {
+        setEmailError("Please enter a valid email address");
+      } else {
+        setEmailError("");
+      }
+    }
 
     setFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: updatedValue,
     }));
   };
 
   return (
     <div className="space-y-6">
-
       <p className="text-sm text-gray-500">
         Add your up-to-date contact information so employers and recruiters can easily reach you.
       </p>
@@ -91,8 +112,13 @@ export default function ContactForm({ formData, setFormData }) {
             placeholder="Email"
             value={formData?.email || ""}
             onChange={handleChange}
-            className="inputStyle"
+            className={`inputStyle ${
+              emailError ? "border-red-500 focus:ring-red-500" : ""
+            }`}
           />
+          {emailError && (
+            <p className="text-red-500 text-xs mt-1">{emailError}</p>
+          )}
         </div>
       </div>
 
@@ -193,7 +219,6 @@ export default function ContactForm({ formData, setFormData }) {
           </div>
         </div>
       )}
-
     </div>
   );
 }
