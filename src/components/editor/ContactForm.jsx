@@ -40,6 +40,7 @@ export default function ContactForm({ formData, setFormData }) {
   };
 
   return (
+    <div id="contacts">
     <div className="space-y-6">
       <p className="text-sm text-gray-500">
         Add your up-to-date contact information so employers and recruiters can easily reach you.
@@ -219,6 +220,7 @@ export default function ContactForm({ formData, setFormData }) {
           </div>
         </div>
       )}
+    </div>
     </div>
   );
 }

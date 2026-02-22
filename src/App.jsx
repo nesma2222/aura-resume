@@ -7,7 +7,7 @@ import ResumeChoiceView from "./components/ResumeChoiceView";
 import TemplateGallery from "./components/TemplateGallery";
 import UploadView from './components/UploadView';
 import EditorPage from "./components/editor/EditorPage";
-import TemplateSwitcher from "./components/editor/TemplateSwitcher";
+import BuilderLayout from "./builder/BuilderLayout";
 import TestimonialsSection from "./components/TestimonialsSection";
 import CTASection from "./components/CTASection";
 import Footer from "./components/Footer";
@@ -16,6 +16,7 @@ import TemplateOne from "./templates/TemplateOne";
 import TemplateTwo from "./templates/TemplateTwo";
 
 import ResumePreview from './assets/resumepreview.webp';
+
 
 
 /* ---------------- PROFESSIONAL LANDING HERO ---------------- */
@@ -135,6 +136,8 @@ function StepsSection() {
 export default function App() {
   const [view, setView] = useState('landing');
   const [selectedTemplate, setSelectedTemplate] = useState("templateOne");
+  
+const [activeEditorSection, setActiveEditorSection] = useState(null);
 
   // ✅ NEW: store resume data when switching templates
   const [formData, setFormData] = useState({
@@ -208,29 +211,34 @@ export default function App() {
         />
       )}
 
-      {view === "editor" && (
-       <EditorPage
-  selectedTemplate={selectedTemplate}
-  formData={formData}
-  setFormData={setFormData}
-  onBack={() => setView("resumeChoice")}
-  goToTemplateSwitcher={(template) => {
-    setSelectedTemplate(template);
-    setView("templateSwitcher");
-  }}
-/>
-      )}
 
-      {view === "templateSwitcher" && (
-        <TemplateSwitcher
-          formData={formData}
-          selectedTemplate={selectedTemplate}
-          onBack={(newTemplate) => {
-            setSelectedTemplate(newTemplate);
-            setView("editor");
-          }}
-        />
-      )}
-    </div>
+   {view === "editor" && (
+  <EditorPage
+    selectedTemplate={selectedTemplate}
+    formData={formData}
+    setFormData={setFormData}
+    activeEditorSection={activeEditorSection} 
+    onBack={() => setView("resumeChoice")}
+    goToTemplateSwitcher={(template) => {
+      setSelectedTemplate(template);
+      setView("builder"); // ← IMPORTANT change
+    }}
+  />
+)}
+
+{view === "builder" && (
+  <BuilderLayout
+    selectedTemplate={selectedTemplate}
+    setSelectedTemplate={setSelectedTemplate}
+    formData={formData}
+    setFormData={setFormData}
+    onBack={() => setView("editor")}
+    goToEditorSection={(sectionId) => {
+      setActiveEditorSection(sectionId);
+      setView("editor");
+    }}
+  />
+)}
+     </div>
   );
 }
