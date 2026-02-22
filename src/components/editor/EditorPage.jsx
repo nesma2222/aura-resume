@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useEffect } from "react";
 import ContactForm from "./ContactForm";
 import ExperienceForm from "./ExperienceForm";
 import EducationForm from "./EducationForm";
@@ -21,6 +22,8 @@ export default function EditorPage({
   setFormData,
   onBack,
   goToTemplateSwitcher,
+  activeEditorSection
+  
 }) {
   const steps = [
     "Contacts",
@@ -32,7 +35,7 @@ export default function EditorPage({
   ];
 
   const [currentStep, setCurrentStep] = useState(0);
-  const [currentTemplate] = useState(selectedTemplate || "templateOne");
+  const currentTemplate = selectedTemplate || "templateOne";
 
   const initialFormData = {
     firstName: "",
@@ -84,6 +87,25 @@ export default function EditorPage({
 
     html2pdf().set(options).from(element).save();
   };
+
+useEffect(() => {
+  if (!activeEditorSection) return;
+
+  const sectionToStepMap = {
+    contacts: 0,
+    experience: 1,
+    education: 2,
+    skills: 3,
+    summary: 4,
+    finalize: 5,
+  };
+
+  const stepIndex = sectionToStepMap[activeEditorSection];
+
+  if (stepIndex !== undefined) {
+    setCurrentStep(stepIndex);
+  }
+}, [activeEditorSection]);
 
   const renderStepForm = () => {
     switch (currentStep) {

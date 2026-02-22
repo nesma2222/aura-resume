@@ -34,6 +34,7 @@ export default function EducationForm({ formData, setFormData }) {
   };
 
   return (
+    <div class="education">
     <div className="space-y-6">
       <p className="text-sm text-gray-500">
         Add your education details — even if you haven't graduated yet.
@@ -176,6 +177,7 @@ export default function EducationForm({ formData, setFormData }) {
       >
         + Add Education
       </button>
+    </div>
     </div>
   );
 }
