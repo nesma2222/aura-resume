@@ -41,8 +41,8 @@ export default function TemplatesPanel({
               className={`cursor-pointer border rounded-xl overflow-hidden transition shadow-sm
                 ${
                   selectedTemplate === template.id
-                    ? "border-blue-500 ring-2 ring-blue-300"
-                    : "border-gray-200 hover:border-blue-300"
+                    ? "border-peach-500 ring-2 ring-peach-300"
+                    : "border-gray-200 hover:border-peach-300"
                 }
               `}
             >

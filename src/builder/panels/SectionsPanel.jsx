@@ -50,7 +50,7 @@ export default function SectionsPanel({ sections, setSections, goToEditorSection
       ${
         section.locked
           ? "opacity-70 cursor-not-allowed"
-          : "cursor-move hover:border-blue-400"
+          : "cursor-move hover:border-peach-400"
       }
     `}
   >
@@ -66,7 +66,7 @@ export default function SectionsPanel({ sections, setSections, goToEditorSection
 
     <button
       onClick={() => goToEditorSection(section.id)}
-      className="text-slate-400 hover:text-blue-600 flex items-center gap-2"
+      className="text-slate-400 hover:text-peach-600 flex items-center gap-2"
     >
       <Pencil size={16} />
       Edit
