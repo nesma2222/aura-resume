@@ -1,124 +1,117 @@
-export default function TemplateOne({ data }) {
+export default function TemplateOne({ data, designSettings = {} }) {
+  const {
+    fontFamily = "",
+    fontSize = "",
+    lineSpacing = "",
+    sectionSpacing = "space-y-6",
+  } = designSettings;
+
   return (
-    <div className="space-y-4">
+    <div className={`${fontFamily} ${fontSize} ${lineSpacing} ${sectionSpacing}`}>
 
       {/* Name */}
-      <h1 className="text-2xl font-bold text-center">
+      <h1 className="font-bold text-center">
         {data.firstName} {data.lastName}
       </h1>
 
       {/* Desired Job Title */}
       {data.desiredJobTitle && (
-        <p className="text-center text-sm text-gray-600">
+        <p className="text-center text-gray-600">
           {data.desiredJobTitle}
         </p>
       )}
 
       {/* Contact */}
-      <div className="text-center text-sm text-gray-600">
+      <div className="text-center text-gray-600">
         {data.email && <p>{data.email}</p>}
         {data.phone && <p>{data.phone}</p>}
 
-        {/* Address + Country with comma */}
         {(data.address || data.country) && (
           <p>
             {data.address}
             {data.address && data.country && ", "}
-            {data.city},
-            {data.postCode},
-            {data.country}
-            
+            {data.city}, {data.postCode}, {data.country}
           </p>
-        )}        
+        )}
 
-       {/* ✅ LinkedIn */}
-{data.linkedin && (
-  <p>
-    <a
-      href={data.linkedin}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="text-blue-600 underline"
-    >
-      {data.linkedin}
-    </a>
-  </p>
-)}
+        {data.linkedin && (
+          <p>
+            <a
+              href={data.linkedin}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-600 underline"
+            >
+              {data.linkedin}
+            </a>
+          </p>
+        )}
 
-{/* ✅ Portfolio */}
-{data.portfolio && (
-  <p>
-    <a
-      href={data.portfolio}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="text-blue-600 underline"
-    >
-      {data.portfolio}
-    </a>
-  </p>
-)}
+        {data.portfolio && (
+          <p>
+            <a
+              href={data.portfolio}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-600 underline"
+            >
+              {data.portfolio}
+            </a>
+          </p>
+        )}
       </div>
 
       <hr />
 
-
-      
-
-      {/* Experience Section */}
+      {/* Experience */}
       <div>
-        <h2 className="text-lg font-semibold mb-2">Experience</h2>
+        <h2 className="font-semibold">Experience</h2>
 
         {(data.experience || []).map((exp, index) => (
-          <div key={index} className="mb-4">
-
+          <div key={index}>
             <h4 className="font-semibold">{exp.jobTitle}</h4>
 
-            <p className="text-sm text-gray-500">
+            <p className="text-gray-500">
               {exp.employer}
               {exp.employer && exp.location && " • "}
               {exp.location}
             </p>
 
-            <p className="text-sm text-gray-400">
+            <p className="text-gray-400">
               {exp.startDate} — {exp.endDate}
             </p>
 
-            <p className="text-sm">{exp.description}</p>
-
+            <p>{exp.description}</p>
           </div>
         ))}
-
       </div>
 
-      {/* ✅ Education Section */}
+      {/* Education */}
       <div>
-        <h2 className="text-lg font-semibold mb-2">Education</h2>
+        <h2 className="font-semibold">Education</h2>
 
         {(data.education || []).map((edu, index) => (
-          <div key={index} className="mb-4">
-
+          <div key={index}>
             <h4 className="font-semibold">{edu.degree}</h4>
 
-            <p className="text-sm text-gray-500">
+            <p className="text-gray-500">
               {edu.school} • {edu.location}
             </p>
 
-            <p className="text-sm text-gray-400">
+            <p className="text-gray-400">
               {edu.startDate} — {edu.endDate}
             </p>
 
-            <p className="text-sm">{edu.description}</p>
-
+            <p>{edu.description}</p>
           </div>
         ))}
       </div>
 
-        {/* ✅ Skills Section */}
+      {/* Skills */}
       <div>
-        <h2 className="text-lg font-semibold mb-2">Skills</h2>
+        <h2 className="font-semibold">Skills</h2>
 
-        <ul className="list-disc list-inside text-sm">
+        <ul className="list-disc list-inside">
           {(data.skills || []).map((skill, index) => (
             <li key={index}>
               {typeof skill === "string" ? skill : skill.name}
@@ -127,21 +120,22 @@ export default function TemplateOne({ data }) {
         </ul>
       </div>
 
-         {data.certifications && (
+      {/* Certifications */}
+      {data.certifications && (
         <div>
-          <h2 className="text-lg font-semibold mb-2">Certifications</h2>
-          <p className="text-sm whitespace-pre-line">
+          <h2 className="font-semibold">Certifications</h2>
+          <p className="whitespace-pre-line">
             {data.certifications}
           </p>
         </div>
       )}
 
-       {/* ✅ Hobbies Section */}
+      {/* Hobbies */}
       {(data.hobbies && data.hobbies.length > 0) && (
         <div>
-          <h2 className="text-lg font-semibold mb-2">Hobbies</h2>
+          <h2 className="font-semibold">Hobbies</h2>
 
-          <ul className="list-disc list-inside text-sm">
+          <ul className="list-disc list-inside">
             {data.hobbies.map((hobby, index) => (
               <li key={index}>
                 {typeof hobby === "string" ? hobby : hobby.name}
@@ -151,29 +145,27 @@ export default function TemplateOne({ data }) {
         </div>
       )}
 
-            {/* ✅ Custom Sections */}
+      {/* Custom Sections */}
       {(data.customSections && data.customSections.length > 0) &&
-        data.customSections.map((section, index) => (
-          section.title && (
+        data.customSections.map((section, index) =>
+          section.title ? (
             <div key={index}>
-              <h2 className="text-lg font-semibold mb-2">
+              <h2 className="font-semibold">
                 {section.title}
               </h2>
-              <p className="text-sm whitespace-pre-line">
+              <p className="whitespace-pre-line">
                 {section.description}
               </p>
             </div>
-          )
-        ))
-      }
+          ) : null
+        )}
 
-
-        {/* ✅ Languages Section */}
+      {/* Languages */}
       {(data.languages && data.languages.length > 0) && (
         <div>
-          <h2 className="text-lg font-semibold mb-2">Languages</h2>
+          <h2 className="font-semibold">Languages</h2>
 
-          <ul className="text-sm space-y-1">
+          <ul>
             {data.languages.map((lang, index) => (
               <li key={index}>
                 <span className="font-medium">{lang.name}</span>
@@ -184,18 +176,15 @@ export default function TemplateOne({ data }) {
         </div>
       )}
 
-         {/* SUMMARY */}
+      {/* Summary */}
       {data.summary && (
         <div>
-          <h2 className="text-lg font-semibold mb-2 text-left">
+          <h2 className="font-semibold text-left">
             Summary
           </h2>
-          <p className="text-sm text-left">{data.summary}</p>
+          <p className="text-left">{data.summary}</p>
         </div>
       )}
-
-
-
 
     </div>
   );

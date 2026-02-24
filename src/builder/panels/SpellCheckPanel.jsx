@@ -6,10 +6,6 @@ export default function SpellCheckPanel({ formData }) {
   const issues = useMemo(() => {
     const problems = [];
 
-    // FULL NAME
-    if (!formData.fullName || formData.fullName.trim().length < 3) {
-      problems.push("Full name looks incomplete.");
-    }
 
     // EMAIL
     if (!formData.email || !formData.email.includes("@")) {

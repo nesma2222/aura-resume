@@ -139,6 +139,13 @@ export default function App() {
   
 const [activeEditorSection, setActiveEditorSection] = useState(null);
 
+const [designSettings, setDesignSettings] = useState({
+  fontFamily: "font-sans",
+  fontSize: 16,
+  lineHeight: 1.6,
+  sectionSpacing: 24,
+});
+
   // ✅ NEW: store resume data when switching templates
   const [formData, setFormData] = useState({
   firstName: "",
@@ -212,16 +219,17 @@ const [activeEditorSection, setActiveEditorSection] = useState(null);
       )}
 
 
-   {view === "editor" && (
+ {view === "editor" && (
   <EditorPage
     selectedTemplate={selectedTemplate}
     formData={formData}
     setFormData={setFormData}
-    activeEditorSection={activeEditorSection} 
+    activeEditorSection={activeEditorSection}
+    designSettings={designSettings}   // ✅ ADD THIS
     onBack={() => setView("resumeChoice")}
     goToTemplateSwitcher={(template) => {
       setSelectedTemplate(template);
-      setView("builder"); // ← IMPORTANT change
+      setView("builder");
     }}
   />
 )}
@@ -232,6 +240,8 @@ const [activeEditorSection, setActiveEditorSection] = useState(null);
     setSelectedTemplate={setSelectedTemplate}
     formData={formData}
     setFormData={setFormData}
+    designSettings={designSettings}
+    setDesignSettings={setDesignSettings}
     onBack={() => setView("editor")}
     goToEditorSection={(sectionId) => {
       setActiveEditorSection(sectionId);
