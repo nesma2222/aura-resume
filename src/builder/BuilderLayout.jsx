@@ -18,6 +18,8 @@ export default function BuilderLayout({
   setSelectedTemplate,
   formData,
   setFormData,
+  designSettings,
+  setDesignSettings,
   onBack,
   goToEditorSection
 }) {
@@ -32,14 +34,7 @@ export default function BuilderLayout({
     { id: "skills", label: "Skills" },
   ]);
 
-  // 🔹 Design settings state
-  const [designSettings, setDesignSettings] = useState({
-    fontFamily: "font-sans",
-    primaryColor: "#2563eb",
-    fontSize: "text-base",
-    lineSpacing: "leading-normal",
-    sectionSpacing: "space-y-6",
-  });
+
 
   return (
     <div className="flex h-screen bg-gray-100 relative">
