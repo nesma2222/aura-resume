@@ -141,9 +141,9 @@ const [activeEditorSection, setActiveEditorSection] = useState(null);
 
 const [designSettings, setDesignSettings] = useState({
   fontFamily: "font-sans",
-  fontSize: 16,
-  lineHeight: 1.6,
-  sectionSpacing: 24,
+  fontSize: "text-base",
+  lineSpacing: "leading-normal",
+  sectionSpacing: "space-y-6",
 });
 
   // ✅ NEW: store resume data when switching templates
@@ -224,8 +224,8 @@ const [designSettings, setDesignSettings] = useState({
     selectedTemplate={selectedTemplate}
     formData={formData}
     setFormData={setFormData}
+    designSettings={designSettings}
     activeEditorSection={activeEditorSection}
-    designSettings={designSettings}   // ✅ ADD THIS
     onBack={() => setView("resumeChoice")}
     goToTemplateSwitcher={(template) => {
       setSelectedTemplate(template);

@@ -3,6 +3,8 @@ import TemplateTwo from "../templates/TemplateTwo";
 import TemplateThree from "../templates/TemplateThree";
 import TemplateFour from "../templates/TemplateFour";
 import TemplateFive from "../templates/TemplateFive";
+import TemplateSix from "../templates/TemplateSix";
+import TemplateSeven from "../templates/TemplateSeven";
 
 export const templateList = [
   {
@@ -34,5 +36,17 @@ export const templateList = [
     name: "Minimal Elegant",
     category: "Professional",
     component: TemplateFive,
+  },
+  {
+    id: "templateSix",
+    name: "ATS Classic",
+    category: "Professional",
+    component: TemplateSix,
+  },
+  {
+    id: "templateSeven",
+    name: "Two Column",
+    category: "Modern",
+    component: TemplateSeven,
   },
 ];
