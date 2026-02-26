@@ -1,5 +1,26 @@
-export default function TemplateTwo({ data }) {
-  const fullName = [data?.firstName, data?.lastName]
+export default function TemplateTwo({ data = {} }) {
+  const {
+    firstName,
+    lastName,
+    desiredJobTitle,
+    email,
+    phone,
+    city,
+    postCode,
+    country,
+    linkedin,
+    portfolio,
+    skills = [],
+    languages = [],
+    hobbies = [],
+    certifications,
+    summary,
+    experience = [],
+    education = [],
+    customSections = [],
+  } = data;
+
+  const fullName = [firstName, lastName]
     .filter(Boolean)
     .join(" ");
 
@@ -9,38 +30,41 @@ export default function TemplateTwo({ data }) {
       {/* HEADER */}
       <div className="bg-gray-900 text-white p-6">
         <h1 className="text-2xl font-bold">
-          {fullName || "Your Name"}
+          {fullName || "Neena Debrew"}
         </h1>
 
-        {data?.desiredJobTitle && (
-          <p className="text-gray-300">{data.desiredJobTitle}</p>
+        {desiredJobTitle && (
+          <p className="text-gray-300">{desiredJobTitle}</p>
         )}
 
         <div className="text-sm mt-2 space-x-4">
-          {data?.email && <span>{data.email}</span>}
-          {data?.phone && <span>{data.phone}</span>}
+          {email && <span>{email}</span>}
+          {phone && <span>{phone}</span>}
+          {city && <span>{city}</span>}
+          {postCode && <span>{postCode}</span>}
+          {country && <span>{country}</span>}
 
-           {data?.linkedin && (
-      <a
-        href={data.linkedin}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="underline text-gray-300 hover:text-white"
-      >
-        LinkedIn
-      </a>
-    )}
+          {linkedin && (
+            <a
+              href={linkedin}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline text-gray-300 hover:text-white"
+            >
+              LinkedIn
+            </a>
+          )}
 
-    {data?.portfolio && (
-      <a
-        href={data.portfolio}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="underline text-gray-300 hover:text-white"
-      >
-        Portfolio
-      </a>
-    )}
+          {portfolio && (
+            <a
+              href={portfolio}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline text-gray-300 hover:text-white"
+            >
+              Portfolio
+            </a>
+          )}
         </div>
       </div>
 
@@ -50,11 +74,11 @@ export default function TemplateTwo({ data }) {
         <div className="col-span-1 bg-gray-100 p-5 space-y-6">
 
           {/* Skills */}
-          {(data?.skills?.length > 0) && (
+          {skills.length > 0 && (
             <div>
               <h2 className="font-semibold border-b pb-1 mb-2">Skills</h2>
               <ul className="text-sm space-y-1">
-                {data.skills.map((skill, index) => (
+                {skills.map((skill, index) => (
                   <li key={index}>
                     {typeof skill === "string" ? skill : skill.name}
                   </li>
@@ -64,11 +88,11 @@ export default function TemplateTwo({ data }) {
           )}
 
           {/* Languages */}
-          {(data?.languages?.length > 0) && (
+          {languages.length > 0 && (
             <div>
               <h2 className="font-semibold border-b pb-1 mb-2">Languages</h2>
               <ul className="text-sm space-y-1">
-                {data.languages.map((lang, index) => (
+                {languages.map((lang, index) => (
                   <li key={index}>
                     {lang.name} {lang.level && `- ${lang.level}`}
                   </li>
@@ -78,11 +102,11 @@ export default function TemplateTwo({ data }) {
           )}
 
           {/* Hobbies */}
-          {(data?.hobbies?.length > 0) && (
+          {hobbies.length > 0 && (
             <div>
               <h2 className="font-semibold border-b pb-1 mb-2">Hobbies</h2>
               <ul className="text-sm space-y-1">
-                {data.hobbies.map((hobby, index) => (
+                {hobbies.map((hobby, index) => (
                   <li key={index}>
                     {typeof hobby === "string" ? hobby : hobby.name}
                   </li>
@@ -92,40 +116,39 @@ export default function TemplateTwo({ data }) {
           )}
 
           {/* Certifications */}
-          {data?.certifications && (
+          {certifications && (
             <div>
               <h2 className="font-semibold border-b pb-1 mb-2">
                 Certifications
               </h2>
               <p className="text-sm whitespace-pre-line">
-                {data.certifications}
+                {certifications}
               </p>
             </div>
           )}
-
         </div>
 
         {/* RIGHT MAIN CONTENT */}
         <div className="col-span-2 p-6 space-y-6">
 
           {/* Summary */}
-          {data?.summary && (
+          {summary && (
             <div>
               <h2 className="font-semibold border-b pb-1 mb-2">
                 Professional Summary
               </h2>
-              <p className="text-sm">{data.summary}</p>
+              <p className="text-sm">{summary}</p>
             </div>
           )}
 
           {/* Experience */}
-          {(data?.experience?.length > 0) && (
+          {experience.length > 0 && (
             <div>
               <h2 className="font-semibold border-b pb-1 mb-3">
                 Experience
               </h2>
 
-              {data.experience.map((exp, index) => (
+              {experience.map((exp, index) => (
                 <div key={index} className="mb-4">
                   <h4 className="font-semibold">{exp.jobTitle}</h4>
 
@@ -153,13 +176,13 @@ export default function TemplateTwo({ data }) {
           )}
 
           {/* Education */}
-          {(data?.education?.length > 0) && (
+          {education.length > 0 && (
             <div>
               <h2 className="font-semibold border-b pb-1 mb-3">
                 Education
               </h2>
 
-              {data.education.map((edu, index) => (
+              {education.map((edu, index) => (
                 <div key={index} className="mb-4">
                   <h4 className="font-semibold">{edu.degree}</h4>
 
@@ -187,9 +210,9 @@ export default function TemplateTwo({ data }) {
           )}
 
           {/* Custom Sections */}
-          {(data?.customSections?.length > 0) &&
-            data.customSections.map((section, index) => (
-              section.title && (
+          {customSections.length > 0 &&
+            customSections.map((section, index) =>
+              section.title ? (
                 <div key={index}>
                   <h2 className="font-semibold border-b pb-1 mb-2">
                     {section.title}
@@ -198,9 +221,8 @@ export default function TemplateTwo({ data }) {
                     {section.description}
                   </p>
                 </div>
-              )
-            ))}
-
+              ) : null
+            )}
         </div>
       </div>
     </div>

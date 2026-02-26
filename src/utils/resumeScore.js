@@ -1,76 +1,69 @@
 export function calculateResumeScore(data) {
   let score = 0;
-
+  let maxScore = 0;
 
   const emailRegex =
     /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[A-Za-z]{2,}$/;
 
-  /* ================= CONTACT SECTION (30 marks) ================= */
+  /* ================= CONTACT SECTION (30) ================= */
+  maxScore += 30;
 
-  // Full Name
-  if (
-    data?.firstName?.trim() &&
-    data?.lastName?.trim()
-  ) {
+  if (data?.firstName?.trim() && data?.lastName?.trim()) {
     score += 10;
   }
 
-  // Valid Email
-  if (
-    data?.email &&
-    emailRegex.test(data.email.trim())
-  ) {
+  if (data?.email && emailRegex.test(data.email.trim())) {
     score += 10;
   }
 
-  // Valid Phone (digits only, min 8 numbers)
   const phoneDigits = data?.phone?.replace(/\D/g, "");
   if (phoneDigits && phoneDigits.length >= 8) {
     score += 10;
   }
 
-  /* ================= JOB TITLE (5 marks) ================= */
-
+  /* ================= JOB TITLE (5) ================= */
+  maxScore += 5;
   if (data?.desiredJobTitle?.trim()) {
     score += 5;
   }
 
-  /* ================= SUMMARY (10 marks) ================= */
+  /* ================= SUMMARY (OPTIONAL - 10) ================= */
+  if (data?.summary?.trim()) {
+    maxScore += 10;
 
-  if (
-    data?.summary &&
-    data.summary.trim().length > 40
-  ) {
-    score += 10;
+    if (data.summary.trim().length > 40) {
+      score += 10;
+    }
   }
 
-  /* ================= EXPERIENCE (25 marks) ================= */
-
-  if (data?.experience?.length > 0) {
-
-    const hasBasicExperience = data.experience.some(
+  /* ================= EXPERIENCE (OPTIONAL - 25) ================= */
+  const hasExperience =
+    data?.experience?.length > 0 &&
+    data.experience.some(
       (exp) =>
         exp?.jobTitle?.trim() ||
         exp?.employer?.trim() ||
         exp?.description?.trim()
     );
 
-    if (hasBasicExperience) {
-      score += 15;
+  if (hasExperience) {
+    maxScore += 25;
 
-      const detailedExperience = data.experience.some(
-        (exp) =>
-          exp?.jobTitle?.trim() &&
-          exp?.employer?.trim() &&
-          exp?.description?.trim() &&
-          exp.description.trim().length > 40
-      );
+    score += 15;
 
-      if (detailedExperience) score += 10;
-    }
+    const detailedExperience = data.experience.some(
+      (exp) =>
+        exp?.jobTitle?.trim() &&
+        exp?.employer?.trim() &&
+        exp?.description?.trim() &&
+        exp.description.trim().length > 40
+    );
+
+    if (detailedExperience) score += 10;
   }
 
-  /* ================= EDUCATION (15 marks) ================= */
+  /* ================= EDUCATION (15) ================= */
+  maxScore += 15;
 
   if (data?.education?.length > 0) {
     const validEducation = data.education.some(
@@ -84,11 +77,16 @@ export function calculateResumeScore(data) {
     }
   }
 
-  /* ================= SKILLS (15 marks) ================= */
+  /* ================= SKILLS (15) ================= */
+  maxScore += 15;
 
   if (data?.skills?.length >= 3) {
     score += 15;
   }
 
-  return Math.min(score, 100);
+  // Normalize to 100
+  const finalScore =
+    maxScore > 0 ? Math.round((score / maxScore) * 100) : 0;
+
+  return finalScore;
 }
