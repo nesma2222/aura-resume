@@ -15,7 +15,13 @@ export function calculateResumeScore(data) {
   }
 
   /* EXPERIENCE (25 marks) */
-  if (data?.experience?.length > 0) {
+if (data?.experience?.length > 0) {
+
+  const hasBasicExperience = data.experience.some(
+    exp => exp?.jobTitle || exp?.employer || exp?.description
+  );
+
+  if (hasBasicExperience) {
     score += 15;
 
     const detailedExperience = data.experience.some(
@@ -28,15 +34,19 @@ export function calculateResumeScore(data) {
 
     if (detailedExperience) score += 10;
   }
+}
+
+
 
   /* EDUCATION (15 marks) */
-  if (data?.education?.length > 0) {
-    const validEducation = data.education.some(
-      edu => edu?.degree && edu?.institution
-    );
+if (data?.education?.length > 0) {
+  const validEducation = data.education.some(
+    edu => edu?.degree && edu?.school
+  );
 
-    if (validEducation) score += 15;
-  }
+  if (validEducation) score += 15;
+}
+
 
   /* SKILLS (15 marks) */
   if (data?.skills?.length >= 3) {

@@ -62,6 +62,9 @@ export default function TemplateOne({ data }) {
 
       <hr />
 
+
+      
+
       {/* Experience Section */}
       <div>
         <h2 className="text-lg font-semibold mb-2">Experience</h2>
@@ -123,6 +126,63 @@ export default function TemplateOne({ data }) {
           ))}
         </ul>
       </div>
+
+         {data.certifications && (
+        <div>
+          <h2 className="text-lg font-semibold mb-2">Certifications</h2>
+          <p className="text-sm whitespace-pre-line">
+            {data.certifications}
+          </p>
+        </div>
+      )}
+
+       {/* ✅ Hobbies Section */}
+      {(data.hobbies && data.hobbies.length > 0) && (
+        <div>
+          <h2 className="text-lg font-semibold mb-2">Hobbies</h2>
+
+          <ul className="list-disc list-inside text-sm">
+            {data.hobbies.map((hobby, index) => (
+              <li key={index}>
+                {typeof hobby === "string" ? hobby : hobby.name}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+            {/* ✅ Custom Sections */}
+      {(data.customSections && data.customSections.length > 0) &&
+        data.customSections.map((section, index) => (
+          section.title && (
+            <div key={index}>
+              <h2 className="text-lg font-semibold mb-2">
+                {section.title}
+              </h2>
+              <p className="text-sm whitespace-pre-line">
+                {section.description}
+              </p>
+            </div>
+          )
+        ))
+      }
+
+
+        {/* ✅ Languages Section */}
+      {(data.languages && data.languages.length > 0) && (
+        <div>
+          <h2 className="text-lg font-semibold mb-2">Languages</h2>
+
+          <ul className="text-sm space-y-1">
+            {data.languages.map((lang, index) => (
+              <li key={index}>
+                <span className="font-medium">{lang.name}</span>
+                {lang.level && ` — ${lang.level}`}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
 
          {/* SUMMARY */}
       {data.summary && (
