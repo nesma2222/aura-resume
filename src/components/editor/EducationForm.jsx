@@ -1,5 +1,4 @@
 export default function EducationForm({ formData, setFormData }) {
-
   const educationList = formData.education || [];
 
   const handleChange = (index, field, value) => {
@@ -8,7 +7,7 @@ export default function EducationForm({ formData, setFormData }) {
 
     setFormData({
       ...formData,
-      education: updatedEducation
+      education: updatedEducation,
     });
   };
 
@@ -23,9 +22,9 @@ export default function EducationForm({ formData, setFormData }) {
           location: "",
           startDate: "",
           endDate: "",
-          description: ""
-        }
-      ]
+          description: "",
+        },
+      ],
     });
   };
 
@@ -36,17 +35,15 @@ export default function EducationForm({ formData, setFormData }) {
 
   return (
     <div className="space-y-6">
-
       <p className="text-sm text-gray-500">
         Add your education details — even if you haven't graduated yet.
       </p>
 
       {educationList.map((edu, index) => (
         <div key={index} className="border-b pb-6 space-y-4">
-
+          
           {/* School + Location */}
           <div className="grid grid-cols-2 gap-4">
-
             <div>
               <label className="block text-sm font-semibold text-slate-600 mb-1">
                 School Name
@@ -74,7 +71,6 @@ export default function EducationForm({ formData, setFormData }) {
                 placeholder="Location"
               />
             </div>
-
           </div>
 
           {/* Degree */}
@@ -92,7 +88,7 @@ export default function EducationForm({ formData, setFormData }) {
             />
           </div>
 
-          {/* Start + End Date */}
+          {/* Start + End Date with Calendar */}
           <div className="grid grid-cols-2 gap-4">
 
             <div>
@@ -100,12 +96,12 @@ export default function EducationForm({ formData, setFormData }) {
                 Start Date
               </label>
               <input
+                type="month"
                 value={edu.startDate}
                 onChange={(e) =>
                   handleChange(index, "startDate", e.target.value)
                 }
                 className="inputStyle"
-                placeholder="MM/YYYY"
               />
             </div>
 
@@ -114,13 +110,32 @@ export default function EducationForm({ formData, setFormData }) {
                 End Date
               </label>
               <input
-                value={edu.endDate}
+                type="month"
+                value={edu.endDate === "Present" ? "" : edu.endDate}
                 onChange={(e) =>
                   handleChange(index, "endDate", e.target.value)
                 }
+                disabled={edu.endDate === "Present"}
                 className="inputStyle"
-                placeholder="MM/YYYY"
               />
+
+              {/* Currently Studying Checkbox */}
+              <div className="flex items-center gap-2 mt-2">
+                <input
+                  type="checkbox"
+                  checked={edu.endDate === "Present"}
+                  onChange={(e) =>
+                    handleChange(
+                      index,
+                      "endDate",
+                      e.target.checked ? "Present" : ""
+                    )
+                  }
+                />
+                <span className="text-sm text-slate-600">
+                  Currently Studying Here
+                </span>
+              </div>
             </div>
 
           </div>
@@ -141,14 +156,15 @@ export default function EducationForm({ formData, setFormData }) {
           </div>
 
           {/* Remove Button */}
-          <button
-            type="button"
-            onClick={() => handleRemoveEducation(index)}
-            className="text-red-500 text-sm hover:underline"
-          >
-            Remove Education
-          </button>
-
+          {educationList.length > 1 && (
+            <button
+              type="button"
+              onClick={() => handleRemoveEducation(index)}
+              className="text-red-500 text-sm hover:underline"
+            >
+              Remove Education
+            </button>
+          )}
         </div>
       ))}
 
@@ -160,7 +176,6 @@ export default function EducationForm({ formData, setFormData }) {
       >
         + Add Education
       </button>
-
     </div>
   );
 }
