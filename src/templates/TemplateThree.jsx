@@ -1,4 +1,6 @@
-export default function TemplateThree({ data = {} }) {
+export default function TemplateThree({
+  data = {},
+}) {
   const {
     firstName,
     lastName,
@@ -26,25 +28,30 @@ export default function TemplateThree({ data = {} }) {
     <div className="flex text-slate-800 max-w-5xl mx-auto bg-white shadow-lg">
 
       {/* LEFT SIDEBAR */}
-      <div className="w-1/3 p-6 bg-slate-100 space-y-6">
-
-        {/* Name */}
+      <div
+        className="w-1/3 p-6 space-y-6 text-white"
+        style={{ backgroundColor: "var(--primary-color)" }}
+      >
         <div>
           <h1 className="text-xl font-bold">
             {fullName || "Neena Debrew"}
           </h1>
+
           {desiredJobTitle && (
-            <p className="text-sm text-slate-600">
+            <p className="text-sm text-white/80">
               {desiredJobTitle}
             </p>
           )}
         </div>
 
-        {/* Contact */}
         <div>
-          <h2 className="font-semibold mb-2">Contact</h2>
+          <h2 className="font-semibold mb-2 border-b border-white/40 pb-1">
+            Contact
+          </h2>
+
           {email && <p className="text-sm">{email}</p>}
           {phone && <p className="text-sm">{phone}</p>}
+
           {(city || country) && (
             <p className="text-sm">
               {city} {city && country && ","} {country}
@@ -56,7 +63,7 @@ export default function TemplateThree({ data = {} }) {
               href={linkedin}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-sm underline"
+              className="text-sm underline block"
             >
               LinkedIn
             </a>
@@ -74,10 +81,12 @@ export default function TemplateThree({ data = {} }) {
           )}
         </div>
 
-        {/* Skills */}
         {skills.length > 0 && (
           <div>
-            <h2 className="font-semibold mb-2">Skills</h2>
+            <h2 className="font-semibold mb-2 border-b border-white/40 pb-1">
+              Skills
+            </h2>
+
             <ul className="text-sm space-y-1">
               {skills.map((skill, index) => (
                 <li key={index}>
@@ -88,10 +97,12 @@ export default function TemplateThree({ data = {} }) {
           </div>
         )}
 
-        {/* Languages */}
         {languages.length > 0 && (
           <div>
-            <h2 className="font-semibold mb-2">Languages</h2>
+            <h2 className="font-semibold mb-2 border-b border-white/40 pb-1">
+              Languages
+            </h2>
+
             <ul className="text-sm space-y-1">
               {languages.map((lang, index) => (
                 <li key={index}>
@@ -103,10 +114,12 @@ export default function TemplateThree({ data = {} }) {
           </div>
         )}
 
-        {/* Hobbies */}
         {hobbies.length > 0 && (
           <div>
-            <h2 className="font-semibold mb-2">Hobbies</h2>
+            <h2 className="font-semibold mb-2 border-b border-white/40 pb-1">
+              Hobbies
+            </h2>
+
             <ul className="text-sm space-y-1">
               {hobbies.map((hobby, index) => (
                 <li key={index}>
@@ -117,10 +130,12 @@ export default function TemplateThree({ data = {} }) {
           </div>
         )}
 
-        {/* Certifications */}
         {certifications && (
           <div>
-            <h2 className="font-semibold mb-2">Certifications</h2>
+            <h2 className="font-semibold mb-2 border-b border-white/40 pb-1">
+              Certifications
+            </h2>
+
             <p className="text-sm whitespace-pre-line">
               {certifications}
             </p>
@@ -129,28 +144,41 @@ export default function TemplateThree({ data = {} }) {
       </div>
 
       {/* RIGHT MAIN */}
-      <div className="w-2/3 p-6 space-y-6">
+      <div className="w-2/3 p-6 space-y-6 text-slate-700">
 
-        {/* Summary */}
         {summary && (
           <div>
-            <h2 className="font-semibold border-b pb-1 mb-2">
+            <h2
+              className="font-semibold border-b pb-1 mb-2"
+              style={{
+                borderColor: "var(--primary-color)",
+                color: "var(--primary-color)"
+              }}
+            >
               Professional Summary
             </h2>
+
             <p className="text-sm">{summary}</p>
           </div>
         )}
 
-        {/* Experience */}
         {experience.length > 0 && (
           <div>
-            <h2 className="font-semibold border-b pb-1 mb-3">
+            <h2
+              className="font-semibold border-b pb-1 mb-3"
+              style={{
+                borderColor: "var(--primary-color)",
+                color: "var(--primary-color)"
+              }}
+            >
               Experience
             </h2>
 
             {experience.map((exp, index) => (
               <div key={index} className="mb-4">
-                <h4 className="font-semibold">{exp.jobTitle}</h4>
+                <h4 className="font-semibold text-slate-800">
+  {exp.jobTitle}
+</h4>
 
                 <p className="text-sm text-slate-600">
                   {exp.employer}
@@ -175,16 +203,23 @@ export default function TemplateThree({ data = {} }) {
           </div>
         )}
 
-        {/* Education */}
         {education.length > 0 && (
           <div>
-            <h2 className="font-semibold border-b pb-1 mb-3">
+            <h2
+              className="font-semibold border-b pb-1 mb-3"
+              style={{
+                borderColor: "var(--primary-color)",
+                color: "var(--primary-color)"
+              }}
+            >
               Education
             </h2>
 
             {education.map((edu, index) => (
               <div key={index} className="mb-4">
-                <h4 className="font-semibold">{edu.degree}</h4>
+                <h4 className="font-semibold text-slate-800">
+  {edu.degree}
+</h4>
 
                 <p className="text-sm text-slate-600">
                   {edu.school}
@@ -208,7 +243,6 @@ export default function TemplateThree({ data = {} }) {
             ))}
           </div>
         )}
-
       </div>
     </div>
   );

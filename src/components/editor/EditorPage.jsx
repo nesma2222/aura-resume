@@ -166,25 +166,7 @@ useEffect(() => {
         {/* LEFT SIDE */}
         <div className="w-1/2">
 
-          {/* Resume Score */}
-          {/* <div className="bg-white rounded-xl shadow p-4 mb-6">
-            <div className="flex justify-between items-center mb-2">
-              <h3 className="font-semibold text-slate-700">
-                Resume Strength
-              </h3>
-
-              <span className="font-bold text-peach-500">
-                {resumeScore} / 100
-              </span>
-            </div>
-
-            <div className="w-full bg-slate-200 h-3 rounded-full overflow-hidden">
-              <div
-                className="bg-peach-500 h-full transition-all duration-500"
-                style={{ width: `${resumeScore}%` }}
-              />
-            </div>
-          </div> */}
+       
 
           {/* Profile Completion */}
 <div className="bg-white rounded-2xl shadow p-6 mb-6 border border-slate-100">
@@ -293,7 +275,19 @@ useEffect(() => {
             </div>
 
             {/* Resume Preview */}
-            <div id="resume-preview" className="p-8">
+            {/* Resume Preview */}
+<div
+  id="resume-preview"
+  className="p-8"
+  style={{
+    "--primary-color":
+      currentTemplate === "templateThree" ||
+      currentTemplate === "templateFour" ||
+      currentTemplate === "templateSeven"
+        ? designSettings?.primaryColor || "#000000"
+        : undefined,
+  }}
+>
               {currentTemplate === "templateOne" && (
                 <TemplateOne 
                 data={formData}

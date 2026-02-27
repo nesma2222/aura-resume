@@ -1,4 +1,6 @@
-export default function TemplateFour({ data = {} }) {
+export default function TemplateFour({
+  data = {},
+}) {
   const {
     firstName,
     lastName,
@@ -7,7 +9,10 @@ export default function TemplateFour({ data = {} }) {
     phone,
     city,
     country,
+    linkedin,
+    portfolio,
     skills = [],
+    summary,
     experience = [],
     education = [],
   } = data;
@@ -17,84 +22,96 @@ export default function TemplateFour({ data = {} }) {
     .join(" ");
 
   return (
-    <div className="flex text-sm font-sans max-w-5xl mx-auto shadow-lg bg-white">
+    <div className="max-w-5xl mx-auto bg-white shadow-lg text-slate-800">
 
-      {/* Sidebar */}
-      <div className="w-1/3 bg-slate-800 text-white p-6 space-y-6">
+      {/* TOP HEADER BAR */}
+      <div
+        className="p-8 text-white"
+        style={{ backgroundColor: "var(--primary-color)" }}
+      >
+        <h1 className="text-3xl font-bold tracking-wide">
+          {fullName || "Neena Debrew"}
+        </h1>
 
-        {/* Name */}
-        <div>
-          <h1 className="text-xl font-bold">
-            {fullName || "Neena Debrew"}
-          </h1>
-          {desiredJobTitle && (
-            <p className="text-slate-300">
-              {desiredJobTitle}
-            </p>
+        {desiredJobTitle && (
+          <p className="mt-2 text-white/90 text-lg">
+            {desiredJobTitle}
+          </p>
+        )}
+
+        <div className="mt-4 text-sm flex flex-wrap gap-x-6 gap-y-2">
+          {email && <span>{email}</span>}
+          {phone && <span>{phone}</span>}
+          {(city || country) && (
+            <span>
+              {city} {city && country && ","} {country}
+            </span>
           )}
+          {linkedin && <span>LinkedIn</span>}
+          {portfolio && <span>Portfolio</span>}
         </div>
-
-        {/* Contact */}
-        {(email || phone || city || country) && (
-          <div>
-            <h2 className="font-semibold mb-2">Contact</h2>
-
-            {email && <p>{email}</p>}
-            {phone && <p>{phone}</p>}
-
-            {(city || country) && (
-              <p>
-                {city}
-                {city && country && ", "}
-                {country}
-              </p>
-            )}
-          </div>
-        )}
-
-        {/* Skills */}
-        {skills.length > 0 && (
-          <div>
-            <h2 className="font-semibold mb-2">Skills</h2>
-            <ul className="space-y-1">
-              {skills.map((skill, i) => (
-                <li key={i}>
-                  • {typeof skill === "string" ? skill : skill.name}
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
-
       </div>
 
-      {/* Main Content */}
-      <div className="w-2/3 p-6 space-y-6">
+      {/* MAIN CONTENT */}
+      <div className="p-10 space-y-10">
 
-        {/* Experience */}
-        {experience.length > 0 && (
+        {/* SUMMARY */}
+        {summary && (
           <div>
-            <h2 className="font-bold text-slate-800 mb-2 border-b pb-1">
-              Experience
+            <h2
+              className="text-xl font-bold mb-3 relative"
+              style={{ color: "var(--primary-color)" }}
+            >
+              Professional Summary
+              <span
+                className="absolute left-0 -bottom-1 h-1 w-16"
+                style={{ backgroundColor: "var(--primary-color)" }}
+              />
             </h2>
 
-            {experience.map((exp, i) => (
-              <div key={i} className="mb-4">
-                <h4 className="font-semibold">
-                  {exp.jobTitle}
-                </h4>
+            <p className="text-sm leading-relaxed mt-4">
+              {summary}
+            </p>
+          </div>
+        )}
 
-                <p className="text-slate-500 text-xs">
+        {/* EXPERIENCE */}
+        {experience.length > 0 && (
+          <div>
+            <h2
+              className="text-xl font-bold mb-5 relative"
+              style={{ color: "var(--primary-color)" }}
+            >
+              Experience
+              <span
+                className="absolute left-0 -bottom-1 h-1 w-16"
+                style={{ backgroundColor: "var(--primary-color)" }}
+              />
+            </h2>
+
+            {experience.map((exp, index) => (
+              <div key={index} className="mb-8">
+                <div className="flex justify-between items-start">
+                  <h4 className="font-semibold text-lg">
+                    {exp.jobTitle}
+                  </h4>
+
+                  <p className="text-xs text-slate-500">
+                    {exp.startDate} —{" "}
+                    {exp.currentlyWorking
+                      ? "Present"
+                      : exp.endDate}
+                  </p>
+                </div>
+
+                <p className="text-sm text-slate-600">
                   {exp.employer}
-                  {exp.employer && " • "}
-                  {exp.startDate} —{" "}
-                  {exp.currentlyWorking
-                    ? "Present"
-                    : exp.endDate}
+                  {exp.employer && exp.location && " • "}
+                  {exp.location}
                 </p>
 
                 {exp.description && (
-                  <p className="mt-1">
+                  <p className="text-sm mt-2">
                     {exp.description}
                   </p>
                 )}
@@ -103,34 +120,84 @@ export default function TemplateFour({ data = {} }) {
           </div>
         )}
 
-        {/* Education */}
+        {/* EDUCATION */}
         {education.length > 0 && (
           <div>
-            <h2 className="font-bold text-slate-800 mb-2 border-b pb-1">
+            <h2
+              className="text-xl font-bold mb-5 relative"
+              style={{ color: "var(--primary-color)" }}
+            >
               Education
+              <span
+                className="absolute left-0 -bottom-1 h-1 w-16"
+                style={{ backgroundColor: "var(--primary-color)" }}
+              />
             </h2>
 
-            {education.map((edu, i) => (
-              <div key={i} className="mb-4">
-                <h4 className="font-semibold">
-                  {edu.degree}
-                </h4>
+            {education.map((edu, index) => (
+              <div key={index} className="mb-8">
+                <div className="flex justify-between items-start">
+                  <h4 className="font-semibold text-lg">
+                    {edu.degree}
+                  </h4>
 
-                <p className="text-slate-500 text-xs">
+                  <p className="text-xs text-slate-500">
+                    {edu.startDate} —{" "}
+                    {edu.currentlyStudying
+                      ? "Present"
+                      : edu.endDate}
+                  </p>
+                </div>
+
+                <p className="text-sm text-slate-600">
                   {edu.school}
-                  {edu.school && " • "}
-                  {edu.startDate} —{" "}
-                  {edu.currentlyStudying
-                    ? "Present"
-                    : edu.endDate}
+                  {edu.school && edu.location && " • "}
+                  {edu.location}
                 </p>
+
+                {edu.description && (
+                  <p className="text-sm mt-2">
+                    {edu.description}
+                  </p>
+                )}
               </div>
             ))}
           </div>
         )}
 
-      </div>
+        {/* SKILLS */}
+        {skills.length > 0 && (
+          <div>
+            <h2
+              className="text-xl font-bold mb-4 relative"
+              style={{ color: "var(--primary-color)" }}
+            >
+              Skills
+              <span
+                className="absolute left-0 -bottom-1 h-1 w-16"
+                style={{ backgroundColor: "var(--primary-color)" }}
+              />
+            </h2>
 
+            <div className="flex flex-wrap gap-3 mt-4">
+              {skills.map((skill, index) => (
+                <span
+                  key={index}
+                  className="text-sm px-3 py-1 rounded-full border"
+                  style={{
+                    borderColor: "var(--primary-color)",
+                    color: "var(--primary-color)",
+                  }}
+                >
+                  {typeof skill === "string"
+                    ? skill
+                    : skill.name}
+                </span>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
