@@ -1,7 +1,5 @@
 export default function TemplateTwo({
-  data = {},
-}) {
-
+  data = {},designSettings = {} }) {
   const {
     firstName,
     lastName,
@@ -23,6 +21,14 @@ export default function TemplateTwo({
     customSections = [],
   } = data;
 
+    const {
+    fontFamily = "",
+    fontSize = "",
+    lineSpacing = "",
+    sectionSpacing = "space-y-6",
+  } = designSettings;
+
+
   const fullName = [firstName, lastName]
     .filter(Boolean)
     .join(" ");
@@ -31,7 +37,8 @@ export default function TemplateTwo({
   const fixedColor = "#1f2937";
 
   return (
-    <div className="max-w-4xl mx-auto bg-white shadow-lg">
+     <div className={`${fontFamily} ${fontSize} ${lineSpacing} ${sectionSpacing}`}>
+
 
       {/* HEADER */}
       <div
@@ -216,7 +223,22 @@ export default function TemplateTwo({
                 </div>
               ))}
             </div>
+
+            
           )}
+
+          {/* Custom Sections */}
+      {customSections.length > 0 &&
+        customSections.map((section, index) =>
+          section.title ? (
+            <div key={index}>
+              <h2 className="font-semibold">{section.title}</h2>
+              <p className="whitespace-pre-line">
+                {section.description}
+              </p>
+            </div>
+          ) : null
+        )}
         </div>
       </div>
     </div>

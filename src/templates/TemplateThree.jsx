@@ -1,6 +1,6 @@
 export default function TemplateThree({
-  data = {},
-}) {
+  data = {},designSettings = {} }) {
+
   const {
     firstName,
     lastName,
@@ -20,12 +20,26 @@ export default function TemplateThree({
     education = [],
   } = data;
 
+    const {
+    fontFamily = "",
+    fontSize = "",
+    lineSpacing = "",
+    sectionSpacing = "space-y-6",
+  } = designSettings;
+
   const fullName = [firstName, lastName]
     .filter(Boolean)
     .join(" ");
 
   return (
-    <div className="flex text-slate-800 max-w-5xl mx-auto bg-white shadow-lg">
+    <div
+  className={`flex text-slate-800 max-w-5xl mx-auto bg-white shadow-lg ${sectionSpacing}`}
+  style={{
+    fontFamily: fontFamily,
+    fontSize: fontSize,
+    lineHeight: lineSpacing,
+  }}
+>
 
       {/* LEFT SIDEBAR */}
       <div
@@ -144,7 +158,7 @@ export default function TemplateThree({
       </div>
 
       {/* RIGHT MAIN */}
-      <div className="w-2/3 p-6 space-y-6 text-slate-700">
+     <div className={`w-2/3 p-6 text-slate-700 ${sectionSpacing}`}>
 
         {summary && (
           <div>

@@ -1,4 +1,4 @@
-export default function TemplateFive({ data = {} }) {
+export default function TemplateFive({ data = {} , designSettings = {} }) {
   const {
     firstName,
     lastName,
@@ -13,8 +13,27 @@ export default function TemplateFive({ data = {} }) {
     .filter(Boolean)
     .join(" ");
 
+      const {
+    fontFamily = "",
+    fontSize = "",
+    lineSpacing = "",
+    sectionSpacing = "space-y-6",
+  } = designSettings;
+  
   return (
-    <div className="p-10 font-sans text-sm text-slate-800 max-w-4xl mx-auto bg-white">
+    <div
+  className={`
+    p-10
+    ${fontFamily}
+    ${fontSize}
+    ${lineSpacing}
+    ${sectionSpacing}
+    text-slate-800
+    max-w-4xl
+    mx-auto
+    bg-white
+  `}
+>
 
       {/* Header */}
       <div className="text-center mb-8">

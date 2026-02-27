@@ -87,12 +87,7 @@ const colors = [
                 setSelectedTemplate(template.id);
 
               
-                if (!colorSupportedTemplates.includes(template.id)) {
-                  setDesignSettings((prev) => ({
-                    ...prev,
-                    primaryColor: undefined,
-                  }));
-                }
+              
               }}
               className={`cursor-pointer border rounded-xl overflow-hidden transition shadow-sm
                 ${
