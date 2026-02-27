@@ -1,4 +1,7 @@
-export default function TemplateTwo({ data = {} }) {
+export default function TemplateTwo({
+  data = {},
+}) {
+
   const {
     firstName,
     lastName,
@@ -24,11 +27,17 @@ export default function TemplateTwo({ data = {} }) {
     .filter(Boolean)
     .join(" ");
 
+  // ✅ HARD FIXED COLOR (no designSettings)
+  const fixedColor = "#1f2937";
+
   return (
     <div className="max-w-4xl mx-auto bg-white shadow-lg">
 
       {/* HEADER */}
-      <div className="bg-gray-900 text-white p-6">
+      <div
+        className="text-white p-6"
+        style={{ backgroundColor: fixedColor }}
+      >
         <h1 className="text-2xl font-bold">
           {fullName || "Neena Debrew"}
         </h1>
@@ -73,10 +82,18 @@ export default function TemplateTwo({ data = {} }) {
         {/* LEFT SIDEBAR */}
         <div className="col-span-1 bg-gray-100 p-5 space-y-6">
 
-          {/* Skills */}
           {skills.length > 0 && (
             <div>
-              <h2 className="font-semibold border-b pb-1 mb-2">Skills</h2>
+              <h2
+                className="font-semibold border-b pb-1 mb-2"
+                style={{
+                  borderColor: fixedColor,
+                  color: fixedColor,
+                }}
+              >
+                Skills
+              </h2>
+
               <ul className="text-sm space-y-1">
                 {skills.map((skill, index) => (
                   <li key={index}>
@@ -87,10 +104,11 @@ export default function TemplateTwo({ data = {} }) {
             </div>
           )}
 
-          {/* Languages */}
           {languages.length > 0 && (
             <div>
-              <h2 className="font-semibold border-b pb-1 mb-2">Languages</h2>
+              <h2 className="font-semibold border-b pb-1 mb-2">
+                Languages
+              </h2>
               <ul className="text-sm space-y-1">
                 {languages.map((lang, index) => (
                   <li key={index}>
@@ -101,10 +119,11 @@ export default function TemplateTwo({ data = {} }) {
             </div>
           )}
 
-          {/* Hobbies */}
           {hobbies.length > 0 && (
             <div>
-              <h2 className="font-semibold border-b pb-1 mb-2">Hobbies</h2>
+              <h2 className="font-semibold border-b pb-1 mb-2">
+                Hobbies
+              </h2>
               <ul className="text-sm space-y-1">
                 {hobbies.map((hobby, index) => (
                   <li key={index}>
@@ -115,7 +134,6 @@ export default function TemplateTwo({ data = {} }) {
             </div>
           )}
 
-          {/* Certifications */}
           {certifications && (
             <div>
               <h2 className="font-semibold border-b pb-1 mb-2">
@@ -131,7 +149,6 @@ export default function TemplateTwo({ data = {} }) {
         {/* RIGHT MAIN CONTENT */}
         <div className="col-span-2 p-6 space-y-6">
 
-          {/* Summary */}
           {summary && (
             <div>
               <h2 className="font-semibold border-b pb-1 mb-2">
@@ -141,7 +158,6 @@ export default function TemplateTwo({ data = {} }) {
             </div>
           )}
 
-          {/* Experience */}
           {experience.length > 0 && (
             <div>
               <h2 className="font-semibold border-b pb-1 mb-3">
@@ -175,7 +191,6 @@ export default function TemplateTwo({ data = {} }) {
             </div>
           )}
 
-          {/* Education */}
           {education.length > 0 && (
             <div>
               <h2 className="font-semibold border-b pb-1 mb-3">
@@ -198,31 +213,10 @@ export default function TemplateTwo({ data = {} }) {
                       ? "Present"
                       : edu.endDate}
                   </p>
-
-                  {edu.description && (
-                    <p className="text-sm mt-1">
-                      {edu.description}
-                    </p>
-                  )}
                 </div>
               ))}
             </div>
           )}
-
-          {/* Custom Sections */}
-          {customSections.length > 0 &&
-            customSections.map((section, index) =>
-              section.title ? (
-                <div key={index}>
-                  <h2 className="font-semibold border-b pb-1 mb-2">
-                    {section.title}
-                  </h2>
-                  <p className="text-sm whitespace-pre-line">
-                    {section.description}
-                  </p>
-                </div>
-              ) : null
-            )}
         </div>
       </div>
     </div>

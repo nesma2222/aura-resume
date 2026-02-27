@@ -146,7 +146,6 @@ const [designSettings, setDesignSettings] = useState({
   sectionSpacing: "space-y-6",
 });
 
-  // ✅ NEW: store resume data when switching templates
   const [formData, setFormData] = useState({
   firstName: "",
   lastName: "",

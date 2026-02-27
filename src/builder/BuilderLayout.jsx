@@ -88,6 +88,8 @@ export default function BuilderLayout({
           <TemplatesPanel
             selectedTemplate={selectedTemplate}
             setSelectedTemplate={setSelectedTemplate}
+            designSettings={designSettings}
+            setDesignSettings={setDesignSettings}
           />
         )}
 
