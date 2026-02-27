@@ -1,4 +1,4 @@
-export default function TemplateSix({ data = {} }) {
+export default function TemplateSix({ data = {}, designSettings = {} }) {
   const {
     firstName,
     lastName,
@@ -12,10 +12,29 @@ export default function TemplateSix({ data = {} }) {
     skills = [],
   } = data;
 
+  const {
+  fontFamily = "",
+  fontSize = "",
+  lineSpacing = "",
+  sectionSpacing = "space-y-6",
+} = designSettings;
+
   const fullName = [firstName, lastName].filter(Boolean).join(" ");
 
   return (
-    <div className="p-10 text-sm font-serif text-black max-w-4xl mx-auto bg-white">
+    <div
+  className={`
+    p-10
+    ${fontFamily}
+    ${fontSize}
+    ${lineSpacing}
+    ${sectionSpacing}
+    text-black
+    max-w-4xl
+    mx-auto
+    bg-white
+  `}
+>
 
       <h1 className="text-2xl font-bold">
         {fullName || "Your Name"}
