@@ -1,6 +1,5 @@
 export default function TemplateFour({
-  data = {},
-}) {
+  data = {},designSettings = {} }) {
   const {
     firstName,
     lastName,
@@ -17,12 +16,19 @@ export default function TemplateFour({
     education = [],
   } = data;
 
+      const {
+    fontFamily = "",
+    fontSize = "",
+    lineSpacing = "",
+    sectionSpacing = "space-y-6",
+  } = designSettings;
+
   const fullName = [firstName, lastName]
     .filter(Boolean)
     .join(" ");
 
   return (
-    <div className="max-w-5xl mx-auto bg-white shadow-lg text-slate-800">
+   <div className={`${fontFamily} ${fontSize} ${lineSpacing} ${sectionSpacing}`}>
 
       {/* TOP HEADER BAR */}
       <div
