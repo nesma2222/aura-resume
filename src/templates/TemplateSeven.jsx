@@ -1,4 +1,4 @@
-export default function TemplateSeven({ data = {} }) {
+export default function TemplateSeven({ data = {}, designSettings = {} }) {
   const {
     firstName,
     lastName,
@@ -10,11 +10,18 @@ export default function TemplateSeven({ data = {} }) {
     summary,
   } = data;
 
+       const {
+    fontFamily = "",
+    fontSize = "",
+    lineSpacing = "",
+    sectionSpacing = "space-y-6",
+  } = designSettings;
+
   const fullName = [firstName, lastName].filter(Boolean).join(" ");
 
   return (
-    <div className="flex max-w-5xl mx-auto bg-white shadow">
-
+    <div className={`${fontFamily} ${fontSize} ${lineSpacing} ${sectionSpacing}`}>
+      
       <div className="w-1/3 bg-gray-100 p-6 space-y-4">
         <h1 className="text-xl font-bold">
           {fullName || "Your Name"}

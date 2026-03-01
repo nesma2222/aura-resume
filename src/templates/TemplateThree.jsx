@@ -32,14 +32,7 @@ export default function TemplateThree({
     .join(" ");
 
   return (
-    <div
-  className={`flex text-slate-800 max-w-5xl mx-auto bg-white shadow-lg ${sectionSpacing}`}
-  style={{
-    fontFamily: fontFamily,
-    fontSize: fontSize,
-    lineHeight: lineSpacing,
-  }}
->
+ <div className={`${fontFamily} ${fontSize} ${lineSpacing} ${sectionSpacing}`}>
 
       {/* LEFT SIDEBAR */}
       <div
