@@ -6,40 +6,46 @@ export default function SpellCheckPanel({ formData }) {
   const [issues, setIssues] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  // 🔹 Extract all text from formData (handles arrays & objects)
-  const extractAllText = (data) => {
+  // ✅ Only extract meaningful content (NOT names, city, email, etc.)
+  const extractRelevantText = (data) => {
     let text = "";
 
-    Object.values(data).forEach((value) => {                  //Recursive-style data flattening
-      if (Array.isArray(value)) {
-        value.forEach((item) => {
-          if (typeof item === "object") {
-            Object.values(item).forEach((v) => {
-              text += " " + v;
-            });
-          } else {
-            text += " " + item;
-          }
-        });
-      } else if (typeof value === "string") {
-        text += " " + value;
-      }
-    });
+    // Summary
+    if (data.summary) {
+      text += " " + data.summary;
+    }
+
+    // Experience descriptions only
+    if (Array.isArray(data.experience)) {
+      data.experience.forEach((exp) => {
+        if (exp.description) {
+          text += " " + exp.description;
+        }
+      });
+    }
+
+    // Optional: skills if they are sentence-based
+    if (Array.isArray(data.skills)) {
+      text += " " + data.skills.join(" ");
+    }
 
     return text;
   };
 
   useEffect(() => {
     const checkSpelling = async () => {
-      const fullText = extractAllText(formData);
+      const fullText = extractRelevantText(formData);
 
-      if (!fullText.trim()) return;
+      if (!fullText.trim()) {
+        setIssues([]);
+        return;
+      }
 
       setLoading(true);
 
       try {
         const response = await axios.post(
-          "https://api.languagetool.org/v2/check",    //client side API integration
+          "https://api.languagetool.org/v2/check",
           new URLSearchParams({
             text: fullText,
             language: "en-US",
@@ -48,12 +54,33 @@ export default function SpellCheckPanel({ formData }) {
 
         const matches = response.data.matches;
 
-        const formattedIssues = matches.map((match) => ({
-          message: match.message,
-          suggestion: match.replacements[0]?.value || "No suggestion",
-        }));
+        // ✅ Filter unwanted issues
+        const filtered = matches
+          .filter((match) => {
+            // Ignore whitespace warnings
+            if (match.rule.issueType === "typographical") return false;
 
-        setIssues(formattedIssues);
+            // Ignore proper noun false positives
+            if (match.rule.issueType === "misspelling") {
+              const word = match.context.text.substring(
+                match.context.offset,
+                match.context.offset + match.context.length
+              );
+
+              // Ignore capitalized words (likely names/places)
+              if (word[0] === word[0].toUpperCase()) {
+                return false;
+              }
+            }
+
+            return true;
+          })
+          .map((match) => ({
+            message: match.message,
+            suggestion: match.replacements[0]?.value || "No suggestion",
+          }));
+
+        setIssues(filtered);
       } catch (error) {
         console.error("Spellcheck error:", error);
       }
@@ -76,7 +103,7 @@ export default function SpellCheckPanel({ formData }) {
       {!loading && issues.length === 0 && (
         <div className="flex items-center gap-3 bg-green-50 p-4 rounded-lg text-green-700">
           <CheckCircle size={20} />
-          <span>No spelling or grammar issues found 🎉</span>
+          <span>No spelling or grammar issues found </span>
         </div>
       )}
 
