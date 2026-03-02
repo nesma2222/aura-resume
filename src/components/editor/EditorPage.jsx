@@ -11,13 +11,8 @@ import Finalize from "../Finalize/Finalize";
 import html2pdf from "html2pdf.js";
 import { calculateResumeScore } from "../../utils/resumeScore";
 
-import TemplateOne from "../../templates/TemplateOne";
-import TemplateTwo from "../../templates/TemplateTwo";
-import TemplateThree from "../../templates/TemplateThree";
-import TemplateFour from "../../templates/TemplateFour";
-import TemplateFive from "../../templates/TemplateFive";
-import TemplateSix from "../../templates/TemplateSix";
-import TemplateSeven from "../../templates/TemplateSeven";
+import { templateList } from "../../data/templateList";
+import { initialResumeData } from "../../data/initialResumeData";
 
 import { ArrowLeft, LayoutGrid } from "lucide-react";
 
@@ -43,28 +38,11 @@ export default function EditorPage({
   const currentTemplate = selectedTemplate || "templateOne";
  
 
- const initialFormData = {
-  firstName: "",
-  lastName: "",
-  email: "",
-  phone: "",
-  desiredJobTitle: "",
-  country: "",
-  city: "",
-  address: "",
-  postCode: "",
-  linkedin: "",
-  portfolio: "",
-  experience: [],
-  education: [],
-  skills: [],
-  languages: [],
-  hobbies: [],
-  certifications: "",
-  summary: "",
-  customSections: [],
-};
+const activeTemplate = templateList.find(
+  (template) => template.id === currentTemplate
+);
 
+const SelectedTemplate = activeTemplate?.component;
  
 
   const resumeScore = calculateResumeScore(formData);
@@ -72,7 +50,7 @@ export default function EditorPage({
   
 
   const handleReset = () => {
-    setFormData(initialFormData);
+    setFormData(initialResumeData);
     setCurrentStep(0);
   };
 
@@ -94,7 +72,7 @@ export default function EditorPage({
 
   useEffect(() => {
   if (!formData || Object.keys(formData).length === 0) {
-    setFormData(initialFormData);
+    setFormData(initialResumeData);
   }
 }, []);
 
@@ -285,51 +263,18 @@ useEffect(() => {
   id="resume-preview"
   className="p-8"
   style={{
-    "--primary-color":
-      currentTemplate === "templateThree" ||
-      currentTemplate === "templateFour" ||
-      currentTemplate === "templateSeven"
-        ? designSettings?.primaryColor || "#000000"
-        : undefined,
-  }}
+  "--primary-color":
+    activeTemplate?.supportsPrimaryColor
+      ? designSettings?.primaryColor || "#000000"
+      : undefined,
+}}
 >
-              {currentTemplate === "templateOne" && (
-                <TemplateOne 
-                data={formData}
-                designSettings={designSettings} />
-                
-              )}
-              {currentTemplate === "templateTwo" && (
-                <TemplateTwo
-                 data={formData}
-                 designSettings={designSettings} />
-              )}
-              {currentTemplate === "templateThree" && (
-                <TemplateThree
-                 data={formData} 
-                 designSettings={designSettings}/>
-              )}
-                 {currentTemplate === "templateFour" && (
-                <TemplateFour 
-                data={formData}
-                designSettings={designSettings} />
-               )}
-
-               {currentTemplate === "templateFive" && (
-                <TemplateFive 
-                data={formData} 
-                designSettings={designSettings}/>
-              )}
-               {currentTemplate === "templateSix" && (
-                <TemplateSix 
-                data={formData}
-                designSettings={designSettings} />
-              )}
-              {currentTemplate === "templateSeven" && (
-                <TemplateSeven 
-                data={formData}
-                designSettings={designSettings} />
-              )}
+              {SelectedTemplate && (
+  <SelectedTemplate
+    data={formData}
+    designSettings={designSettings}
+  />
+)}
             </div>
 
           </div>
