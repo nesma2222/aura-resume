@@ -201,7 +201,13 @@ const [designSettings, setDesignSettings] = useState({
         </>
       )}
 
-      {view === 'upload' && <UploadView onBack={() => setView('landing')} />}
+      {view === 'upload' && (
+  <UploadView 
+    onBack={() => setView('landing')}
+    setFormData={setFormData}
+    goToEditor={() => setView("editor")}
+  />
+)}
 
       {view === 'templates' && (
         <TemplateGallery

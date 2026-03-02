@@ -118,10 +118,12 @@ export default function TemplateTwo({
               </h2>
               <ul className="text-sm space-y-1">
                 {languages.map((lang, index) => (
-                  <li key={index}>
-                    {lang.name} {lang.level && `- ${lang.level}`}
-                  </li>
-                ))}
+  <li key={index}>
+    {typeof lang === "string"
+      ? lang
+      : `${lang.name}${lang.level ? " - " + lang.level : ""}`}
+  </li>
+))}
               </ul>
             </div>
           )}
@@ -205,8 +207,16 @@ export default function TemplateTwo({
               </h2>
 
               {education.map((edu, index) => (
-                <div key={index} className="mb-4">
-                  <h4 className="font-semibold">{edu.degree}</h4>
+  <div key={index} className="mb-4">
+    <h4 className="font-semibold">
+      {edu.degree || "Education"}
+    </h4>
+
+    {edu.description && (
+  <p className="text-sm mt-1 whitespace-pre-line">
+    {edu.description}
+  </p>
+)}
 
                   <p className="text-sm text-gray-600">
                     {edu.school}
@@ -232,8 +242,10 @@ export default function TemplateTwo({
         customSections.map((section, index) =>
           section.title ? (
             <div key={index}>
-              <h2 className="font-semibold">{section.title}</h2>
-              <p className="whitespace-pre-line">
+              <h2 className="font-semibold border-b pb-1 mb-2">
+  {section.title}
+</h2>
+              <p className="text-sm whitespace-pre-line">
                 {section.description}
               </p>
             </div>

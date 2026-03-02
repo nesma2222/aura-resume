@@ -41,37 +41,35 @@ export default function EditorPage({
 
   const [currentStep, setCurrentStep] = useState(0);
   const currentTemplate = selectedTemplate || "templateOne";
+ 
 
-  const initialFormData = {
-    firstName: "",
-    lastName: "",
-    email: "",
-    phone: "",
-    desiredJobTitle: "",
-    country: "",
-    city: "",
-    address: "",
-    postCode: "",
-    linkedin: "",
-    portfolio: "",
-    experience: [
-      {
-        jobTitle: "",
-        employer: "",
-        location: "",
-        startDate: "",
-        endDate: "",
-        description: "",
-      },
-    ],
-    education: [],
-    skills: [],
-    summary: "",
-  };
+ const initialFormData = {
+  firstName: "",
+  lastName: "",
+  email: "",
+  phone: "",
+  desiredJobTitle: "",
+  country: "",
+  city: "",
+  address: "",
+  postCode: "",
+  linkedin: "",
+  portfolio: "",
+  experience: [],
+  education: [],
+  skills: [],
+  languages: [],
+  hobbies: [],
+  certifications: "",
+  summary: "",
+  customSections: [],
+};
 
  
 
   const resumeScore = calculateResumeScore(formData);
+
+  
 
   const handleReset = () => {
     setFormData(initialFormData);
@@ -92,6 +90,13 @@ export default function EditorPage({
 
     html2pdf().set(options).from(element).save();
   };
+
+
+  useEffect(() => {
+  if (!formData || Object.keys(formData).length === 0) {
+    setFormData(initialFormData);
+  }
+}, []);
 
 useEffect(() => {
   if (!activeEditorSection) return;
