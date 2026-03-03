@@ -1,10 +1,12 @@
-import TemplateOne from "../../templates/TemplateOne";
-import TemplateTwo from "../../templates/TemplateTwo";
-import TemplateThree from "../../templates/TemplateThree";
-import TemplateFour from "../../templates/TemplateFour";
-import TemplateFive from "../../templates/TemplateFive";
-import TemplateSix from "../../templates/TemplateSix";
-import TemplateSeven from "../../templates/TemplateSeven";
+import { lazy, Suspense } from "react";
+const TemplateOne = lazy(() => import("../../templates/TemplateOne"));
+const TemplateTwo = lazy(() => import("../../templates/TemplateTwo"));
+const TemplateThree = lazy(() => import("../../templates/TemplateThree"));
+const TemplateFour = lazy(() => import("../../templates/TemplateFour"));
+const TemplateFive = lazy(() => import("../../templates/TemplateFive"));
+const TemplateSix = lazy(() => import("../../templates/TemplateSix"));
+const TemplateSeven = lazy(() => import("../../templates/TemplateSeven"));
+
 
 export default function TemplatesPanel({
   selectedTemplate,
@@ -104,10 +106,12 @@ const colors = [
       designSettings?.primaryColor || "#2563eb",
   }}
 >
+  <Suspense fallback={<div>Loading...</div>}>
   <PreviewComponent
     data={{}}
     designSettings={designSettings}
   />
+  </Suspense>
 </div>
 
               <div className="p-3 bg-white border-t text-center font-medium">

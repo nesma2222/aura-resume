@@ -41,7 +41,7 @@ export default function TemplateThree({
       >
         <div>
           <h1 className="text-xl font-bold">
-            {fullName || "Neena Debrew"}
+            {fullName || "John Doe"}
           </h1>
 
           {desiredJobTitle && (

@@ -5,9 +5,7 @@ import {
 
 import ResumeChoiceView from "./components/ResumeChoiceView";
 import TemplateGallery from "./components/TemplateGallery";
-import UploadView from './components/UploadView';
-import EditorPage from "./components/editor/EditorPage";
-import BuilderLayout from "./builder/BuilderLayout";
+
 import TestimonialsSection from "./components/TestimonialsSection";
 import CTASection from "./components/CTASection";
 import Footer from "./components/Footer";
@@ -16,6 +14,11 @@ import TemplateOne from "./templates/TemplateOne";
 import TemplateTwo from "./templates/TemplateTwo";
 
 import ResumePreview from './assets/resumepreview.webp';
+import { lazy, Suspense } from "react";
+
+const EditorPage = lazy(() => import("./components/editor/EditorPage"));
+const BuilderLayout = lazy(() => import("./builder/BuilderLayout"));
+const UploadView = lazy(() => import("./components/UploadView"));
 
 
 
@@ -202,11 +205,14 @@ const [designSettings, setDesignSettings] = useState({
       )}
 
       {view === 'upload' && (
+    
+     <Suspense fallback={<div>Loading...</div>}>
   <UploadView 
     onBack={() => setView('landing')}
     setFormData={setFormData}
     goToEditor={() => setView("editor")}
   />
+  </Suspense>
 )}
 
       {view === 'templates' && (
@@ -226,6 +232,7 @@ const [designSettings, setDesignSettings] = useState({
 
 
  {view === "editor" && (
+  <Suspense fallback={<div>Loading...</div>}>
   <EditorPage
     selectedTemplate={selectedTemplate}
     formData={formData}
@@ -238,9 +245,11 @@ const [designSettings, setDesignSettings] = useState({
       setView("builder");
     }}
   />
+  </Suspense>
 )}
 
 {view === "builder" && (
+  <Suspense fallback={<div>Loading...</div>}>
   <BuilderLayout
     selectedTemplate={selectedTemplate}
     setSelectedTemplate={setSelectedTemplate}
@@ -254,6 +263,7 @@ const [designSettings, setDesignSettings] = useState({
       setView("editor");
     }}
   />
+  </Suspense>
 )}
      </div>
   );

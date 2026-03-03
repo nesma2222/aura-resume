@@ -45,7 +45,7 @@ export default function SpellCheckPanel({ formData }) {
 
       try {
         const response = await axios.post(
-          "https://api.languagetool.org/v2/check",
+           import.meta.env.VITE_LANGUAGE_TOOL_API,
           new URLSearchParams({
             text: fullText,
             language: "en-US",

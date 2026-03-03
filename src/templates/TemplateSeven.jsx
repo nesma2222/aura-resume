@@ -24,7 +24,7 @@ export default function TemplateSeven({ data = {}, designSettings = {} }) {
       
       <div className="w-1/3 bg-gray-100 p-6 space-y-4">
         <h1 className="text-xl font-bold">
-          {fullName || "Your Name"}
+          {fullName || "John Doe"}
         </h1>
 
         <div>

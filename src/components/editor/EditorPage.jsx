@@ -8,7 +8,7 @@ import SummaryForm from "./SummaryForm";
 import Finalize from "../Finalize/Finalize";
 
 
-import html2pdf from "html2pdf.js";
+
 import { calculateResumeScore } from "../../utils/resumeScore";
 
 import { templateList } from "../../data/templateList";
@@ -54,20 +54,23 @@ const SelectedTemplate = activeTemplate?.component;
     setCurrentStep(0);
   };
 
-  const handleDownload = () => {
-    const element = document.getElementById("resume-preview");
-    if (!element) return;
+  const handleDownload = async () => {
+  const element = document.getElementById("resume-preview");
+  if (!element) return;
 
-    const options = {
-      margin: 0,
-      filename: "My_Resume.pdf",
-      image: { type: "jpeg", quality: 1 },
-      html2canvas: { scale: 2, useCORS: true },
-      jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
-    };
+  //  Dynamically load html2pdf only when needed
+  const html2pdf = (await import("html2pdf.js")).default;
 
-    html2pdf().set(options).from(element).save();
+  const options = {
+    margin: 0,
+    filename: "My_Resume.pdf",
+    image: { type: "jpeg", quality: 1 },
+    html2canvas: { scale: 2, useCORS: true },
+    jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
   };
+
+  html2pdf().set(options).from(element).save();
+};
 
 
   useEffect(() => {

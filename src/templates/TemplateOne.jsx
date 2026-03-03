@@ -37,7 +37,7 @@ export default function TemplateOne({ data = {}, designSettings = {} }) {
 
       {/* Name */}
       <h1 className="font-bold text-center">
-        {fullName || "Neena Debrew"}
+        {fullName || "John Doe"}
       </h1>
 
       {/* Desired Job Title */}

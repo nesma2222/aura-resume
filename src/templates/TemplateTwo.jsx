@@ -46,7 +46,7 @@ export default function TemplateTwo({
         style={{ backgroundColor: fixedColor }}
       >
         <h1 className="text-2xl font-bold">
-          {fullName || "Neena Debrew"}
+          {fullName || "John Doe"}
         </h1>
 
         {desiredJobTitle && (

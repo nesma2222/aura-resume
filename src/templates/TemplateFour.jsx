@@ -36,7 +36,7 @@ export default function TemplateFour({
         style={{ backgroundColor: "var(--primary-color)" }}
       >
         <h1 className="text-3xl font-bold tracking-wide">
-          {fullName || "Neena Debrew"}
+          {fullName || "John Doe"}
         </h1>
 
         {desiredJobTitle && (
@@ -53,8 +53,26 @@ export default function TemplateFour({
               {city} {city && country && ","} {country}
             </span>
           )}
-          {linkedin && <span>LinkedIn</span>}
-          {portfolio && <span>Portfolio</span>}
+          {linkedin && (
+  <a
+    href={linkedin}
+    target="_blank"
+    rel="noopener noreferrer"
+    className="underline"
+  >
+    {linkedin}
+  </a>
+)}
+          {portfolio && (
+  <a
+    href={portfolio}
+    target="_blank"
+    rel="noopener noreferrer"
+    className="underline"
+  >
+    {portfolio}
+  </a>
+)}
         </div>
       </div>
 
@@ -94,35 +112,46 @@ export default function TemplateFour({
                 style={{ backgroundColor: "var(--primary-color)" }}
               />
             </h2>
+             
+             {experience.map((exp, index) => {
+  const {
+    jobTitle,
+    startDate,
+    endDate,
+    currentlyWorking,
+    employer,
+    location,
+    description,
+  } = exp || {};
 
-            {experience.map((exp, index) => (
-              <div key={index} className="mb-8">
-                <div className="flex justify-between items-start">
-                  <h4 className="font-semibold text-lg">
-                    {exp.jobTitle}
-                  </h4>
+  return (
+    <div key={index} className="mb-8">
+      <div className="flex justify-between items-start">
+        <h4 className="font-semibold text-lg">
+          {jobTitle}
+        </h4>
 
-                  <p className="text-xs text-slate-500">
-                    {exp.startDate} —{" "}
-                    {exp.currentlyWorking
-                      ? "Present"
-                      : exp.endDate}
-                  </p>
-                </div>
+        <p className="text-xs text-slate-500">
+          {startDate} — {currentlyWorking ? "Present" : endDate}
+        </p>
+      </div>
 
-                <p className="text-sm text-slate-600">
-                  {exp.employer}
-                  {exp.employer && exp.location && " • "}
-                  {exp.location}
-                </p>
+      {(employer || location) && (
+        <p className="text-sm text-slate-600">
+          {employer}
+          {employer && location && " • "}
+          {location}
+        </p>
+      )}
 
-                {exp.description && (
-                  <p className="text-sm mt-2">
-                    {exp.description}
-                  </p>
-                )}
-              </div>
-            ))}
+      {description && (
+        <p className="text-sm mt-2">
+          {description}
+        </p>
+      )}
+    </div>
+  );
+})}
           </div>
         )}
 

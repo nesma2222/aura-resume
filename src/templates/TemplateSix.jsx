@@ -37,7 +37,7 @@ export default function TemplateSix({ data = {}, designSettings = {} }) {
 >
 
       <h1 className="text-2xl font-bold">
-        {fullName || "Your Name"}
+        {fullName || "John Doe"}
       </h1>
 
       <p className="mt-1">
