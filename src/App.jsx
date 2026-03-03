@@ -144,9 +144,9 @@ const [designSettings, setDesignSettings] = useState({
   fontSize: "text-base",
   lineSpacing: "leading-normal",
   sectionSpacing: "space-y-6",
+  primaryColor: "#2563eb", // ✅ ONE default color only
 });
 
-  // ✅ NEW: store resume data when switching templates
   const [formData, setFormData] = useState({
   firstName: "",
   lastName: "",
@@ -201,7 +201,13 @@ const [designSettings, setDesignSettings] = useState({
         </>
       )}
 
-      {view === 'upload' && <UploadView onBack={() => setView('landing')} />}
+      {view === 'upload' && (
+  <UploadView 
+    onBack={() => setView('landing')}
+    setFormData={setFormData}
+    goToEditor={() => setView("editor")}
+  />
+)}
 
       {view === 'templates' && (
         <TemplateGallery
