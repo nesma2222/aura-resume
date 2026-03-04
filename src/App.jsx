@@ -10,11 +10,10 @@ import TestimonialsSection from "./components/TestimonialsSection";
 import CTASection from "./components/CTASection";
 import Footer from "./components/Footer";
 
-import TemplateOne from "./templates/TemplateOne";
-import TemplateTwo from "./templates/TemplateTwo";
 
 import ResumePreview from './assets/resumepreview.webp';
 import { lazy, Suspense } from "react";
+import { Routes, Route, useNavigate } from "react-router-dom";
 
 const EditorPage = lazy(() => import("./components/editor/EditorPage"));
 const BuilderLayout = lazy(() => import("./builder/BuilderLayout"));
@@ -23,7 +22,8 @@ const UploadView = lazy(() => import("./components/UploadView"));
 
 
 /* ---------------- PROFESSIONAL LANDING HERO ---------------- */
-function LandingHero({ setView }) {
+function LandingHero() {
+  const navigate = useNavigate(); 
   const resumesCreated = 51863;
   const moreLikelyHired = 48;
   const betterPay = 12;
@@ -45,14 +45,14 @@ function LandingHero({ setView }) {
 
           <div className="flex gap-6 mt-6">
             <button
-              onClick={() => setView('templates')}
+              onClick={() => navigate('/templates')}
               className="bg-[#FF7F50] text-white px-10 py-4 rounded-xl font-bold hover:bg-[#FF6A33] transition"
             >
               Create New Resume
             </button>
 
             <button
-              onClick={() => setView('upload')}
+              onClick={() => navigate('/upload')}
               className="border-2 border-[#FF7F50] text-[#FF7F50] px-10 py-4 rounded-xl font-bold hover:bg-[#FFDAB3] transition"
             >
               Improve My Resume
@@ -114,8 +114,8 @@ function StepsSection() {
             <span className="text-[#FF7F50] text-6xl">3 simple steps</span>
           </h2>
 
-          {steps.map((step, index) => (
-            <div key={index} className="flex gap-8">
+          {steps.map((step) => (
+  <div key={step.id} className="flex gap-8">
               <div className="w-12 h-12 bg-white border-2 border-[#FFDAB3] rounded-xl flex items-center justify-center">
                 {step.icon}
               </div>
@@ -137,10 +137,13 @@ function StepsSection() {
 
 /* ---------------- MAIN APP ---------------- */
 export default function App() {
-  const [view, setView] = useState('landing');
+
+  const navigate = useNavigate();
+
+  
   const [selectedTemplate, setSelectedTemplate] = useState("templateOne");
   
-const [activeEditorSection, setActiveEditorSection] = useState(null);
+
 
 const [designSettings, setDesignSettings] = useState({
   fontFamily: "font-sans",
@@ -177,94 +180,104 @@ const [designSettings, setDesignSettings] = useState({
   summary: "",
 });
 
-  const Navbar = () => (
-    <nav className="flex justify-between items-center px-12 py-6 bg-white border-b border-[#FFDAB3] sticky top-0 z-50">
-      <div className="flex items-center gap-2 font-bold text-2xl cursor-pointer" onClick={() => setView('landing')}>
-        <div className="bg-[#FF7F50] p-1.5 rounded-lg text-white"><Sparkles size={24} /></div>
-        <span>Aura<span className="text-[#FF7F50]">Resume</span></span>
+const Navbar = () => (
+  <nav className="flex justify-between items-center px-12 py-6 bg-white border-b border-[#FFDAB3] sticky top-0 z-50">
+    
+    <div 
+      className="flex items-center gap-2 font-bold text-2xl cursor-pointer" 
+      onClick={() => navigate('/')}
+    >
+      <div className="bg-[#FF7F50] p-1.5 rounded-lg text-white">
+        <Sparkles size={24} />
       </div>
+      <span>Aura<span className="text-[#FF7F50]">Resume</span></span>
+    </div>
 
-      <button onClick={() => setView('templates')} className="border-2 border-[#FF7F50] text-[#FF7F50] font-bold px-6 py-2 rounded-xl">
-        Build My CV
-      </button>
-    </nav>
-  );
+    <button 
+      onClick={() => navigate('/templates')} 
+      className="border-2 border-[#FF7F50] text-[#FF7F50] font-bold px-6 py-2 rounded-xl"
+    >
+      Build My CV
+    </button>
+
+  </nav>
+);
 
   return (
     <div className="min-h-screen bg-[#fefefd] font-sans text-slate-900">
       <Navbar />
+      
+      <Routes>
 
-      {view === 'landing' && (
-        <>
-          <LandingHero setView={setView} />
-          <StepsSection />
-          <TestimonialsSection />
-          <CTASection />
-          <Footer />
-        </>
-      )}
-
-      {view === 'upload' && (
-    
-     <Suspense fallback={<div>Loading...</div>}>
-  <UploadView 
-    onBack={() => setView('landing')}
-    setFormData={setFormData}
-    goToEditor={() => setView("editor")}
+  <Route 
+    path="/" 
+    element={
+      <>
+        <LandingHero />
+        <StepsSection />
+        <TestimonialsSection />
+        <CTASection />
+        <Footer />
+      </>
+    } 
   />
-  </Suspense>
-)}
 
-      {view === 'templates' && (
-        <TemplateGallery
-          setView={setView}
-          setSelectedTemplate={setSelectedTemplate}
+  <Route 
+    path="/upload" 
+    element={
+      <Suspense fallback={<div>Loading...</div>}>
+        <UploadView 
+          setFormData={setFormData}
         />
-      )}
+      </Suspense>
+    } 
+  />
 
-      {view === 'resumeChoice' && (
-        <ResumeChoiceView
-          onUpload={() => setView("upload")}
-          onScratch={() => setView("editor")}
-          onBack={() => setView("templates")}
+  <Route 
+    path="/templates" 
+    element={
+      <TemplateGallery
+        setSelectedTemplate={setSelectedTemplate}
+      />
+    } 
+  />
+  <Route 
+  path="/resume-choice" 
+  element={<ResumeChoiceView />} 
+/>
+
+  <Route 
+    path="/editor" 
+    element={
+      <Suspense fallback={<div>Loading...</div>}>
+        <EditorPage
+          selectedTemplate={selectedTemplate}
+          formData={formData}
+          setFormData={setFormData}
+          designSettings={designSettings}
         />
-      )}
-
-
- {view === "editor" && (
-  <Suspense fallback={<div>Loading...</div>}>
-  <EditorPage
-    selectedTemplate={selectedTemplate}
-    formData={formData}
-    setFormData={setFormData}
-    designSettings={designSettings}
-    activeEditorSection={activeEditorSection}
-    onBack={() => setView("resumeChoice")}
-    goToTemplateSwitcher={(template) => {
-      setSelectedTemplate(template);
-      setView("builder");
-    }}
+      </Suspense>
+    } 
   />
-  </Suspense>
-)}
 
-{view === "builder" && (
-  <Suspense fallback={<div>Loading...</div>}>
-  <BuilderLayout
-    selectedTemplate={selectedTemplate}
-    setSelectedTemplate={setSelectedTemplate}
-    formData={formData}
-    setFormData={setFormData}
-    designSettings={designSettings}
-    setDesignSettings={setDesignSettings}
-    onBack={() => setView("editor")}
-    goToEditorSection={(sectionId) => {
-      setActiveEditorSection(sectionId);
-      setView("editor");
-    }}
+  <Route 
+    path="/builder" 
+    element={
+      <Suspense fallback={<div>Loading...</div>}>
+        <BuilderLayout
+          selectedTemplate={selectedTemplate}
+          setSelectedTemplate={setSelectedTemplate} 
+          formData={formData}
+          designSettings={designSettings}
+          setDesignSettings={setDesignSettings}
+        />
+      </Suspense>
+    } 
   />
-  </Suspense>
-)}
+
+</Routes>
+      
+
      </div>
   );
 }

@@ -1,12 +1,12 @@
-import { useState } from "react";
-import { useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import ContactForm from "./ContactForm";
 import ExperienceForm from "./ExperienceForm";
 import EducationForm from "./EducationForm";
 import SkillsForm from "./SkillsForm";
 import SummaryForm from "./SummaryForm";
 import Finalize from "../Finalize/Finalize";
-
+import { useNavigate } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 
 
 import { calculateResumeScore } from "../../utils/resumeScore";
@@ -20,9 +20,6 @@ export default function EditorPage({
   selectedTemplate,
   formData,
   setFormData,
-  onBack,
-  goToTemplateSwitcher,
-  activeEditorSection,
   designSettings
 }) {
   const steps = [
@@ -35,17 +32,27 @@ export default function EditorPage({
   ];
 
   const [currentStep, setCurrentStep] = useState(0);
-  const currentTemplate = selectedTemplate || "templateOne";
+  const currentTemplate = selectedTemplate ?? templateList[0]?.id;
+  const navigate = useNavigate();
+ 
+  const [searchParams] = useSearchParams();
+const sectionFromUrl = searchParams.get("section");
+
+const activeTemplate = useMemo(() => {
+  return templateList.find(
+    (template) => template.id === currentTemplate
+  );
+}, [currentTemplate]);
+
+const SelectedTemplate =
+  activeTemplate?.component || templateList[0]?.component;
  
 
-const activeTemplate = templateList.find(
-  (template) => template.id === currentTemplate
-);
 
-const SelectedTemplate = activeTemplate?.component;
- 
 
-  const resumeScore = calculateResumeScore(formData);
+const resumeScore = useMemo(() => {
+  return calculateResumeScore(formData);
+}, [formData]);
 
   
 
@@ -73,14 +80,8 @@ const SelectedTemplate = activeTemplate?.component;
 };
 
 
-  useEffect(() => {
-  if (!formData || Object.keys(formData).length === 0) {
-    setFormData(initialResumeData);
-  }
-}, []);
-
 useEffect(() => {
-  if (!activeEditorSection) return;
+  if (!sectionFromUrl) return;
 
   const sectionToStepMap = {
     contacts: 0,
@@ -91,12 +92,12 @@ useEffect(() => {
     finalize: 5,
   };
 
-  const stepIndex = sectionToStepMap[activeEditorSection];
+  const stepIndex = sectionToStepMap[sectionFromUrl];
 
   if (stepIndex !== undefined) {
     setCurrentStep(stepIndex);
   }
-}, [activeEditorSection]);
+}, [sectionFromUrl]);
 
   const renderStepForm = () => {
     switch (currentStep) {
@@ -123,7 +124,7 @@ useEffect(() => {
       {/* TOP BAR */}
       <div className="flex justify-between mb-6 max-w-7xl mx-auto px-4">
         <button
-          onClick={onBack}
+          onClick={() => navigate("/resume-choice")}
           className="flex items-center gap-2 text-slate-500 hover:text-peach-500 font-semibold transition"
         >
           <ArrowLeft size={20} />
@@ -181,7 +182,7 @@ useEffect(() => {
           {/* Steps */}
           <div className="flex flex-wrap gap-4 mb-6">
             {steps.map((step, index) => (
-              <div key={index} className="flex items-center">
+  <div key={step} className="flex items-center">
                 <span
                   className={`rounded-full w-6 h-6 flex items-center justify-center border ${
                     currentStep === index
@@ -250,9 +251,7 @@ useEffect(() => {
               </div>
 
               <button
-                onClick={() =>
-                  goToTemplateSwitcher(currentTemplate)
-                }
+                onClick={() => navigate("/builder")}
                 className="flex items-center gap-2 text-peach-600 font-semibold hover:underline"
               >
                 <LayoutGrid size={18} />

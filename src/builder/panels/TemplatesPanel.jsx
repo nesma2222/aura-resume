@@ -1,11 +1,5 @@
-import { lazy, Suspense } from "react";
-const TemplateOne = lazy(() => import("../../templates/TemplateOne"));
-const TemplateTwo = lazy(() => import("../../templates/TemplateTwo"));
-const TemplateThree = lazy(() => import("../../templates/TemplateThree"));
-const TemplateFour = lazy(() => import("../../templates/TemplateFour"));
-const TemplateFive = lazy(() => import("../../templates/TemplateFive"));
-const TemplateSix = lazy(() => import("../../templates/TemplateSix"));
-const TemplateSeven = lazy(() => import("../../templates/TemplateSeven"));
+import { Suspense } from "react";
+import { templateList } from "../../data/templateList";
 
 
 export default function TemplatesPanel({
@@ -15,21 +9,12 @@ export default function TemplatesPanel({
   setDesignSettings,
 }) {
 
-  const templates = [
-    { id: "templateOne", name: "Modern", component: TemplateOne },
-    { id: "templateTwo", name: "Professional", component: TemplateTwo },
-    { id: "templateThree", name: "Simple", component: TemplateThree },
-    { id: "templateFour", name: "Dark Sidebar", component: TemplateFour },
-    { id: "templateFive", name: "Minimal Clean", component: TemplateFive },
-    { id: "templateSix", name: "ATS Classic", component: TemplateSix },
-    { id: "templateSeven", name: "Two Column", component: TemplateSeven },
-  ];
+  
 
-  const colorSupportedTemplates = [
-    "templateThree",
-    "templateFour",
-    
-  ];
+  const activeTemplate = templateList.find(
+  t => t.id === selectedTemplate
+);
+  
 
 const colors = [
   "#CBD5E1", // Slate Light
@@ -47,7 +32,7 @@ const colors = [
       <h2 className="text-xl font-bold mb-6">Choose Template</h2>
 
       {/* 🎨 SHOW COLORS ONLY FOR 3,4,7 */}
-      {colorSupportedTemplates.includes(selectedTemplate) && (
+     {activeTemplate?.supportsPrimaryColor && (
         <div className="mb-6">
           <h3 className="text-sm font-semibold mb-3">
             Accent Color
@@ -79,7 +64,7 @@ const colors = [
       )}
 
       <div className="space-y-6">
-        {templates.map((template) => {
+        {templateList.map((template) => {
           const PreviewComponent = template.component;
 
           return (
