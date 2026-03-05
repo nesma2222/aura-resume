@@ -228,6 +228,8 @@ const Navbar = () => (
       <Suspense fallback={<div>Loading...</div>}>
         <UploadView 
           setFormData={setFormData}
+          goToEditor={() => navigate("/editor")} // pass navigation function
+          onBack={() => navigate("/")}           // pass back function
         />
       </Suspense>
     } 
