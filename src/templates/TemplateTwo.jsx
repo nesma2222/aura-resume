@@ -76,6 +76,7 @@ export default function TemplateTwo({
     target="_blank"
     rel="noopener noreferrer"
   >
+    LinkedIn: 
     {linkedin}
   </a>
 )}
@@ -86,6 +87,7 @@ export default function TemplateTwo({
     target="_blank"
     rel="noopener noreferrer"
   >
+    Portfolio: 
     {portfolio}
   </a>
 )}
@@ -152,14 +154,17 @@ export default function TemplateTwo({
             </div>
           )}
 
+   
           {certifications && (
             <div>
               <h2 className="font-semibold border-b pb-1 mb-2">
                 Certifications
               </h2>
-              <p className="text-sm whitespace-pre-line">
-                {certifications}
-              </p>
+                     <p
+  className="text-sm whitespace-pre-line"
+  dangerouslySetInnerHTML={{ __html: certifications }}
+/>
+              
             </div>
           )}
         </div>

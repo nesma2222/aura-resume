@@ -80,6 +80,7 @@ export default function TemplateOne({ data = {}, designSettings = {} }) {
     target="_blank"
     rel="noopener noreferrer"
   >
+     LinkedIn: 
     {linkedin}
   </a>
 )}
@@ -90,6 +91,7 @@ export default function TemplateOne({ data = {}, designSettings = {} }) {
     target="_blank"
     rel="noopener noreferrer"
   >
+    Portfolio: 
     {portfolio}
   </a>
 )}
@@ -167,9 +169,10 @@ export default function TemplateOne({ data = {}, designSettings = {} }) {
       {certifications && (
         <div>
           <h2 className="font-semibold">Certifications</h2>
-          <p className="whitespace-pre-line">
-            {certifications}
-          </p>
+                             <p
+  className="text-sm whitespace-pre-line"
+  dangerouslySetInnerHTML={{ __html: certifications }}
+/>
         </div>
       )}
 

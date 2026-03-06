@@ -81,6 +81,7 @@ export default function TemplateThree({
     target="_blank"
     rel="noopener noreferrer"
   >
+     LinkedIn:
     {linkedin}
   </a>
 )}
@@ -91,6 +92,7 @@ export default function TemplateThree({
     target="_blank"
     rel="noopener noreferrer"
   >
+    Portfolio: 
     {portfolio}
   </a>
 )}
@@ -151,9 +153,10 @@ export default function TemplateThree({
               Certifications
             </h2>
 
-            <p className="text-sm whitespace-pre-line">
-              {certifications}
-            </p>
+                              <p
+  className="text-sm whitespace-pre-line"
+  dangerouslySetInnerHTML={{ __html: certifications }}
+/>
           </div>
         )}
       </div>
