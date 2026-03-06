@@ -19,6 +19,16 @@ export default function TemplateSeven({ data = {}, designSettings = {} }) {
 
   const fullName = [firstName, lastName].filter(Boolean).join(" ");
 
+     //  FIX URL FUNCTION (correct place)
+  // const fixURL = (url) => {
+  //   if (!url) return "";
+  //   if (url.startsWith("http://") || url.startsWith("https://")) {
+  //     return url;
+  //   }
+  //   return "https://" + url;
+  // };
+
+
   return (
     <div className={`${fontFamily} ${fontSize} ${lineSpacing} ${sectionSpacing}`}>
       
@@ -31,6 +41,8 @@ export default function TemplateSeven({ data = {}, designSettings = {} }) {
           <h2 className="font-semibold">Contact</h2>
           <p>{email}</p>
           <p>{phone}</p>
+
+          
         </div>
 
         {skills.length > 0 && (

@@ -21,6 +21,16 @@ export default function TemplateSix({ data = {}, designSettings = {} }) {
 
   const fullName = [firstName, lastName].filter(Boolean).join(" ");
 
+     //  FIX URL FUNCTION (correct place)
+  // const fixURL = (url) => {
+  //   if (!url) return "";
+  //   if (url.startsWith("http://") || url.startsWith("https://")) {
+  //     return url;
+  //   }
+  //   return "https://" + url;
+  // };
+
+
   return (
     <div
   className={`
@@ -44,6 +54,8 @@ export default function TemplateSix({ data = {}, designSettings = {} }) {
         {email} {email && phone && " | "} {phone}
       </p>
       <p>{city} {city && country && ","} {country}</p>
+
+      
 
       <hr className="my-4" />
 

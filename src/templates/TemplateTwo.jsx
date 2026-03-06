@@ -36,6 +36,15 @@ export default function TemplateTwo({
   // ✅ HARD FIXED COLOR (no designSettings)
   const fixedColor = "#1f2937";
 
+   // ✅ FIX URL FUNCTION (correct place)
+  const fixURL = (url) => {
+    if (!url) return "";
+    if (url.startsWith("http://") || url.startsWith("https://")) {
+      return url;
+    }
+    return "https://" + url;
+  };
+
   return (
      <div className={`${fontFamily} ${fontSize} ${lineSpacing} ${sectionSpacing}`}>
 
@@ -60,27 +69,27 @@ export default function TemplateTwo({
           {postCode && <span>{postCode}</span>}
           {country && <span>{country}</span>}
 
-          {linkedin && (
-            <a
-              href={linkedin}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="underline text-gray-300 hover:text-white"
-            >
-              LinkedIn
-            </a>
-          )}
+          
+ {linkedin && (
+  <a
+    href={fixURL(linkedin)}
+    target="_blank"
+    rel="noopener noreferrer"
+  >
+    {linkedin}
+  </a>
+)}
 
-          {portfolio && (
-            <a
-              href={portfolio}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="underline text-gray-300 hover:text-white"
-            >
-              Portfolio
-            </a>
-          )}
+{portfolio && (
+  <a
+    href={fixURL(portfolio)}
+    target="_blank"
+    rel="noopener noreferrer"
+  >
+    {portfolio}
+  </a>
+)}
+
         </div>
       </div>
 

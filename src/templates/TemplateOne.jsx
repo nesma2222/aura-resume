@@ -32,6 +32,16 @@ export default function TemplateOne({ data = {}, designSettings = {} }) {
     .filter(Boolean)
     .join(" ");
 
+       // ✅ FIX URL FUNCTION (correct place)
+  const fixURL = (url) => {
+    if (!url) return "";
+    if (url.startsWith("http://") || url.startsWith("https://")) {
+      return url;
+    }
+    return "https://" + url;
+  };
+
+
   return (
     <div className={`${fontFamily} ${fontSize} ${lineSpacing} ${sectionSpacing}`}>
 
@@ -65,30 +75,24 @@ export default function TemplateOne({ data = {}, designSettings = {} }) {
         )}
 
         {linkedin && (
-          <p>
-            <a
-              href={linkedin}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-blue-600 underline"
-            >
-              {linkedin}
-            </a>
-          </p>
-        )}
+  <a
+    href={fixURL(linkedin)}
+    target="_blank"
+    rel="noopener noreferrer"
+  >
+    {linkedin}
+  </a>
+)}
 
-        {portfolio && (
-          <p>
-            <a
-              href={portfolio}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-blue-600 underline"
-            >
-              {portfolio}
-            </a>
-          </p>
-        )}
+{portfolio && (
+  <a
+    href={fixURL(portfolio)}
+    target="_blank"
+    rel="noopener noreferrer"
+  >
+    {portfolio}
+  </a>
+)}
       </div>
 
       <hr />

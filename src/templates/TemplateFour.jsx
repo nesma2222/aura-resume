@@ -27,6 +27,16 @@ export default function TemplateFour({
     .filter(Boolean)
     .join(" ");
 
+       // ✅ FIX URL FUNCTION (correct place)
+  const fixURL = (url) => {
+    if (!url) return "";
+    if (url.startsWith("http://") || url.startsWith("https://")) {
+      return url;
+    }
+    return "https://" + url;
+  };
+
+
   return (
    <div className={`${fontFamily} ${fontSize} ${lineSpacing} ${sectionSpacing}`}>
 
@@ -53,26 +63,26 @@ export default function TemplateFour({
               {city} {city && country && ","} {country}
             </span>
           )}
-          {linkedin && (
+         {linkedin && (
   <a
-    href={linkedin}
+    href={fixURL(linkedin)}
     target="_blank"
     rel="noopener noreferrer"
-    className="underline"
   >
     {linkedin}
   </a>
 )}
-          {portfolio && (
+
+{portfolio && (
   <a
-    href={portfolio}
+    href={fixURL(portfolio)}
     target="_blank"
     rel="noopener noreferrer"
-    className="underline"
   >
     {portfolio}
   </a>
 )}
+ 
         </div>
       </div>
 

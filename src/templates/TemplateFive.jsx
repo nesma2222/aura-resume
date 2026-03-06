@@ -19,6 +19,16 @@ export default function TemplateFive({ data = {} , designSettings = {} }) {
     lineSpacing = "",
     sectionSpacing = "space-y-6",
   } = designSettings;
+
+     //  FIX URL FUNCTION (correct place)
+  // const fixURL = (url) => {
+  //   if (!url) return "";
+  //   if (url.startsWith("http://") || url.startsWith("https://")) {
+  //     return url;
+  //   }
+  //   return "https://" + url;
+  // };
+
   
   return (
     <div
@@ -54,6 +64,8 @@ export default function TemplateFive({ data = {} , designSettings = {} }) {
             {phone}
           </p>
         )}
+
+        
       </div>
 
       <div className="space-y-8">
