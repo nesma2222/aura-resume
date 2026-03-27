@@ -31,36 +31,38 @@ export default function SummaryForm({ formData, setFormData }) {
   };
 
   // ✨ AI FUNCTION
-  async function generateSummary() {
-    try {
-      setLoading(true);
+async function generateSummary() {
+  try {
+    setLoading(true);
 
-      const res = await fetch("/api/generate", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          prompt: `Generate a professional resume summary for:
-          Name: ${formData.firstName} ${formData.lastName}
-          Role: ${formData.desiredJobTitle}
-          Skills: ${formData.skills?.join(", ")}`,
-        }),
-      });
+    const res = await fetch("/api/generate", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        prompt: `Generate a professional resume summary for:
+        Name: ${formData.firstName} ${formData.lastName}
+        Role: ${formData.desiredJobTitle}
+        Skills: ${formData.skills?.join(", ")}`,
+      }),
+    });
 
-      const data = await res.json();
+    const data = await res.json();
 
-      setFormData({
-        ...formData,
-        summary: data.text,
-      });
+    console.log("AI RESPONSE:", data); // 🔥 DEBUG
 
-    } catch (error) {
-      console.error("AI Error:", error);
-    } finally {
-      setLoading(false);
-    }
+    setFormData((prev) => ({
+      ...prev,
+      summary: data.text,
+    }));
+
+  } catch (error) {
+    console.error("AI Error:", error);
+  } finally {
+    setLoading(false);
   }
+}
 
   return (
     <div>
