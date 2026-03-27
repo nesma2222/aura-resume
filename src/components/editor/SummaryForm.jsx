@@ -20,7 +20,6 @@
 import { useState } from "react";
 
 export default function SummaryForm({ formData, setFormData }) {
-
   const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
@@ -31,38 +30,53 @@ export default function SummaryForm({ formData, setFormData }) {
   };
 
   // ✨ AI FUNCTION
-async function generateSummary() {
-  try {
-    setLoading(true);
+  async function generateSummary() {
+    try {
+      setLoading(true);
 
-    const res = await fetch("/api/generate", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        prompt: `Generate a professional resume summary for:
-        Name: ${formData.firstName} ${formData.lastName}
-        Role: ${formData.desiredJobTitle}
-        Skills: ${formData.skills?.join(", ")}`,
-      }),
-    });
+      const res = await fetch("/api/generate", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          prompt: `Generate a professional resume summary for:
+          Name: ${formData.firstName} ${formData.lastName}
+          Role: ${formData.desiredJobTitle}
+          Skills: ${formData.skills?.join(", ")}`,
+        }),
+      });
 
-    const data = await res.json();
+      const data = await res.json();
 
-    console.log("AI RESPONSE:", data); // 🔥 DEBUG
+      console.log("AI RESPONSE:", data);
 
-    setFormData((prev) => ({
-      ...prev,
-      summary: data.text,
-    }));
+      // ❗ HANDLE BACKEND ERROR
+      if (!res.ok) {
+        console.error("Backend error:", data.error);
+        alert("AI Error: " + data.error);
+        return;
+      }
 
-  } catch (error) {
-    console.error("AI Error:", error);
-  } finally {
-    setLoading(false);
+      // ❗ HANDLE EMPTY RESPONSE
+      if (!data.text) {
+        alert("No response from AI");
+        return;
+      }
+
+      // ✅ SAFE STATE UPDATE
+      setFormData((prev) => ({
+        ...prev,
+        summary: data.text,
+      }));
+
+    } catch (error) {
+      console.error("AI Error:", error);
+      alert("Something went wrong. Check console.");
+    } finally {
+      setLoading(false);
+    }
   }
-}
 
   return (
     <div>
