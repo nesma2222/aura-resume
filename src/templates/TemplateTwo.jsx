@@ -33,10 +33,10 @@ export default function TemplateTwo({
     .filter(Boolean)
     .join(" ");
 
-  // ✅ HARD FIXED COLOR (no designSettings)
+  //  HARD FIXED COLOR (no designSettings)
   const fixedColor = "#1f2937";
 
-   // ✅ FIX URL FUNCTION (correct place)
+   //  FIX URL FUNCTION (correct place)
   const fixURL = (url) => {
     if (!url) return "";
     if (url.startsWith("http://") || url.startsWith("https://")) {

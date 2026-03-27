@@ -150,7 +150,7 @@ const [designSettings, setDesignSettings] = useState({
   fontSize: "text-base",
   lineSpacing: "leading-normal",
   sectionSpacing: "space-y-6",
-  primaryColor: "#2563eb", // ✅ ONE default color only
+  primaryColor: "#2563eb", //  ONE default color only
 });
 
   const [formData, setFormData] = useState({

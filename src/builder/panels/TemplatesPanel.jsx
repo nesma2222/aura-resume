@@ -31,7 +31,7 @@ const colors = [
 
       <h2 className="text-xl font-bold mb-6">Choose Template</h2>
 
-      {/* 🎨 SHOW COLORS ONLY FOR 3,4,7 */}
+      {/*  SHOW COLORS ONLY FOR 3,4,7 */}
      {activeTemplate?.supportsPrimaryColor && (
         <div className="mb-6">
           <h3 className="text-sm font-semibold mb-3">

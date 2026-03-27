@@ -21,7 +21,7 @@ export default function ResumePreview({
     ${designSettings.sectionSpacing}
   `;
 
-  // ✅ Strictly separate default colors per template
+  //  Strictly separate default colors per template
   const templateDefaultColors = {
     templateThree: "#059669", // Green
     templateFour: "#dc2626",  // Red
