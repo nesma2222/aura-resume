@@ -29,7 +29,7 @@ export default function SummaryForm({ formData, setFormData }) {
     });
   };
 
-  // ✨ AI FUNCTION
+  // AI FUNCTION
   async function generateSummary() {
     try {
       setLoading(true);
@@ -51,20 +51,20 @@ export default function SummaryForm({ formData, setFormData }) {
 
       console.log("AI RESPONSE:", data);
 
-      // ❗ HANDLE BACKEND ERROR
+      // HANDLE BACKEND ERROR
       if (!res.ok) {
         console.error("Backend error:", data.error);
         alert("AI Error: " + data.error);
         return;
       }
 
-      // ❗ HANDLE EMPTY RESPONSE
+      // HANDLE EMPTY RESPONSE
       if (!data.text) {
         alert("No response from AI");
         return;
       }
 
-      // ✅ SAFE STATE UPDATE
+      // SAFE STATE UPDATE
       setFormData((prev) => ({
         ...prev,
         summary: data.text,
