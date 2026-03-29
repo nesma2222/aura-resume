@@ -30,53 +30,109 @@ export default function SummaryForm({ formData, setFormData }) {
   };
 
   // AI FUNCTION
+  // async function generateSummary() {
+  //   try {
+  //     setLoading(true);
+
+  //     const res = await fetch("/api/generate", {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify({
+  //         prompt: `Generate a professional resume summary for:
+  //         Name: ${formData.firstName} ${formData.lastName}
+  //         Role: ${formData.desiredJobTitle}
+  //         Skills: ${formData.skills?.join(", ")}`,
+  //       }),
+  //     });
+
+  //     const data = await res.json();
+
+  //     console.log("AI RESPONSE:", data);
+
+  //     // HANDLE BACKEND ERROR
+  //     if (!res.ok) {
+  //       console.error("Backend error:", data.error);
+  //       alert("AI Error: " + data.error);
+  //       return;
+  //     }
+
+  //     // HANDLE EMPTY RESPONSE
+  //     if (!data.text) {
+  //       alert("No response from AI");
+  //       return;
+  //     }
+
+  //     // SAFE STATE UPDATE
+  //     setFormData((prev) => ({
+  //       ...prev,
+  //       summary: data.text,
+  //     }));
+
+  //   } catch (error) {
+  //     console.error("AI Error:", error);
+  //     alert("Something went wrong. Check console.");
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // }
+
+
   async function generateSummary() {
-    try {
-      setLoading(true);
+  try {
+    setLoading(true);
 
-      const res = await fetch("/api/generate", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          prompt: `Generate a professional resume summary for:
-          Name: ${formData.firstName} ${formData.lastName}
-          Role: ${formData.desiredJobTitle}
-          Skills: ${formData.skills?.join(", ")}`,
-        }),
-      });
+    // 🔥 Better prompt (VERY IMPORTANT)
+    const prompt = `
+Write a professional resume summary in 3-4 lines.
 
-      const data = await res.json();
+Name: ${formData.firstName || ""}
+Role: ${formData.desiredJobTitle || ""}
+Skills: ${formData.skills?.join(", ") || ""}
 
-      console.log("AI RESPONSE:", data);
+Make it concise, impactful, and professional.
+`;
 
-      // HANDLE BACKEND ERROR
-      if (!res.ok) {
-        console.error("Backend error:", data.error);
-        alert("AI Error: " + data.error);
-        return;
-      }
+    const res = await fetch("/api/generate", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ prompt }),
+    });
 
-      // HANDLE EMPTY RESPONSE
-      if (!data.text) {
-        alert("No response from AI");
-        return;
-      }
+    const data = await res.json();
 
-      // SAFE STATE UPDATE
-      setFormData((prev) => ({
-        ...prev,
-        summary: data.text,
-      }));
+    console.log("AI RESPONSE:", data);
 
-    } catch (error) {
-      console.error("AI Error:", error);
-      alert("Something went wrong. Check console.");
-    } finally {
-      setLoading(false);
+    // ❌ No need for res.ok (backend always sends 200 now)
+
+    // ⚠️ Handle empty response
+    if (!data || !data.text) {
+      alert("No response from AI");
+      return;
     }
+
+    // ⚠️ Handle model loading case
+    if (data.text.includes("waking up")) {
+      alert("AI is loading... click again in a few seconds ⏳");
+      return;
+    }
+
+    // ✅ Update UI
+    setFormData((prev) => ({
+      ...prev,
+      summary: data.text.trim(),
+    }));
+
+  } catch (error) {
+    console.error("AI Error:", error);
+    alert("Something went wrong. Check console.");
+  } finally {
+    setLoading(false);
   }
+}
 
   return (
     <div>
