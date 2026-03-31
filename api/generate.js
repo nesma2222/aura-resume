@@ -15,7 +15,7 @@ export async function POST(req) {
 
     // Call Google Gemini model
     const { text } = await generateText({
-      model: google("gemini-1.5-flash"),
+      model: google("gemini-1.5"),
       prompt,
     });
 
