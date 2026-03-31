@@ -49,7 +49,7 @@ while (true) {
 
 setFormData((prev) => ({
   ...prev,
-  summary: text,
+  summary: result,
 }));
     } catch (error) {
       console.error("AI Error:", error);
