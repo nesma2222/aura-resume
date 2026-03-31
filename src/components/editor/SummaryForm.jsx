@@ -10,42 +10,41 @@ export default function SummaryForm({ formData, setFormData }) {
     });
   };
 
-  // AI FUNCTION
   async function generateSummary() {
-    try {
-      setLoading(true);
+    if (!formData.firstName && !formData.lastName) {
+      alert("Please enter your name first.");
+      return;
+    }
 
+    setLoading(true);
+
+    try {
       const res = await fetch("/api/generate", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           prompt: `Write a professional and unique resume summary in 3-4 lines.
 
 Name: ${formData.firstName || ""} ${formData.lastName || ""}
 Target Role: ${formData.desiredJobTitle || "Not specified"}
-Skills: ${
-            formData.skills?.length
-              ? formData.skills.join(", ")
-              : "Not specified"
-          }
+Skills: ${formData.skills?.length ? formData.skills.join(", ") : "Not specified"}
 
 Make it personalized and impactful.`,
         }),
       });
 
+      if (!res.ok) {
+        const text = await res.text();
+        throw new Error(`Server responded with ${res.status}: ${text}`);
+      }
+
       const data = await res.json();
 
-      console.log("API RESPONSE:", data);
-
-      // HANDLE ERROR
       if (data.error) {
         alert("AI Error: " + data.error);
         return;
       }
 
-      // UPDATE SUMMARY
       setFormData((prev) => ({
         ...prev,
         summary: data.text || "No response from AI",
