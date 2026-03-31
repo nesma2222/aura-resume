@@ -87,7 +87,7 @@ export default function SummaryForm({ formData, setFormData }) {
         placeholder="Write your summary..."
       />
 
-      {/* ✨ BUTTON */}
+      {/*  BUTTON */}
       <button
         onClick={generateSummary}
         disabled={loading}
