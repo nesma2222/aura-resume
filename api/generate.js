@@ -1,31 +1,27 @@
-// app/api/generate/route.js
 import { generateText } from "ai";
 import { google } from "@ai-sdk/google";
 
-export async function POST(req) {
+export default async function handler(req, res) {
+  if (req.method !== "POST") {
+    return res.status(405).json({ error: "Method not allowed" });
+  }
+
+  const { prompt } = req.body;
+
+  if (!prompt) {
+    return res.status(400).json({ error: "Prompt is required" });
+  }
+
   try {
-    const { prompt } = await req.json();
-
-    if (!prompt) {
-      return new Response(
-        JSON.stringify({ error: "Prompt is required" }),
-        { status: 400 }
-      );
-    }
-
-    // Call Google Gemini model
     const { text } = await generateText({
-      model: google("gemini-1.5"),
+      model: google("gemini-2.0-flash"),
       prompt,
     });
 
-    return new Response(JSON.stringify({ text }), { status: 200 });
+    res.status(200).json({ text });
 
   } catch (error) {
-    console.error("AI API Error:", error);
-    return new Response(
-      JSON.stringify({ error: error.message }),
-      { status: 500 }
-    );
+    console.error("AI Error:", error);
+    res.status(500).json({ error: error.message });
   }
 }
