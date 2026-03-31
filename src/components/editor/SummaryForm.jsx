@@ -35,7 +35,17 @@ Make it personalized and impactful.`,
   }),
 });
 
-const text = await res.text(); // ⚡ streaming response
+const reader = res.body.getReader();
+const decoder = new TextDecoder("utf-8");
+
+let result = "";
+
+while (true) {
+  const { done, value } = await reader.read();
+  if (done) break;
+
+  result += decoder.decode(value);
+}
 
 setFormData((prev) => ({
   ...prev,
