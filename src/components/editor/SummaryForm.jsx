@@ -16,41 +16,41 @@ export default function SummaryForm({ formData, setFormData }) {
       setLoading(true);
 
       const res = await fetch("/api/generate", {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json",
-  },
-  body: JSON.stringify({
-    prompt: `Write a professional and unique resume summary in 3-4 lines.
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          prompt: `Write a professional and unique resume summary in 3-4 lines.
 
 Name: ${formData.firstName || ""} ${formData.lastName || ""}
 Target Role: ${formData.desiredJobTitle || "Not specified"}
 Skills: ${
-      formData.skills?.length
-        ? formData.skills.join(", ")
-        : "Not specified"
-    }
+            formData.skills?.length
+              ? formData.skills.join(", ")
+              : "Not specified"
+          }
 
 Make it personalized and impactful.`,
-  }),
-});
+        }),
+      });
 
-const reader = res.body.getReader();
-const decoder = new TextDecoder("utf-8");
+      const data = await res.json();
 
-let result = "";
+      console.log("API RESPONSE:", data);
 
-while (true) {
-  const { done, value } = await reader.read();
-  if (done) break;
+      // HANDLE ERROR
+      if (data.error) {
+        alert("AI Error: " + data.error);
+        return;
+      }
 
-  result += decoder.decode(value);
-}
+      // UPDATE SUMMARY
+      setFormData((prev) => ({
+        ...prev,
+        summary: data.text || "No response from AI",
+      }));
 
-setFormData((prev) => ({
-  ...prev,
-  summary: result,
-}));
     } catch (error) {
       console.error("AI Error:", error);
       alert("Something went wrong. Check console.");
