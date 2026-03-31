@@ -1,5 +1,9 @@
 import { generateText } from "ai";
-import { google } from "@ai-sdk/google";
+import { createOpenRouter } from "@openrouter/ai-sdk-provider";
+
+const openrouter = createOpenRouter({
+  apiKey: process.env.OPENROUTER_API_KEY,
+});
 
 export default async function handler(req, res) {
   if (req.method !== "POST") {
@@ -14,7 +18,7 @@ export default async function handler(req, res) {
 
   try {
     const { text } = await generateText({
-      model: google("gemini-2.0-flash"),
+      model: openrouter("meta-llama/llama-3.1-8b-instruct"),
       prompt,
     });
 
@@ -25,3 +29,4 @@ export default async function handler(req, res) {
     res.status(500).json({ error: error.message });
   }
 }
+
