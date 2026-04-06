@@ -17,19 +17,31 @@ export default function SummaryForm({ formData, setFormData }) {
     }
 
     setLoading(true);
-
+  //calling backend
     try {
       const res = await fetch("/api/generate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          prompt: `Write a professional and unique resume summary in 3-4 lines.
+//           prompt: `Write a professional and unique resume summary in 3-4 lines.
+
+// Name: ${formData.firstName || ""} ${formData.lastName || ""}
+// Target Role: ${formData.desiredJobTitle || "Not specified"}
+// Skills: ${formData.skills?.length ? formData.skills.join(", ") : "Not specified"}
+
+// Make it personalized and impactful.`,
+prompt: `Write a professional resume summary in 3-4 lines.
 
 Name: ${formData.firstName || ""} ${formData.lastName || ""}
 Target Role: ${formData.desiredJobTitle || "Not specified"}
 Skills: ${formData.skills?.length ? formData.skills.join(", ") : "Not specified"}
 
-Make it personalized and impactful.`,
+Rules:
+- Output ONLY the summary paragraph
+- Do NOT include any intro line like "Here is a summary for..."
+- Do NOT include any label or heading
+- Do NOT use quotes around the summary
+- Start directly with the summary text`,
         }),
       });
 
@@ -44,7 +56,7 @@ Make it personalized and impactful.`,
         alert("AI Error: " + data.error);
         return;
       }
-
+     //updating ui with the ai data
       setFormData((prev) => ({
         ...prev,
         summary: data.text || "No response from AI",

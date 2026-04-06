@@ -15,14 +15,14 @@ export default async function handler(req, res) {
   if (!prompt) {
     return res.status(400).json({ error: "Prompt is required" });
   }
-
+  //vercel ai sdk fnctn,openrouter provider,model called
   try {
-    const { text } = await generateText({
+    const { text } = await generateText({   
       model: openrouter("meta-llama/llama-3.1-8b-instruct"),
       prompt,
     });
 
-    res.status(200).json({ text });
+    res.status(200).json({ text });           //sends data from model to frontend in json format
 
   } catch (error) {
     console.error("AI Error:", error);

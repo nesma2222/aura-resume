@@ -1,8 +1,8 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-import { generateText } from "ai";                           // ✅ Vercel AI SDK
-import { createOpenRouter } from "@openrouter/ai-sdk-provider"; // ✅ OpenRouter provider
+import { generateText } from "ai";                           //  Vercel AI SDK
+import { createOpenRouter } from "@openrouter/ai-sdk-provider"; //  OpenRouter provider
 
 dotenv.config();
 
@@ -23,7 +23,7 @@ app.post("/api/generate", async (req, res) => {
 
   try {
     const { text } = await generateText({
-      model: openrouter("meta-llama/llama-3.1-8b-instruct"), // ✅ free model
+      model: openrouter("meta-llama/llama-3.1-8b-instruct"), //  free model
       prompt,
     });
 
@@ -36,5 +36,5 @@ app.post("/api/generate", async (req, res) => {
 });
 
 app.listen(3001, () => {
-  console.log("✅ Backend running on http://localhost:3001");
+  console.log(" Backend running on http://localhost:3001");
 });
