@@ -55,54 +55,52 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// ─── EXISTING: Generate Summary (SummaryForm.jsx) ─────────────────────────────
-app.post("/api/generate", async (req, res) => {
-  const { prompt } = req.body;
-  if (!prompt) return res.status(400).json({ error: "Prompt is required" });
+app.post("/api/generate", (req, res) => {
+  const { prompt, jobTitle, employer, skills } = req.body;
 
-  try {
-    const { text } = await generateText({
-      model: openrouter("meta-llama/llama-3.1-8b-instruct"),
-      prompt,
-    });
-    res.json({ text });
-  } catch (error) {
-    console.error("AI Error:", error);
-    res.status(500).json({ error: error.message });
-  }
-});
-
-// ─── NEW: Generate Experience Bullets (ExperienceForm.jsx) ────────────────────
-app.post("/api/generate-experience", async (req, res) => {
-  const { jobTitle, employer, skills } = req.body;
-  if (!jobTitle) return res.status(400).json({ error: "Job title is required" });
-
-  const prompt = `Write professional resume bullet points for this job role.
+  if (jobTitle) {
+    const experiencePrompt = `Write professional resume bullet points for this job role.
 
 Job Title: ${jobTitle}
 Employer: ${employer || "Not specified"}
 Skills/Technologies: ${skills?.length ? skills.join(", ") : "Not specified"}
 
 Rules:
-- Write exactly 5-6 bullet points so the user has plenty of choices
-- Each bullet MUST start with a strong past-tense action verb (Led, Built, Improved, Developed, Designed, Optimized, etc.)
+- Write exactly 5-6 bullet points
+- Each bullet MUST start with a strong past-tense action verb
 - Do NOT use "I"
-- Keep each bullet concise — one clear achievement per line
-- Do NOT include any intro line, heading, label, or explanation
-- Do NOT use quotes
-- Include measurable impact with numbers where possible (e.g. reduced load time by 30%, increased sales by 20%)
-- Output ONLY the bullet points, one per line, each starting with •`;
+- Keep each bullet concise
+- No intro line, heading, or explanation
+- No quotes
+- Include numbers where possible (e.g. reduced load time by 30%)
+- Output ONLY bullet points, one per line, each starting with •`;
 
-  try {
-    const { text } = await generateText({
+    generateText({
       model: openrouter("meta-llama/llama-3.1-8b-instruct"),
-      prompt,
-    });
-    res.json({ text });
-  } catch (error) {
-    console.error("AI Error:", error);
-    res.status(500).json({ error: error.message });
+      prompt: experiencePrompt,
+    })
+      .then(({ text }) => res.json({ text }))
+      .catch((error) => {
+        console.error("AI Error:", error);
+        res.status(500).json({ error: error.message });
+      });
+
+    return;
   }
+
+  if (!prompt) {
+    return res.status(400).json({ error: "Prompt or jobTitle is required" });
+  }
+
+  generateText({
+    model: openrouter("meta-llama/llama-3.1-8b-instruct"),
+    prompt,
+  })
+    .then(({ text }) => res.json({ text }))
+    .catch((error) => {
+      console.error("AI Error:", error);
+      res.status(500).json({ error: error.message });
+    });
 });
 
 app.listen(3001, () => {
