@@ -21,6 +21,16 @@ export default function TemplateSix({ data = {}, designSettings = {} }) {
 
   const fullName = [firstName, lastName].filter(Boolean).join(" ");
 
+     //  FIX URL FUNCTION (correct place)
+  // const fixURL = (url) => {
+  //   if (!url) return "";
+  //   if (url.startsWith("http://") || url.startsWith("https://")) {
+  //     return url;
+  //   }
+  //   return "https://" + url;
+  // };
+
+
   return (
     <div
   className={`
@@ -37,13 +47,15 @@ export default function TemplateSix({ data = {}, designSettings = {} }) {
 >
 
       <h1 className="text-2xl font-bold">
-        {fullName || "Your Name"}
+        {fullName || "John Doe"}
       </h1>
 
       <p className="mt-1">
         {email} {email && phone && " | "} {phone}
       </p>
       <p>{city} {city && country && ","} {country}</p>
+
+      
 
       <hr className="my-4" />
 

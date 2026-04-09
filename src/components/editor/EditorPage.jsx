@@ -1,23 +1,18 @@
-import { useState } from "react";
-import { useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import ContactForm from "./ContactForm";
 import ExperienceForm from "./ExperienceForm";
 import EducationForm from "./EducationForm";
 import SkillsForm from "./SkillsForm";
 import SummaryForm from "./SummaryForm";
 import Finalize from "../Finalize/Finalize";
+import { useNavigate } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 
 
-import html2pdf from "html2pdf.js";
 import { calculateResumeScore } from "../../utils/resumeScore";
 
-import TemplateOne from "../../templates/TemplateOne";
-import TemplateTwo from "../../templates/TemplateTwo";
-import TemplateThree from "../../templates/TemplateThree";
-import TemplateFour from "../../templates/TemplateFour";
-import TemplateFive from "../../templates/TemplateFive";
-import TemplateSix from "../../templates/TemplateSix";
-import TemplateSeven from "../../templates/TemplateSeven";
+import { templateList } from "../../data/templateList";
+import { initialResumeData } from "../../data/initialResumeData";
 
 import { ArrowLeft, LayoutGrid } from "lucide-react";
 
@@ -25,9 +20,6 @@ export default function EditorPage({
   selectedTemplate,
   formData,
   setFormData,
-  onBack,
-  goToTemplateSwitcher,
-  activeEditorSection,
   designSettings
 }) {
   const steps = [
@@ -40,66 +32,56 @@ export default function EditorPage({
   ];
 
   const [currentStep, setCurrentStep] = useState(0);
-  const currentTemplate = selectedTemplate || "templateOne";
+  const currentTemplate = selectedTemplate ?? templateList[0]?.id;
+  const navigate = useNavigate();
+ 
+  const [searchParams] = useSearchParams();
+const sectionFromUrl = searchParams.get("section");
+
+const activeTemplate = useMemo(() => {
+  return templateList.find(
+    (template) => template.id === currentTemplate
+  );
+}, [currentTemplate]);
+
+const SelectedTemplate =
+  activeTemplate?.component || templateList[0]?.component;
  
 
- const initialFormData = {
-  firstName: "",
-  lastName: "",
-  email: "",
-  phone: "",
-  desiredJobTitle: "",
-  country: "",
-  city: "",
-  address: "",
-  postCode: "",
-  linkedin: "",
-  portfolio: "",
-  experience: [],
-  education: [],
-  skills: [],
-  languages: [],
-  hobbies: [],
-  certifications: "",
-  summary: "",
-  customSections: [],
-};
 
- 
 
-  const resumeScore = calculateResumeScore(formData);
+const resumeScore = useMemo(() => {
+  return calculateResumeScore(formData);
+}, [formData]);
 
   
 
   const handleReset = () => {
-    setFormData(initialFormData);
+    setFormData(initialResumeData);
     setCurrentStep(0);
   };
 
-  const handleDownload = () => {
-    const element = document.getElementById("resume-preview");
-    if (!element) return;
+  const handleDownload = async () => {
+  const element = document.getElementById("resume-preview");
+  if (!element) return;
 
-    const options = {
-      margin: 0,
-      filename: "My_Resume.pdf",
-      image: { type: "jpeg", quality: 1 },
-      html2canvas: { scale: 2, useCORS: true },
-      jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
-    };
+  //  Dynamically load html2pdf only when needed
+  const html2pdf = (await import("html2pdf.js")).default;
 
-    html2pdf().set(options).from(element).save();
+  const options = {
+    margin: 0,
+    filename: "My_Resume.pdf",
+    image: { type: "jpeg", quality: 1 },
+    html2canvas: { scale: 2, useCORS: true },
+    jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
   };
 
+  html2pdf().set(options).from(element).save();
+};
 
-  useEffect(() => {
-  if (!formData || Object.keys(formData).length === 0) {
-    setFormData(initialFormData);
-  }
-}, []);
 
 useEffect(() => {
-  if (!activeEditorSection) return;
+  if (!sectionFromUrl) return;
 
   const sectionToStepMap = {
     contacts: 0,
@@ -110,12 +92,12 @@ useEffect(() => {
     finalize: 5,
   };
 
-  const stepIndex = sectionToStepMap[activeEditorSection];
+  const stepIndex = sectionToStepMap[sectionFromUrl];
 
   if (stepIndex !== undefined) {
     setCurrentStep(stepIndex);
   }
-}, [activeEditorSection]);
+}, [sectionFromUrl]);
 
   const renderStepForm = () => {
     switch (currentStep) {
@@ -142,7 +124,7 @@ useEffect(() => {
       {/* TOP BAR */}
       <div className="flex justify-between mb-6 max-w-7xl mx-auto px-4">
         <button
-          onClick={onBack}
+          onClick={() => navigate("/resume-choice")}
           className="flex items-center gap-2 text-slate-500 hover:text-peach-500 font-semibold transition"
         >
           <ArrowLeft size={20} />
@@ -200,7 +182,7 @@ useEffect(() => {
           {/* Steps */}
           <div className="flex flex-wrap gap-4 mb-6">
             {steps.map((step, index) => (
-              <div key={index} className="flex items-center">
+  <div key={step} className="flex items-center">
                 <span
                   className={`rounded-full w-6 h-6 flex items-center justify-center border ${
                     currentStep === index
@@ -269,9 +251,7 @@ useEffect(() => {
               </div>
 
               <button
-                onClick={() =>
-                  goToTemplateSwitcher(currentTemplate)
-                }
+                onClick={() => navigate("/builder")}
                 className="flex items-center gap-2 text-peach-600 font-semibold hover:underline"
               >
                 <LayoutGrid size={18} />
@@ -285,51 +265,18 @@ useEffect(() => {
   id="resume-preview"
   className="p-8"
   style={{
-    "--primary-color":
-      currentTemplate === "templateThree" ||
-      currentTemplate === "templateFour" ||
-      currentTemplate === "templateSeven"
-        ? designSettings?.primaryColor || "#000000"
-        : undefined,
-  }}
+  "--primary-color":
+    activeTemplate?.supportsPrimaryColor
+      ? designSettings?.primaryColor || "#000000"
+      : undefined,
+}}
 >
-              {currentTemplate === "templateOne" && (
-                <TemplateOne 
-                data={formData}
-                designSettings={designSettings} />
-                
-              )}
-              {currentTemplate === "templateTwo" && (
-                <TemplateTwo
-                 data={formData}
-                 designSettings={designSettings} />
-              )}
-              {currentTemplate === "templateThree" && (
-                <TemplateThree
-                 data={formData} 
-                 designSettings={designSettings}/>
-              )}
-                 {currentTemplate === "templateFour" && (
-                <TemplateFour 
-                data={formData}
-                designSettings={designSettings} />
-               )}
-
-               {currentTemplate === "templateFive" && (
-                <TemplateFive 
-                data={formData} 
-                designSettings={designSettings}/>
-              )}
-               {currentTemplate === "templateSix" && (
-                <TemplateSix 
-                data={formData}
-                designSettings={designSettings} />
-              )}
-              {currentTemplate === "templateSeven" && (
-                <TemplateSeven 
-                data={formData}
-                designSettings={designSettings} />
-              )}
+              {SelectedTemplate && (
+  <SelectedTemplate
+    data={formData}
+    designSettings={designSettings}
+  />
+)}
             </div>
 
           </div>

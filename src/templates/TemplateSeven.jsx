@@ -19,18 +19,30 @@ export default function TemplateSeven({ data = {}, designSettings = {} }) {
 
   const fullName = [firstName, lastName].filter(Boolean).join(" ");
 
+     //  FIX URL FUNCTION (correct place)
+  // const fixURL = (url) => {
+  //   if (!url) return "";
+  //   if (url.startsWith("http://") || url.startsWith("https://")) {
+  //     return url;
+  //   }
+  //   return "https://" + url;
+  // };
+
+
   return (
     <div className={`${fontFamily} ${fontSize} ${lineSpacing} ${sectionSpacing}`}>
       
       <div className="w-1/3 bg-gray-100 p-6 space-y-4">
         <h1 className="text-xl font-bold">
-          {fullName || "Your Name"}
+          {fullName || "John Doe"}
         </h1>
 
         <div>
           <h2 className="font-semibold">Contact</h2>
           <p>{email}</p>
           <p>{phone}</p>
+
+          
         </div>
 
         {skills.length > 0 && (

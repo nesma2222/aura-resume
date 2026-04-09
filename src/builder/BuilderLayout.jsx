@@ -12,18 +12,17 @@ import SectionsPanel from "./panels/SectionsPanel";
 import DesignPanel from "./panels/DesignPanel";
 import SpellCheckPanel from "./panels/SpellCheckPanel";
 import ResumePreview from "./preview/ResumePreview";
+import { useNavigate } from "react-router-dom";
 
 export default function BuilderLayout({
   selectedTemplate,
   setSelectedTemplate,
   formData,
-  setFormData,
   designSettings,
   setDesignSettings,
-  onBack,
-  goToEditorSection
 }) {
   const [activePanel, setActivePanel] = useState("sections");
+  const navigate = useNavigate();
 
   // 🔹 Section order state
   const [sections, setSections] = useState([
@@ -35,13 +34,15 @@ export default function BuilderLayout({
   ]);
 
 
-
+const goToEditorSection = (sectionId) => {
+  navigate(`/editor?section=${sectionId}`);
+};
   return (
     <div className="flex h-screen bg-gray-100 relative">
 
       {/*  Back Button */}
       <button
-        onClick={onBack}
+       onClick={() => navigate("/editor")}
         className="absolute top-4 left-24 flex items-center gap-2 text-peach-600 font-medium"
       >
         <ArrowLeft size={18} />
@@ -96,6 +97,7 @@ export default function BuilderLayout({
         {activePanel === "sections" && (
           <SectionsPanel
              sections={sections}
+             setSections={setSections}
              goToEditorSection={goToEditorSection}
           />
         )}

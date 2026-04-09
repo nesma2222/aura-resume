@@ -1,4 +1,5 @@
 import { Award, ChevronUp, ChevronDown, Trash2 } from "lucide-react";
+import { useRef } from "react";
 
 export default function CertificationsSection({
   formData,
@@ -7,6 +8,58 @@ export default function CertificationsSection({
   toggleSection
 }) {
   const isOpen = openSection === "certifications";
+
+  const textareaRef = useRef(null);
+
+  const updateText = (newText) => {
+    setFormData({
+      ...formData,
+      certifications: newText
+    });
+  };
+
+  const wrapSelection = (before, after) => {
+    const textarea = textareaRef.current;
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+
+    const text = formData.certifications || "";
+    const selected = text.substring(start, end);
+
+    const newText =
+      text.substring(0, start) +
+      before +
+      selected +
+      after +
+      text.substring(end);
+
+    updateText(newText);
+  };
+
+  // FIXED BOLD
+  const makeBold = () => {
+    wrapSelection("<b>", "</b>");
+  };
+
+  // BULLET
+  const addBullet = () => {
+    const text = formData.certifications || "";
+    updateText(text + "\n• ");
+  };
+
+  // NUMBERED LIST
+  const addNumber = () => {
+    const text = formData.certifications || "";
+    const matches = text.match(/\n\d+\./g);
+    const next = matches ? matches.length + 1 : 1;
+
+    updateText(text + `\n${next}. `);
+  };
+
+  // LINK
+  const addLink = () => {
+    wrapSelection('<a href="https://">', "</a>");
+  };
 
   return (
     <div className="bg-gray-50 border rounded-xl p-5 mb-5 shadow-sm">
@@ -18,12 +71,10 @@ export default function CertificationsSection({
       >
         <div className="flex gap-4">
           
-          {/* Icon Box */}
           <div className="bg-blue-100 p-3 rounded-lg">
             <Award className="text-blue-600 w-6 h-6" />
           </div>
 
-          {/* Title + Subtitle */}
           <div>
             <h3 className="font-semibold text-lg text-gray-800">
               Certifications and licenses
@@ -34,7 +85,6 @@ export default function CertificationsSection({
           </div>
         </div>
 
-        {/* Right Icons */}
         <div className="flex items-center gap-3">
           {isOpen ? (
             <ChevronUp className="w-5 h-5 text-gray-500" />
@@ -45,22 +95,31 @@ export default function CertificationsSection({
         </div>
       </div>
 
-      {/* Body */}
       {isOpen && (
         <div className="mt-5">
           
           {/* Toolbar */}
           <div className="flex gap-4 border border-gray-200 rounded-t-lg px-3 py-2 bg-white">
-            <button className="font-bold">B</button>
-            <button className="italic">I</button>
-            <button className="underline">U</button>
-            <button>•</button>
-            <button>1.</button>
-            <button>🔗</button>
+            <button onClick={makeBold} className="font-bold">B</button>
+
+            <button onClick={() => wrapSelection("<i>", "</i>")} className="italic">
+              I
+            </button>
+
+            <button onClick={() => wrapSelection("<u>", "</u>")} className="underline">
+              U
+            </button>
+
+            <button onClick={addBullet}>•</button>
+
+            <button onClick={addNumber}>1.</button>
+
+            <button onClick={addLink}>🔗</button>
           </div>
 
           {/* Textarea */}
           <textarea
+            ref={textareaRef}
             value={formData.certifications || ""}
             onChange={(e) =>
               setFormData({

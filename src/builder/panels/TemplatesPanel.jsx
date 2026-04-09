@@ -1,10 +1,6 @@
-import TemplateOne from "../../templates/TemplateOne";
-import TemplateTwo from "../../templates/TemplateTwo";
-import TemplateThree from "../../templates/TemplateThree";
-import TemplateFour from "../../templates/TemplateFour";
-import TemplateFive from "../../templates/TemplateFive";
-import TemplateSix from "../../templates/TemplateSix";
-import TemplateSeven from "../../templates/TemplateSeven";
+import { Suspense } from "react";
+import { templateList } from "../../data/templateList";
+
 
 export default function TemplatesPanel({
   selectedTemplate,
@@ -13,21 +9,12 @@ export default function TemplatesPanel({
   setDesignSettings,
 }) {
 
-  const templates = [
-    { id: "templateOne", name: "Modern", component: TemplateOne },
-    { id: "templateTwo", name: "Professional", component: TemplateTwo },
-    { id: "templateThree", name: "Simple", component: TemplateThree },
-    { id: "templateFour", name: "Dark Sidebar", component: TemplateFour },
-    { id: "templateFive", name: "Minimal Clean", component: TemplateFive },
-    { id: "templateSix", name: "ATS Classic", component: TemplateSix },
-    { id: "templateSeven", name: "Two Column", component: TemplateSeven },
-  ];
+  
 
-  const colorSupportedTemplates = [
-    "templateThree",
-    "templateFour",
-    
-  ];
+  const activeTemplate = templateList.find(
+  t => t.id === selectedTemplate
+);
+  
 
 const colors = [
   "#CBD5E1", // Slate Light
@@ -44,8 +31,8 @@ const colors = [
 
       <h2 className="text-xl font-bold mb-6">Choose Template</h2>
 
-      {/* 🎨 SHOW COLORS ONLY FOR 3,4,7 */}
-      {colorSupportedTemplates.includes(selectedTemplate) && (
+      {/*  SHOW COLORS ONLY FOR 3,4,7 */}
+     {activeTemplate?.supportsPrimaryColor && (
         <div className="mb-6">
           <h3 className="text-sm font-semibold mb-3">
             Accent Color
@@ -77,7 +64,7 @@ const colors = [
       )}
 
       <div className="space-y-6">
-        {templates.map((template) => {
+        {templateList.map((template) => {
           const PreviewComponent = template.component;
 
           return (
@@ -104,10 +91,12 @@ const colors = [
       designSettings?.primaryColor || "#2563eb",
   }}
 >
+  <Suspense fallback={<div>Loading...</div>}>
   <PreviewComponent
     data={{}}
     designSettings={designSettings}
   />
+  </Suspense>
 </div>
 
               <div className="p-3 bg-white border-t text-center font-medium">

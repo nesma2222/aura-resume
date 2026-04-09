@@ -31,6 +31,16 @@ export default function TemplateThree({
     .filter(Boolean)
     .join(" ");
 
+       // ✅ FIX URL FUNCTION (correct place)
+  const fixURL = (url) => {
+    if (!url) return "";
+    if (url.startsWith("http://") || url.startsWith("https://")) {
+      return url;
+    }
+    return "https://" + url;
+  };
+
+
   return (
  <div className={`${fontFamily} ${fontSize} ${lineSpacing} ${sectionSpacing}`}>
 
@@ -41,7 +51,7 @@ export default function TemplateThree({
       >
         <div>
           <h1 className="text-xl font-bold">
-            {fullName || "Neena Debrew"}
+            {fullName || "John Doe"}
           </h1>
 
           {desiredJobTitle && (
@@ -66,26 +76,26 @@ export default function TemplateThree({
           )}
 
           {linkedin && (
-            <a
-              href={linkedin}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-sm underline block"
-            >
-              LinkedIn
-            </a>
-          )}
+  <a
+    href={fixURL(linkedin)}
+    target="_blank"
+    rel="noopener noreferrer"
+  >
+     LinkedIn:
+    {linkedin}
+  </a>
+)}
 
-          {portfolio && (
-            <a
-              href={portfolio}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-sm underline block"
-            >
-              Portfolio
-            </a>
-          )}
+{portfolio && (
+  <a
+    href={fixURL(portfolio)}
+    target="_blank"
+    rel="noopener noreferrer"
+  >
+    Portfolio: 
+    {portfolio}
+  </a>
+)}
         </div>
 
         {skills.length > 0 && (
@@ -143,9 +153,10 @@ export default function TemplateThree({
               Certifications
             </h2>
 
-            <p className="text-sm whitespace-pre-line">
-              {certifications}
-            </p>
+                              <p
+  className="text-sm whitespace-pre-line"
+  dangerouslySetInnerHTML={{ __html: certifications }}
+/>
           </div>
         )}
       </div>

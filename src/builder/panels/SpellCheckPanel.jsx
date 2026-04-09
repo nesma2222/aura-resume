@@ -6,7 +6,7 @@ export default function SpellCheckPanel({ formData }) {
   const [issues, setIssues] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  // ✅ Only extract meaningful content (NOT names, city, email, etc.)
+  //  Only extract meaningful content (NOT names, city, email, etc.)
   const extractRelevantText = (data) => {
     let text = "";
 
@@ -45,7 +45,7 @@ export default function SpellCheckPanel({ formData }) {
 
       try {
         const response = await axios.post(
-          "https://api.languagetool.org/v2/check",
+           import.meta.env.VITE_LANGUAGE_TOOL_API,
           new URLSearchParams({
             text: fullText,
             language: "en-US",
@@ -54,7 +54,7 @@ export default function SpellCheckPanel({ formData }) {
 
         const matches = response.data.matches;
 
-        // ✅ Filter unwanted issues
+        //  Filter unwanted issues
         const filtered = matches
           .filter((match) => {
             // Ignore whitespace warnings

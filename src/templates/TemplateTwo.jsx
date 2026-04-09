@@ -33,8 +33,17 @@ export default function TemplateTwo({
     .filter(Boolean)
     .join(" ");
 
-  // ✅ HARD FIXED COLOR (no designSettings)
+  //  HARD FIXED COLOR (no designSettings)
   const fixedColor = "#1f2937";
+
+   //  FIX URL FUNCTION (correct place)
+  const fixURL = (url) => {
+    if (!url) return "";
+    if (url.startsWith("http://") || url.startsWith("https://")) {
+      return url;
+    }
+    return "https://" + url;
+  };
 
   return (
      <div className={`${fontFamily} ${fontSize} ${lineSpacing} ${sectionSpacing}`}>
@@ -46,7 +55,7 @@ export default function TemplateTwo({
         style={{ backgroundColor: fixedColor }}
       >
         <h1 className="text-2xl font-bold">
-          {fullName || "Neena Debrew"}
+          {fullName || "John Doe"}
         </h1>
 
         {desiredJobTitle && (
@@ -60,27 +69,29 @@ export default function TemplateTwo({
           {postCode && <span>{postCode}</span>}
           {country && <span>{country}</span>}
 
-          {linkedin && (
-            <a
-              href={linkedin}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="underline text-gray-300 hover:text-white"
-            >
-              LinkedIn
-            </a>
-          )}
+          
+ {linkedin && (
+  <a
+    href={fixURL(linkedin)}
+    target="_blank"
+    rel="noopener noreferrer"
+  >
+    LinkedIn: 
+    {linkedin}
+  </a>
+)}
 
-          {portfolio && (
-            <a
-              href={portfolio}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="underline text-gray-300 hover:text-white"
-            >
-              Portfolio
-            </a>
-          )}
+{portfolio && (
+  <a
+    href={fixURL(portfolio)}
+    target="_blank"
+    rel="noopener noreferrer"
+  >
+    Portfolio: 
+    {portfolio}
+  </a>
+)}
+
         </div>
       </div>
 
@@ -143,14 +154,17 @@ export default function TemplateTwo({
             </div>
           )}
 
+   
           {certifications && (
             <div>
               <h2 className="font-semibold border-b pb-1 mb-2">
                 Certifications
               </h2>
-              <p className="text-sm whitespace-pre-line">
-                {certifications}
-              </p>
+                     <p
+  className="text-sm whitespace-pre-line"
+  dangerouslySetInnerHTML={{ __html: certifications }}
+/>
+              
             </div>
           )}
         </div>

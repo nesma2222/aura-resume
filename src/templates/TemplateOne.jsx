@@ -32,12 +32,22 @@ export default function TemplateOne({ data = {}, designSettings = {} }) {
     .filter(Boolean)
     .join(" ");
 
+       // ✅ FIX URL FUNCTION (correct place)
+  const fixURL = (url) => {
+    if (!url) return "";
+    if (url.startsWith("http://") || url.startsWith("https://")) {
+      return url;
+    }
+    return "https://" + url;
+  };
+
+
   return (
     <div className={`${fontFamily} ${fontSize} ${lineSpacing} ${sectionSpacing}`}>
 
       {/* Name */}
       <h1 className="font-bold text-center">
-        {fullName || "Neena Debrew"}
+        {fullName || "John Doe"}
       </h1>
 
       {/* Desired Job Title */}
@@ -65,30 +75,26 @@ export default function TemplateOne({ data = {}, designSettings = {} }) {
         )}
 
         {linkedin && (
-          <p>
-            <a
-              href={linkedin}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-blue-600 underline"
-            >
-              {linkedin}
-            </a>
-          </p>
-        )}
+  <a
+    href={fixURL(linkedin)}
+    target="_blank"
+    rel="noopener noreferrer"
+  >
+     LinkedIn: 
+    {linkedin}
+  </a>
+)}
 
-        {portfolio && (
-          <p>
-            <a
-              href={portfolio}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-blue-600 underline"
-            >
-              {portfolio}
-            </a>
-          </p>
-        )}
+{portfolio && (
+  <a
+    href={fixURL(portfolio)}
+    target="_blank"
+    rel="noopener noreferrer"
+  >
+    Portfolio: 
+    {portfolio}
+  </a>
+)}
       </div>
 
       <hr />
@@ -163,9 +169,10 @@ export default function TemplateOne({ data = {}, designSettings = {} }) {
       {certifications && (
         <div>
           <h2 className="font-semibold">Certifications</h2>
-          <p className="whitespace-pre-line">
-            {certifications}
-          </p>
+                             <p
+  className="text-sm whitespace-pre-line"
+  dangerouslySetInnerHTML={{ __html: certifications }}
+/>
         </div>
       )}
 
