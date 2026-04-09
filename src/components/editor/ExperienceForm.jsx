@@ -174,7 +174,7 @@
 //   );
 // }
 
-import { useState, useRef } from "react";
+import { useState } from "react";
 
 // ── Tips data ──────────────────────────────────────────────────────────────────
 const tips = [
@@ -190,15 +190,14 @@ const tips = [
 
 export default function ExperienceForm({ formData, setFormData }) {
   const [showTips,    setShowTips]    = useState(false);
-  const [loadingIdx,  setLoadingIdx]  = useState(null);   // which card is fetching AI
-  const [panelIdx,    setPanelIdx]    = useState(null);   // which card has panel open
-  const [suggestions, setSuggestions] = useState([]);     // bullet strings from AI
-  const [addedSet,    setAddedSet]    = useState({});     // { "bullet text": true }
-  const [tooltip,     setTooltip]     = useState(null);   // index of card showing tooltip
+  const [loadingIdx,  setLoadingIdx]  = useState(null);
+  const [panelIdx,    setPanelIdx]    = useState(null);
+  const [suggestions, setSuggestions] = useState([]);
+  const [addedSet,    setAddedSet]    = useState({});
+  const [tooltip,     setTooltip]     = useState(null);
 
   const experiences = formData.experience || [];
 
-  // ── Helpers ────────────────────────────────────────────────────────────────
   const handleChange = (index, field, value) => {
     const updated = [...experiences];
     updated[index][field] = value;
@@ -226,18 +225,16 @@ export default function ExperienceForm({ formData, setFormData }) {
     setAddedSet({});
   };
 
-  // ── Parse AI text into individual bullet strings ───────────────────────────
   const parseBullets = (text) =>
     text
       .split("\n")
       .map((l) => l.replace(/^[•\-*]\s*/, "").trim())
       .filter((l) => l.length > 0);
 
-  // ── Fetch AI suggestions ───────────────────────────────────────────────────
+  // ── Fetch AI suggestions — calls /api/generate with jobTitle in body ─────────
   const generateSuggestions = async (index) => {
     const exp = experiences[index];
 
-    // Show tooltip if no job title
     if (!exp.jobTitle) {
       setTooltip(index);
       setTimeout(() => setTooltip(null), 2500);
@@ -250,11 +247,11 @@ export default function ExperienceForm({ formData, setFormData }) {
     setPanelIdx(index);
 
     try {
-      const res = await fetch("/api/generate-experience", {
+      const res = await fetch("/api/generate", {          // ← same endpoint as SummaryForm
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          jobTitle: exp.jobTitle,
+          jobTitle: exp.jobTitle,                         // ← generate.js detects jobTitle → runs experience prompt
           employer: exp.employer,
           skills:   formData.skills || [],
         }),
@@ -274,18 +271,16 @@ export default function ExperienceForm({ formData, setFormData }) {
     }
   };
 
-  // ── Add a bullet to the description textarea ───────────────────────────────
   const addBulletToDescription = (index, bullet) => {
-    const exp      = experiences[index];
-    const current  = exp.description?.trim() || "";
-    const newLine  = `• ${bullet}`;
-    const updated  = [...experiences];
+    const exp     = experiences[index];
+    const current = exp.description?.trim() || "";
+    const newLine = `• ${bullet}`;
+    const updated = [...experiences];
     updated[index].description = current ? `${current}\n${newLine}` : newLine;
     setFormData({ ...formData, experience: updated });
     setAddedSet((prev) => ({ ...prev, [bullet]: true }));
   };
 
-  // ── Render ─────────────────────────────────────────────────────────────────
   return (
     <div className="space-y-6">
 
@@ -339,7 +334,6 @@ export default function ExperienceForm({ formData, setFormData }) {
       {experiences.map((exp, index) => (
         <div key={index} className="border border-gray-200 rounded-xl p-5 space-y-4">
 
-          {/* Job Title */}
           <div>
             <label className="block text-sm font-semibold text-slate-600 mb-1">Job Title</label>
             <input type="text" placeholder="Software Developer" value={exp.jobTitle}
@@ -347,7 +341,6 @@ export default function ExperienceForm({ formData, setFormData }) {
               className="inputStyle" />
           </div>
 
-          {/* Employer */}
           <div>
             <label className="block text-sm font-semibold text-slate-600 mb-1">Employer</label>
             <input type="text" placeholder="Company name" value={exp.employer}
@@ -355,7 +348,6 @@ export default function ExperienceForm({ formData, setFormData }) {
               className="inputStyle" />
           </div>
 
-          {/* Location */}
           <div>
             <label className="block text-sm font-semibold text-slate-600 mb-1">Location</label>
             <input type="text" placeholder="City, Country" value={exp.location}
@@ -363,7 +355,6 @@ export default function ExperienceForm({ formData, setFormData }) {
               className="inputStyle" />
           </div>
 
-          {/* Dates */}
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-semibold text-slate-600 mb-1">Start Date</label>
@@ -390,7 +381,6 @@ export default function ExperienceForm({ formData, setFormData }) {
 
             {/* Toolbar with Generate button */}
             <div className="flex items-center justify-between border border-gray-200 border-b-0 rounded-t-lg px-3 py-2 bg-gray-50">
-              {/* Formatting icons (visual) */}
               <div className="flex items-center gap-1 text-gray-500 text-sm select-none">
                 <span className="font-bold px-0.5">B</span>
                 <span className="italic px-0.5">I</span>
@@ -406,7 +396,7 @@ export default function ExperienceForm({ formData, setFormData }) {
                 <span className="px-0.5">↪</span>
               </div>
 
-              {/* Generate with AI button + tooltip */}
+              {/* Generate button + tooltip */}
               <div className="relative">
                 {tooltip === index && (
                   <div className="absolute bottom-full right-0 mb-2 w-56 bg-gray-800 text-white text-xs rounded-lg px-3 py-2 z-20 shadow-lg">
@@ -428,9 +418,7 @@ export default function ExperienceForm({ formData, setFormData }) {
                       </svg>
                       Generating...
                     </>
-                  ) : (
-                    <>✨ Generate with AI</>
-                  )}
+                  ) : <>✨ Generate with AI</>}
                 </button>
               </div>
             </div>
@@ -444,10 +432,9 @@ export default function ExperienceForm({ formData, setFormData }) {
               className="inputStyle resize-none rounded-t-none"
             />
 
-            {/* ── Ideas Suggestion Panel ── */}
+            {/* Ideas Suggestion Panel */}
             {panelIdx === index && (
               <div className="mt-3 border border-gray-200 rounded-xl bg-white shadow-md">
-                {/* Panel header */}
                 <div className="flex items-start justify-between px-4 pt-4 pb-2">
                   <div>
                     <h3 className="text-base font-bold text-slate-800">Ideas Suggestion</h3>
@@ -458,27 +445,16 @@ export default function ExperienceForm({ formData, setFormData }) {
                   <button type="button" onClick={closePanel}
                     className="text-gray-400 hover:text-gray-600 text-xl leading-none mt-0.5">×</button>
                 </div>
-
-                {/* Bullet suggestions */}
                 <div className="px-3 pb-4 space-y-2">
-                  {suggestions.length === 0 && loadingIdx === index && (
+                  {suggestions.length === 0 && (
                     <p className="text-sm text-gray-400 px-1 py-2">Generating ideas...</p>
-                  )}
-                  {suggestions.length === 0 && loadingIdx !== index && (
-                    <p className="text-sm text-gray-400 px-1 py-2">No suggestions yet.</p>
                   )}
                   {suggestions.map((bullet, bi) => {
                     const isAdded = !!addedSet[bullet];
                     return (
-                      <div
-                        key={bi}
-                        className={`flex items-start gap-3 rounded-lg px-3 py-2.5 border transition ${
-                          isAdded
-                            ? "bg-blue-50 border-blue-200"
-                            : "bg-gray-50 border-gray-100 hover:border-gray-300"
-                        }`}
-                      >
-                        {/* Add / Added button */}
+                      <div key={bi} className={`flex items-start gap-3 rounded-lg px-3 py-2.5 border transition ${
+                        isAdded ? "bg-blue-50 border-blue-200" : "bg-gray-50 border-gray-100 hover:border-gray-300"
+                      }`}>
                         <button
                           type="button"
                           onClick={() => !isAdded && addBulletToDescription(index, bullet)}
@@ -488,22 +464,17 @@ export default function ExperienceForm({ formData, setFormData }) {
                               ? "bg-blue-500 border-blue-500 text-white cursor-default"
                               : "bg-white border-gray-300 text-gray-500 hover:border-blue-400 hover:text-blue-500"
                           }`}
-                          title={isAdded ? "Added" : "Add to description"}
                         >
                           {isAdded ? (
-                            // checkmark
                             <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24">
                               <polyline points="20 6 9 17 4 12" />
                             </svg>
                           ) : (
-                            // left arrow
                             <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
                               <polyline points="15 18 9 12 15 6" />
                             </svg>
                           )}
                         </button>
-
-                        {/* Bullet text */}
                         <p className={`text-sm leading-snug ${isAdded ? "text-blue-700" : "text-slate-700"}`}>
                           {bullet}
                         </p>
@@ -515,7 +486,6 @@ export default function ExperienceForm({ formData, setFormData }) {
             )}
           </div>
 
-          {/* Remove button */}
           {experiences.length > 1 && (
             <button type="button" onClick={() => handleRemoveExperience(index)}
               className="text-red-500 text-sm hover:underline">
@@ -526,7 +496,6 @@ export default function ExperienceForm({ formData, setFormData }) {
         </div>
       ))}
 
-      {/* Add Experience */}
       <button type="button" onClick={handleAddExperience}
         className="bg-peach-500 text-white px-5 py-2 rounded-lg hover:bg-peach-600 transition">
         + Add Experience
